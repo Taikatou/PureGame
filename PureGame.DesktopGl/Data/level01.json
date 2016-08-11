@@ -1,0 +1,13 @@
+﻿{
+	"Name": "level",
+	"Metadata": { },
+	"Objects": [
+    {
+      "Type": "EntityObject",
+      "Data": {
+        "FileName": "axe",
+        "Position": "1, 2"
+      }
+    }
+	]
+}

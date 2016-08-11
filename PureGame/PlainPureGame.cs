@@ -1,18 +1,27 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine;
+using SmallGame;
 
 namespace PureGame
 {
-    public class PlainPureGame : IPureGame
+    public class PlainPureGame
     {
-        WorldArea current;
-        public PlainPureGame(WorldArea current)
+        public WorldArea Current;
+        public DataLoader DataLoader { get; private set; }
+        public PlainPureGame()
         {
-            this.current = current;
+            DataLoader = new DataLoader();
+            DataLoader.RegisterParser(StandardGameObjectParser.For<EntityObject>());
         }
+
+        public virtual void LoadWorld(string world_name, IFileReader reader)
+        {
+            Current = DataLoader.Load<WorldArea>(world_name, reader);
+        }
+
         public void Update(GameTime timer)
         {
-            current.Update(timer);
+            Current?.Update(timer);
         }
     }
 }

@@ -1,18 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using PureGame.Render;
 
 namespace PureGame.Gui
 {
     public class PureGameRendererGui : IPureGameRenderer
     {
-        public IPureGameRenderer game;
-        public PureGameRendererGui(IPureGameRenderer game)
+        public PlainPureGameRenderer game;
+        public PureGameRendererGui(PlainPureGameRenderer game)
         {
             this.game = game;
         }
-        public void Draw()
+        public void Draw(SpriteBatch sprite_batch)
         {
-            game.Draw();
+            game.Draw(sprite_batch);
         }
 
         public void Update(GameTime timer)

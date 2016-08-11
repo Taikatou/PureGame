@@ -4,6 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using SmallGame.GameObjects;
 using System.Diagnostics;
+using PureGame;
 
 namespace SmallGame
 {
@@ -144,6 +145,7 @@ namespace SmallGame
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.ToString());
             }
             return g;
         }
@@ -193,14 +195,14 @@ namespace SmallGame
         }
 
         // terrible way to read a file. TODO: fix this shit.
-        private string AttemptToRead(string jsonPath)
+        private string AttemptToRead(string jsonPath, IFileReader reader)
         {
             string json = null;
             while (json == null)
             {
                 try
                 {
-                    //json = File.ReadAllText(jsonPath);
+                    json = reader.ReadAllText("Data/" + jsonPath);
                 }
                 catch (Exception ex)
                 {
@@ -219,11 +221,10 @@ namespace SmallGame
 
             foreach (var obj in levelData.Objects)
             {
-                bool validType = string.IsNullOrWhiteSpace(obj.Type);
+                bool validType = !(string.IsNullOrWhiteSpace(obj.Type));
                 if (validType && Parsers.ContainsKey(obj.Type))
                 {
                     var parsedObj = Parsers[obj.Type].ParseFunction(obj);
-
                     if (parsedObj is GameObject)
                     {
                         lvl.Objects.Add((GameObject)parsedObj);
@@ -233,9 +234,9 @@ namespace SmallGame
             return lvl;
         }
 
-        public T Load<T>(string jsonPath) where T : GameLevel
+        public T Load<T>(string jsonPath, IFileReader reader) where T : GameLevel
         {
-            var json = AttemptToRead(jsonPath);
+            var json = AttemptToRead(jsonPath, reader);
 
             return LoadJson<T>(json);
         }

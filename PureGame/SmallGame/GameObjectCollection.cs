@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using SmallGame.GameObjects;
 
 namespace SmallGame
@@ -32,14 +30,6 @@ namespace SmallGame
             _objectMap.Add(obj.Id, obj);
             Objects[obj.Type].Add(obj);
         }
-
-
-        //public List<GameObject> GetAll()
-        //{
-        //    var gobs = new List<GameObject>();
-        //    Objects.Values.ToList().ForEach(g => gobs.Add(g));
-        //    return gobs;
-        //} 
 
         public List<T> GetObjects<T>() where T : GameObject
         {

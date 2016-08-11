@@ -1,9 +1,10 @@
-﻿using PureGame;
+﻿using Microsoft.Xna.Framework.Graphics;
+using PureGame;
 
 namespace PureGame.Render
 {
-    public interface IPureGameRenderer : IPureGame
+    public interface IPureGameRenderer
     {
-        void Draw();
+        void Draw(SpriteBatch sprite_batch);
     }
 }

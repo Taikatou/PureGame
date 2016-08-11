@@ -1,29 +1,16 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using PureGame.AbstractEngine;
+﻿using Microsoft.Xna.Framework;
 using SmallGame.GameObjects;
 
 namespace PureGame.Engine
 {
-    public class EntityObject : AbstractEntityObject
+    public class EntityObject : GameObject
     {
         public string FileName;
-        public Vector2 position;
+        //This is not supposed to be changed directly only through entityManager
+        public Vector2 Position;
         public EntityObject()
         {
 
-        }
-
-        public override Vector2 Position
-        {
-            get
-            {
-                return position;
-            }
-            set
-            {
-                position = value;
-            }
         }
     }
 }

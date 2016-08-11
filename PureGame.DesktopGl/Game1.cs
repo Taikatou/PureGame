@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using PureGame.Render;
+using System.Diagnostics;
 
 namespace PureGame.DesktopGl
 {
@@ -8,6 +10,7 @@ namespace PureGame.DesktopGl
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        PlainPureGameRenderer game;
 
         public Game1()
         {
@@ -21,6 +24,9 @@ namespace PureGame.DesktopGl
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            var g = new PlainPureGame();
+            g.LoadWorld("level01.json", new FileReader());
+            game = new PlainPureGameRenderer(g, Content);
         }
         protected override void UnloadContent()
         {
@@ -29,7 +35,7 @@ namespace PureGame.DesktopGl
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            game.Update(gameTime);
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime)
@@ -37,6 +43,7 @@ namespace PureGame.DesktopGl
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             base.Draw(gameTime);
+            game.Draw(spriteBatch);
         }
     }
 }

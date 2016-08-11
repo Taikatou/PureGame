@@ -45,6 +45,8 @@
     <Compile Include="PlainPureGameRendererDebug.cs" />
     <Compile Include="PlainPureGameRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RenderEntity.cs" />
+    <Compile Include="RenderWorld.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
