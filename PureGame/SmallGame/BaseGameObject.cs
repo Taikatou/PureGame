@@ -1,4 +1,6 @@
-﻿namespace SmallGame
+﻿using System.Diagnostics;
+
+namespace SmallGame
 {
     public class BaseIGameObject : IGameObject
     {
@@ -30,9 +32,23 @@
             }
         }
 
+        private string script;
+        public string Script
+        {
+            get
+            {
+                return script;
+            }
+
+            set
+            {
+                script = value;
+            }
+        }
+
         public virtual void OnInit()
         {
-
+            
         }
     }
 }

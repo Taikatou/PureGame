@@ -16,6 +16,8 @@
         /// </summary>
         string Id { get; set; }
 
+        string Script { get; set; }
+
         void OnInit();
     }
 }

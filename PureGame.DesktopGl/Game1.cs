@@ -28,8 +28,8 @@ namespace PureGame.DesktopGl
             BoxingViewportAdapter viewport_adapter = new BoxingViewportAdapter(Window, GraphicsDevice, Width, Height);
             var g = new PlainPureGame(Content);
             g.LoadWorld("level01.json", new FileReader());
-            var g2 = new PlainPureGameRenderer(g, viewport_adapter, Content);
-            game = new PlainPureGameRendererDebug(g2, Content);
+            var g2 = new PlainPureGameRenderer(g, viewport_adapter);
+            game = new PlainPureGameRendererDebug(g2);
         }
         protected override void UnloadContent()
         {

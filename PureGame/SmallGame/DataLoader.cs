@@ -108,6 +108,8 @@ namespace SmallGame
             obj.Type = Type;
             obj.Id = raw.Id;
 
+            obj.Script = raw.Script;
+
             if (string.IsNullOrWhiteSpace(obj.Id))
             {
                 obj.Id = IdFactory.NewId;
@@ -224,7 +226,9 @@ namespace SmallGame
                         var parsedObj = Parsers[obj.Type].ParseFunction(obj);
                         if (parsedObj is IGameObject)
                         {
-                            lvl.Objects.Add((IGameObject)parsedObj);
+                            IGameObject game_object = (IGameObject)parsedObj;
+                            game_object.OnInit();
+                            lvl.Objects.Add(game_object);
                         }
                     }
                 }

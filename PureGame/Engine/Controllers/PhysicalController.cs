@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using MonoGame.Extended.InputListeners;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Input;
+using PureGame.Engine.EntityData;
 
 namespace PureGame.Engine.Controllers
 {

@@ -2,7 +2,7 @@
 using PureGame.Engine.Controllers;
 using SmallGame;
 
-namespace PureGame.Engine
+namespace PureGame.Engine.EntityData
 {
     public class EntityObject : BaseIGameObject
     {

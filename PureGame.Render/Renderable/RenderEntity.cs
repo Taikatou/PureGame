@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PureGame.Engine;
+using PureGame.Engine.EntityData;
 using PureGame.Render.Common;
 using System.Diagnostics;
 

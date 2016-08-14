@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using PureGame.Engine.EntityData;
 
 namespace PureGame.Engine.Controllers
 {

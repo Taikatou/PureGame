@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using PureGame.Engine.Common;
 using MonoGame.Extended.Maps.Tiled;
+using PureGame.Engine.EntityData;
 
 namespace PureGame.Engine
 {

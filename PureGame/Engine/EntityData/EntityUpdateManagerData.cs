@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace PureGame.Engine
+namespace PureGame.Engine.EntityData
 {
 
     public class EntityUpdateManagerData

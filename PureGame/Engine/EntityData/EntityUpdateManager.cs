@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System;
 using MonoGame.Extended.Maps.Tiled;
 
-namespace PureGame.Engine
+namespace PureGame.Engine.EntityData
 {
     public class EntityUpdateManager
     {

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.Maps.Tiled;
 using PureGame.Engine;
+using PureGame.Engine.EntityData;
 using System.Collections.Generic;
 
 namespace PureGame.Render.Renderable
@@ -16,11 +17,9 @@ namespace PureGame.Render.Renderable
         private TiledMap Map;
         public Vector2 TileSize;
         public Vector2 Offset => TileSize / 2;
-        private PlainPureGameRenderer parent;
 
-        public RenderWorld(WorldArea World, PlainPureGameRenderer parent)
+        public RenderWorld(WorldArea World)
         {
-            this.parent = parent;
             this.World = World;
             Content = ContentManagerManager.RequestContentManager();
             Map = World.Maps[0].GetTiledMap(Content);

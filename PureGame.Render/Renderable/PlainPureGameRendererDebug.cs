@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.BitmapFonts;
+using PureGame.Engine;
 
 namespace PureGame.Render.Renderable
 {
@@ -13,13 +14,13 @@ namespace PureGame.Render.Renderable
         PlainPureGameRenderer game;
         ContentManager Content;
 
-        public PlainPureGameRendererDebug(PlainPureGameRenderer game, ContentManager Content)
+        public PlainPureGameRendererDebug(PlainPureGameRenderer game)
         {
             this.game = game;
             fps_counter = new FramesPerSecondCounter();
             string file_name = string.Format("Fonts/{0}", "montserrat-32");
-            this.Content = new ContentManager(Content.ServiceProvider, Content.RootDirectory);
-            bitmapFont = this.Content.Load<BitmapFont>(file_name);
+            Content = ContentManagerManager.RequestContentManager();
+            bitmapFont = Content.Load<BitmapFont>(file_name);
         }
         public void Draw(SpriteBatch sprite_batch)
         {

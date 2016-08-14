@@ -8,15 +8,13 @@ namespace PureGame.Render.Renderable
 {
     public class PlainPureGameRenderer : IPureGameRenderer
     {
-        private PlainPureGame game;
+        private IPureGame game;
         private RenderWorld render_world;
-        private ContentManager content;
         public Camera2D Camera;
 
-        public PlainPureGameRenderer(PlainPureGame game, ViewportAdapter viewport_adapter, ContentManager content)
+        public PlainPureGameRenderer(IPureGame game, ViewportAdapter viewport_adapter)
         {
             this.game = game;
-            this.content = content;
             Camera = new Camera2D(viewport_adapter);
             Camera.Zoom = 0.25f;
         }
@@ -32,7 +30,7 @@ namespace PureGame.Render.Renderable
             if(render_world == null || render_world.World.Name != game.Current.Name)
             {
                 render_world?.UnLoad();
-                render_world = new RenderWorld(game.Current, this);
+                render_world = new RenderWorld(game.Current);
             }
             render_world.Update(time);
         }
