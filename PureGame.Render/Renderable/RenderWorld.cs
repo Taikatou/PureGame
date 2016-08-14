@@ -18,11 +18,11 @@ namespace PureGame.Render.Renderable
         public Vector2 Offset => TileSize / 2;
         private PlainPureGameRenderer parent;
 
-        public RenderWorld(WorldArea World, PlainPureGameRenderer parent, ContentManager Content)
+        public RenderWorld(WorldArea World, PlainPureGameRenderer parent)
         {
             this.parent = parent;
             this.World = World;
-            this.Content = Content;
+            Content = ContentManagerManager.RequestContentManager();
             Map = World.Maps[0].GetTiledMap(Content);
             TileSize = new Vector2(Map.TileWidth, Map.TileHeight);
             entity_sprites = new Dictionary<string, RenderEntity>();
@@ -55,8 +55,7 @@ namespace PureGame.Render.Renderable
         {
             if (!entity_sprites.ContainsKey(e.Id))
             {
-                var entity_content = new ContentManager(Content.ServiceProvider, Content.RootDirectory);
-                entity_sprites[e.Id] = new RenderEntity(e, this, entity_content);
+                entity_sprites[e.Id] = new RenderEntity(e, this, Content);
             }
             return entity_sprites[e.Id];
         }

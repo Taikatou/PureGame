@@ -32,7 +32,7 @@ namespace PureGame.Render.Renderable
             if(render_world == null || render_world.World.Name != game.Current.Name)
             {
                 render_world?.UnLoad();
-                render_world = new RenderWorld(game.Current, this, content);
+                render_world = new RenderWorld(game.Current, this);
             }
             render_world.Update(time);
         }
