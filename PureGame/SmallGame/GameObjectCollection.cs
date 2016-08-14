@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using SmallGame.GameObjects;
 
 namespace SmallGame
 {
@@ -26,7 +26,7 @@ namespace SmallGame
             {
                 Objects.Add(obj.Type, new List<GameObject>());
             }
-
+            Debug.WriteLine(obj.Id);
             _objectMap.Add(obj.Id, obj);
             Objects[obj.Type].Add(obj);
         }

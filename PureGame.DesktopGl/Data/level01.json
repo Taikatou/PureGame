@@ -1,13 +1,19 @@
 ﻿{
 	"Name": "level",
 	"Metadata": { },
-	"Objects": [
+  "Objects": [
+    {
+      "Type": "MapObject",
+      "Data": {
+        "MapName": "level01"
+      }
+    },
     {
       "Type": "EntityObject",
       "Data": {
-        "FileName": "axe",
+        "FileName": "CharacterSheet",
         "Position": "1, 2"
       }
     }
-	]
+  ]
 }

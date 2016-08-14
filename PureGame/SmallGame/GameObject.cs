@@ -1,4 +1,4 @@
-﻿namespace SmallGame.GameObjects
+﻿namespace SmallGame
 {
     /// <summary>
     /// A GameObject is the primary object for all SmallGame Games. 

@@ -1,33 +1,44 @@
 ﻿using SmallGame;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using System;
+using Microsoft.Xna.Framework.Content;
+using PureGame.Engine.Common;
+using MonoGame.Extended.Maps.Tiled;
 
 namespace PureGame.Engine
 {
     public class WorldArea : GameLevel
     {
-
+        public ContentManager Content;
+        public CollisionTiledMap collision_map;
+        public CollisionTiledMap CollisionMap
+        {
+            get
+            {
+                if(collision_map == null)
+                {
+                    TiledMap map = Maps[0].GetTiledMap(Content);
+                    collision_map = new CollisionTiledMap(map);
+                }
+                return collision_map;
+            }
+        }
         public WorldArea()
         {
+            Content = ContentManagerManager.RequestContentManager();
         }
 
-        public List<EntityObject> Entities
+        public void AddMover(EntityMover mover)
         {
-            get
-            {
-                List<EntityObject> to_return = Objects.GetObjects<EntityObject>();
-                return to_return;
-            }
+            WorldEntities.movers.Add(mover);
         }
 
-        public List<EntityMover> Movers
-        {
-            get
-            {
-                List<EntityMover> to_return = Objects.GetObjects<EntityMover>();
-                return to_return;
-            }
-        }
+        public List<MapObject> Maps => Objects.GetObjects<MapObject>();
+
+        public List<EntityObject> Entities => Objects.GetObjects<EntityObject>();
+
+        public List<EntityMover> Movers => Objects.GetObjects<EntityMover>();
 
         public EntityUpdateManager world_entities;
 
@@ -37,7 +48,7 @@ namespace PureGame.Engine
             {
                 if(world_entities == null)
                 {
-                    world_entities = new EntityUpdateManager(Entities, Movers);
+                    world_entities = new EntityUpdateManager(Entities, this, Movers);
                 }
                 return world_entities;
             }
@@ -46,6 +57,11 @@ namespace PureGame.Engine
         public void Update(GameTime timer)
         {
             WorldEntities.Update(timer);
+        }
+
+        public void UnLoad()
+        {
+            Content.Unload();
         }
     }
 }

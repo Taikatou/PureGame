@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.ViewportAdapters;
 using PureGame.Render;
+using PureGame.Render.Renderable;
 using System.Diagnostics;
 
 namespace PureGame.DesktopGl
@@ -10,7 +12,8 @@ namespace PureGame.DesktopGl
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        PlainPureGameRenderer game;
+        IPureGameRenderer game;
+        public int Width = 800, Height = 480;
 
         public Game1()
         {
@@ -24,9 +27,11 @@ namespace PureGame.DesktopGl
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            var g = new PlainPureGame();
+            BoxingViewportAdapter viewport_adapter = new BoxingViewportAdapter(Window, GraphicsDevice, Width, Height);
+            var g = new PlainPureGame(Content);
             g.LoadWorld("level01.json", new FileReader());
-            game = new PlainPureGameRenderer(g, Content);
+            var g2 = new PlainPureGameRenderer(g, viewport_adapter, Content);
+            game = new PlainPureGameRendererDebug(g2, Content);
         }
         protected override void UnloadContent()
         {
@@ -40,9 +45,8 @@ namespace PureGame.DesktopGl
         }
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
-            base.Draw(gameTime);
             game.Draw(spriteBatch);
         }
     }

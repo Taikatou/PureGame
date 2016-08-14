@@ -1,6 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using PureGame.Render;
+using PureGame.Render.Renderable;
 
 namespace PureGame.Gui
 {
@@ -10,7 +11,24 @@ namespace PureGame.Gui
         public PureGameRendererGui(PlainPureGameRenderer game)
         {
             this.game = game;
+            rotation = 90.0f;
         }
+
+        public float rotation = 0.0f;
+
+        public float Rotation
+        {
+            get
+            {
+                return rotation;
+            }
+
+            set
+            {
+                rotation = value;
+            }
+        }
+
         public void Draw(SpriteBatch sprite_batch)
         {
             game.Draw(sprite_batch);

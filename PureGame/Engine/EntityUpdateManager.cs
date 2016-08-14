@@ -1,24 +1,33 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System;
+using MonoGame.Extended.Maps.Tiled;
 
 namespace PureGame.Engine
 {
     public class EntityUpdateManager
     {
-        public readonly List<EntityObject> entities;
-        private readonly List<ExpiringKey<Vector2>> expiring_tiles;
-        public readonly Dictionary<string, EntityObject> id_hash;
-        public readonly Dictionary<Vector2, EntityObject> spatial_hash;
-        private List<EntityMover> movers;
+        public List<EntityObject> entities;
+        private List<ExpiringKey<Vector2>> expiring_tiles;
+        private Dictionary<ExpiringKey<Vector2>, EntityObject> KeyToEntity;
+        public Dictionary<EntityObject, ExpiringKey<Vector2>> EntityToKey;
+        public Dictionary<string, EntityObject> id_hash;
+        public Dictionary<Vector2, EntityObject> spatial_hash;
+        public List<EntityMover> movers;
+        private WorldArea parent;
 
-        public EntityUpdateManager(List<EntityObject> entities, List<EntityMover> movers)
+        public EntityUpdateManager(List<EntityObject> entities, WorldArea parent, List<EntityMover> movers)
         {
             this.movers = movers;
             this.entities = entities;
+            this.parent = parent;
             id_hash = new Dictionary<string, EntityObject>();
             expiring_tiles = new List<ExpiringKey<Vector2>>();
             spatial_hash = new Dictionary<Vector2, EntityObject>();
-            foreach(EntityObject e in this.entities)
+            EntityToKey = new Dictionary<EntityObject, ExpiringKey<Vector2>>();
+            KeyToEntity = new Dictionary<ExpiringKey<Vector2>, EntityObject>();
+            foreach (EntityObject e in this.entities)
             {
                 id_hash[e.Id] = e;
                 spatial_hash[e.Position] = e;
@@ -40,29 +49,52 @@ namespace PureGame.Engine
             Vector2 previous_position;
             foreach(EntityMover m in movers)
             {
-                previous_position = m.Position;
-                m.Update(timer);
-                if(previous_position != m.Position)
+                if(!EntityToKey.ContainsKey(m.Entity))
                 {
-                    if(!spatial_hash.ContainsKey(m.Position))
+                    previous_position = m.Position;
+                    m.Update(timer);
+                    if (previous_position != m.Position)
                     {
-                        spatial_hash[m.Position] = m.Entity;
-                        expiring_tiles.Add(new ExpiringKey<Vector2>(previous_position, 350));
-                    }
-                    else
-                    {
-                        m.Position = previous_position;
+                        if (ValidPosition(m.Position))
+                        {
+                            var movement_key = new ExpiringKey<Vector2>(previous_position, m.Speed);
+                            expiring_tiles.Add(movement_key);
+                            EntityToKey[m.Entity] = movement_key;
+                            KeyToEntity[movement_key] = m.Entity;
+                            spatial_hash[m.Position] = m.Entity;
+                        }
+                        else
+                        {
+                            m.Position = previous_position;
+                        }
                     }
                 }
             }
-            foreach(ExpiringKey<Vector2> k in expiring_tiles)
+            for (int i = 0; i < expiring_tiles.Count; i++)
             {
-                k.Update(timer);
-                if(k.TimeLeft <= 0)
+                expiring_tiles[i].Update(timer);
+                if(expiring_tiles[i].TimeLeft <= 0)
                 {
-                    expiring_tiles.Remove(k);
+                    Vector2 position = expiring_tiles[i].Key;
+                    Debug.WriteLine("Remove tile : " + position);
+                    var EntitiyObject = KeyToEntity[expiring_tiles[i]];
+                    spatial_hash.Remove(position);
+                    EntityToKey.Remove(EntitiyObject);
+                    KeyToEntity.Remove(expiring_tiles[i]);
+                    expiring_tiles.RemoveAt(i);
                 }
             }
+        }
+
+        private bool ValidPosition(Vector2 position)
+        {
+            bool within_limits = position.X >= 0 && position.Y >= 0 &&
+                                 position.X < parent.CollisionMap.TiledMap.Width &&
+                                 position.Y < parent.CollisionMap.TiledMap.Height;
+            bool entity_collision = !spatial_hash.ContainsKey(position);
+            bool map_collision = !parent.CollisionMap.CheckCollision(position);
+            Debug.WriteLine("Map collision: " + map_collision);
+            return within_limits && entity_collision && map_collision;
         }
     }
 }

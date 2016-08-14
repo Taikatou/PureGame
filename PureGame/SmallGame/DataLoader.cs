@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using SmallGame.GameObjects;
 using System.Diagnostics;
 using PureGame;
 
@@ -153,7 +152,6 @@ namespace SmallGame
 
     public class DataLoader
     {
-
         public Dictionary<string, LevelDataObjectParser> Parsers { get; private set; } 
 
         public DataLoader() : this(new Dictionary<string, LevelDataObjectParser>())
@@ -214,24 +212,33 @@ namespace SmallGame
 
         public T LoadJson<T>(string jsonString) where T : GameLevel
         {
-            var levelData = JsonConvert.DeserializeObject<LevelData>(jsonString);
-
-            var lvl = Activator.CreateInstance<T>();
-            lvl.Data = levelData;
-
-            foreach (var obj in levelData.Objects)
+            try
             {
-                bool validType = !(string.IsNullOrWhiteSpace(obj.Type));
-                if (validType && Parsers.ContainsKey(obj.Type))
+                var levelData = JsonConvert.DeserializeObject<LevelData>(jsonString);
+                var lvl = Activator.CreateInstance<T>();
+                lvl.Data = levelData;
+
+                foreach (var obj in levelData.Objects)
                 {
-                    var parsedObj = Parsers[obj.Type].ParseFunction(obj);
-                    if (parsedObj is GameObject)
+                    bool validType = !(string.IsNullOrWhiteSpace(obj.Type));
+                    if (validType && Parsers.ContainsKey(obj.Type))
                     {
-                        lvl.Objects.Add((GameObject)parsedObj);
+                        var parsedObj = Parsers[obj.Type].ParseFunction(obj);
+                        if (parsedObj is GameObject)
+                        {
+                            lvl.Objects.Add((GameObject)parsedObj);
+                        }
                     }
                 }
+                return lvl;
             }
-            return lvl;
+            catch(Exception ex)
+            {
+                Debug.WriteLine(jsonString);
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+                throw new Exception();
+            }
         }
 
         public T Load<T>(string jsonPath, IFileReader reader) where T : GameLevel
