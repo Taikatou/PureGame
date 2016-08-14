@@ -8,82 +8,46 @@ namespace PureGame.Engine
 {
     public class EntityUpdateManager
     {
-        public List<EntityObject> entities;
-        private List<ExpiringKey<Vector2>> expiring_tiles;
-        private Dictionary<ExpiringKey<Vector2>, EntityObject> KeyToEntity;
-        public Dictionary<EntityObject, ExpiringKey<Vector2>> EntityToKey;
-        public Dictionary<string, EntityObject> id_hash;
-        public Dictionary<Vector2, EntityObject> spatial_hash;
-        public List<EntityMover> movers;
+        public EntityUpdateManagerData Data;
+        public List<EntityMover> Movers;
         private WorldArea parent;
 
-        public EntityUpdateManager(List<EntityObject> entities, WorldArea parent, List<EntityMover> movers)
+        public EntityUpdateManager(List<EntityObject> entities, WorldArea parent)
         {
-            this.movers = movers;
-            this.entities = entities;
+            Data = new EntityUpdateManagerData(entities);
+            Movers = new List<EntityMover>();
             this.parent = parent;
-            id_hash = new Dictionary<string, EntityObject>();
-            expiring_tiles = new List<ExpiringKey<Vector2>>();
-            spatial_hash = new Dictionary<Vector2, EntityObject>();
-            EntityToKey = new Dictionary<EntityObject, ExpiringKey<Vector2>>();
-            KeyToEntity = new Dictionary<ExpiringKey<Vector2>, EntityObject>();
-            foreach (EntityObject e in this.entities)
-            {
-                id_hash[e.Id] = e;
-                spatial_hash[e.Position] = e;
-            }
         }
 
         public void AddEntity(EntityObject e)
         {
-            if(!(spatial_hash.ContainsKey(e.Position) || id_hash.ContainsKey(e.Id)))
-            {
-                entities.Add(e);
-                spatial_hash[e.Position] = e;
-                id_hash[e.Id] = e;
-            }
+            Data.AddEntity(e);
         }
 
-        public void Update(GameTime timer)
+        public void Update(GameTime time)
         {
             Vector2 previous_position;
-            foreach(EntityMover m in movers)
+            foreach(EntityMover m in Movers)
             {
-                if(!EntityToKey.ContainsKey(m.Entity))
+                if(!Data.EntityToKey.ContainsKey(m.Entity))
                 {
-                    previous_position = m.Position;
-                    m.Update(timer);
-                    if (previous_position != m.Position)
+                    previous_position = m.Entity.Position;
+                    m.Update(time);
+                    if (previous_position != m.Entity.Position)
                     {
-                        if (ValidPosition(m.Position))
+                        if (ValidPosition(m.Entity.Position))
                         {
                             var movement_key = new ExpiringKey<Vector2>(previous_position, m.Speed);
-                            expiring_tiles.Add(movement_key);
-                            EntityToKey[m.Entity] = movement_key;
-                            KeyToEntity[movement_key] = m.Entity;
-                            spatial_hash[m.Position] = m.Entity;
+                            Data.AddEntityKey(m.Entity, movement_key);
                         }
                         else
                         {
-                            m.Position = previous_position;
+                            m.Entity.Position = previous_position;
                         }
                     }
                 }
             }
-            for (int i = 0; i < expiring_tiles.Count; i++)
-            {
-                expiring_tiles[i].Update(timer);
-                if(expiring_tiles[i].TimeLeft <= 0)
-                {
-                    Vector2 position = expiring_tiles[i].Key;
-                    Debug.WriteLine("Remove tile : " + position);
-                    var EntitiyObject = KeyToEntity[expiring_tiles[i]];
-                    spatial_hash.Remove(position);
-                    EntityToKey.Remove(EntitiyObject);
-                    KeyToEntity.Remove(expiring_tiles[i]);
-                    expiring_tiles.RemoveAt(i);
-                }
-            }
+            Data.Update(time);
         }
 
         private bool ValidPosition(Vector2 position)
@@ -91,7 +55,7 @@ namespace PureGame.Engine
             bool within_limits = position.X >= 0 && position.Y >= 0 &&
                                  position.X < parent.CollisionMap.TiledMap.Width &&
                                  position.Y < parent.CollisionMap.TiledMap.Height;
-            bool entity_collision = !spatial_hash.ContainsKey(position);
+            bool entity_collision = !Data.SpatialHash.ContainsKey(position);
             bool map_collision = !parent.CollisionMap.CheckCollision(position);
             Debug.WriteLine("Map collision: " + map_collision);
             return within_limits && entity_collision && map_collision;

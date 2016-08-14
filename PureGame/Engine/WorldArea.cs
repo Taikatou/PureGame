@@ -31,14 +31,14 @@ namespace PureGame.Engine
 
         public void AddMover(EntityMover mover)
         {
-            WorldEntities.movers.Add(mover);
+            WorldEntities.Movers.Add(mover);
         }
 
         public List<MapObject> Maps => Objects.GetObjects<MapObject>();
 
-        public List<EntityObject> Entities => Objects.GetObjects<EntityObject>();
+        public List<EntityObject> Entities => WorldEntities.Data.Entities;
 
-        public List<EntityMover> Movers => Objects.GetObjects<EntityMover>();
+        public List<EntityMover> Movers => WorldEntities.Movers;
 
         public EntityUpdateManager world_entities;
 
@@ -48,7 +48,8 @@ namespace PureGame.Engine
             {
                 if(world_entities == null)
                 {
-                    world_entities = new EntityUpdateManager(Entities, this, Movers);
+                    List<EntityObject> e = Objects.GetObjects<EntityObject>();
+                    world_entities = new EntityUpdateManager(e, this);
                 }
                 return world_entities;
             }

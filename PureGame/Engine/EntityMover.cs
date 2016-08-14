@@ -4,49 +4,23 @@ using SmallGame;
 
 namespace PureGame.Engine
 {
-    public class EntityMover : GameObject
+    public class EntityMover
     {
-        private EntityObject entity;
+        public EntityObject Entity;
         private IController controller;
         public static int EntityMoverID = 0;
-        public EntityObject Entity
+        public EntityMover(EntityObject Entity, IController controller) : base()
         {
-            get
-            {
-                return entity;
-            }
-        }
-        public EntityMover(EntityObject entity, IController controller) : base()
-        {
-            Type = "EntityMover";
-            Id = "EntityMover-" + EntityMoverID;
             EntityMoverID++;
-            this.entity = entity;
+            this.Entity = Entity;
             this.controller = controller;
-        }
-
-        public EntityMover()
-        {
-
         }
 
         public void Update(GameTime time)
         {
-            controller.Update(entity, time);
+            controller.Update(Entity, time);
         }
 
         public int Speed => controller.Speed;
-
-        public Vector2 Position
-        {
-            get
-            {
-                return entity.Position;
-            }
-            set
-            {
-                entity.Position = value;
-            }
-        }
     }
 }

@@ -90,7 +90,7 @@ namespace SmallGame
     /// An ldop built for GameObjects.
     /// </summary>
     /// <typeparam name="G"></typeparam>
-    public class GameObjectParser<G> : LevelDataObjectParser<G> where G : GameObject
+    public class GameObjectParser<G> : LevelDataObjectParser<G> where G : IGameObject
     {
         public GameObjectParser() : base(typeof (G).Name)
         {
@@ -107,10 +107,8 @@ namespace SmallGame
         {
             obj.Type = Type;
             obj.Id = raw.Id;
-            
-            obj.Script = raw.Script;
 
-            if (String.IsNullOrWhiteSpace(obj.Id))
+            if (string.IsNullOrWhiteSpace(obj.Id))
             {
                 obj.Id = IdFactory.NewId;
             }
@@ -120,7 +118,7 @@ namespace SmallGame
 
     public class StandardGameObjectParser
     {
-        public static StandardGameObjectParser<G> For<G>() where G : GameObject
+        public static StandardGameObjectParser<G> For<G>() where G : IGameObject
         {
             return new StandardGameObjectParser<G>();
         } 
@@ -131,7 +129,7 @@ namespace SmallGame
     /// 
     /// </summary>
     /// <typeparam name="G"></typeparam>
-    public class StandardGameObjectParser<G> : GameObjectParser<G> where G : GameObject
+    public class StandardGameObjectParser<G> : GameObjectParser<G> where G : IGameObject
     {
         public override G Parse(LevelDataObject obj)
         {
@@ -224,9 +222,9 @@ namespace SmallGame
                     if (validType && Parsers.ContainsKey(obj.Type))
                     {
                         var parsedObj = Parsers[obj.Type].ParseFunction(obj);
-                        if (parsedObj is GameObject)
+                        if (parsedObj is IGameObject)
                         {
-                            lvl.Objects.Add((GameObject)parsedObj);
+                            lvl.Objects.Add((IGameObject)parsedObj);
                         }
                     }
                 }

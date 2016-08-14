@@ -53,7 +53,7 @@ namespace PureGame.Render.Renderable
 
         public void Draw(SpriteBatch sprite_batch, Camera2D camera)
         {
-            camera.LookAt(GetEntityScreenPosition(world.WorldEntities.entities[0]) + Offset);
+            camera.LookAt(GetEntityScreenPosition(world.WorldEntities.Data.Entities[0]) + Offset);
             sprite_batch.Begin(transformMatrix: camera.GetViewMatrix());
             sprite_batch.Draw(Map);
             foreach (var e in world.Entities)
@@ -86,7 +86,7 @@ namespace PureGame.Render.Renderable
         public Vector2 GetEntityScreenPosition(EntityObject entity)
         {
             Vector2 position = entity.Position;
-            var EntityToKey = world.WorldEntities.EntityToKey;
+            var EntityToKey = world.WorldEntities.Data.EntityToKey;
             if (EntityToKey.ContainsKey(entity))
             {
                 float progress = EntityToKey[entity].Progress;

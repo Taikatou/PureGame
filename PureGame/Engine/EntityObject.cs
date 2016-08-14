@@ -4,7 +4,7 @@ using SmallGame;
 
 namespace PureGame.Engine
 {
-    public class EntityObject : GameObject
+    public class EntityObject : BaseIGameObject
     {
         public string FileName;
         //This is not supposed to be changed directly only through entityManager

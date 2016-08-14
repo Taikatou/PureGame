@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace PureGame.Engine
 {
-    public class MapObject : GameObject
+    public class MapObject : BaseIGameObject
     {
         public string MapName;
         public MapObject()
