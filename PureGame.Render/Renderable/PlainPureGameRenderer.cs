@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
@@ -30,7 +29,7 @@ namespace PureGame.Render.Renderable
         public void Update(GameTime time)
         {
             game.Update(time);
-            if(render_world == null || render_world.WorldName != game.Current.Name)
+            if(render_world == null || render_world.World.Name != game.Current.Name)
             {
                 render_world?.UnLoad();
                 render_world = new RenderWorld(game.Current, this, content);
