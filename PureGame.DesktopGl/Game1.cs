@@ -2,9 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.ViewportAdapters;
-using PureGame.Render;
 using PureGame.Render.Renderable;
-using System.Diagnostics;
 
 namespace PureGame.DesktopGl
 {

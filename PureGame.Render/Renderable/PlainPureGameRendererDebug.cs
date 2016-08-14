@@ -3,8 +3,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.BitmapFonts;
-using System.Diagnostics;
-using System;
 
 namespace PureGame.Render.Renderable
 {

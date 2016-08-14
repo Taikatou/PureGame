@@ -5,6 +5,7 @@ using MonoGame.Extended;
 using MonoGame.Extended.Maps.Tiled;
 using PureGame.Engine;
 using System.Collections.Generic;
+using System;
 
 namespace PureGame.Render.Renderable
 {
@@ -52,7 +53,7 @@ namespace PureGame.Render.Renderable
 
         public void Draw(SpriteBatch sprite_batch, Camera2D camera)
         {
-            camera.LookAt(GetEntityPosition(world.WorldEntities.entities[0], TileSize) + Offset);
+            camera.LookAt(GetEntityScreenPosition(world.WorldEntities.entities[0]) + Offset);
             sprite_batch.Begin(transformMatrix: camera.GetViewMatrix());
             sprite_batch.Draw(Map);
             foreach (var e in world.Entities)
@@ -61,6 +62,15 @@ namespace PureGame.Render.Renderable
                 r.Draw(sprite_batch, TileSize);
             }
             sprite_batch.End();
+        }
+
+        public void Update(GameTime time)
+        {
+            foreach (var e in world.Entities)
+            {
+                RenderEntity r = GetRenderEntity(e);
+                r.Update(time);
+            }
         }
 
         public RenderEntity GetRenderEntity(EntityObject e)
@@ -73,7 +83,7 @@ namespace PureGame.Render.Renderable
             return entity_sprites[e.Id];
         }
 
-        public Vector2 GetEntityPosition(EntityObject entity, Vector2 size)
+        public Vector2 GetEntityScreenPosition(EntityObject entity)
         {
             Vector2 position = entity.Position;
             var EntityToKey = world.WorldEntities.EntityToKey;
@@ -82,12 +92,17 @@ namespace PureGame.Render.Renderable
                 float progress = EntityToKey[entity].Progress;
                 position -= (entity.FacingPosition * progress);
             }
-            return position * size;
+            return GetScreenPosition(position);
         }
 
         public void UnLoad()
         {
             Content.Unload();
+        }
+
+        public Vector2 GetScreenPosition(Vector2 pos)
+        {
+            return pos * TileSize;
         }
     }
 }
