@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace PureGame.Render.Renderable
 {
-    public class RenderEntity : IRenderable
+    public class RenderEntity
     {
         private EntityObject base_entity;
         private Texture2D entity_texture;
@@ -68,19 +68,6 @@ namespace PureGame.Render.Renderable
             standing[(int)Direction.Right].AddFrame(new Rectangle(96, 0, 16, 16), TimeSpan.FromSeconds(.25));
             previous_position = base_entity.Position;
             GetAnimation();
-        }
-        private float rotation = 0.0f;
-
-        public float Rotation
-        {
-            get
-            {
-                return rotation + base_entity.Rotation + parent.Rotation;
-            }
-            set
-            {
-                rotation = value;
-            }
         }
 
         public void Draw(SpriteBatch sprite_batch)

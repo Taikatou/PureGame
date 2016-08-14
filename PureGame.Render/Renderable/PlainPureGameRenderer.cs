@@ -13,20 +13,6 @@ namespace PureGame.Render.Renderable
         private RenderWorld render_world;
         private ContentManager content;
         public Camera2D Camera;
-        private float rotation = 0.0f;
-
-        public float Rotation
-        {
-            get
-            {
-                return rotation;
-            }
-
-            set
-            {
-                rotation = value;
-            }
-        }
 
         public PlainPureGameRenderer(PlainPureGame game, ViewportAdapter viewport_adapter, ContentManager content)
         {

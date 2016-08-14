@@ -26,21 +26,6 @@ namespace PureGame.Render.Renderable
             }
         }
 
-        public float rotation = 0.0f;
-
-        public float Rotation
-        {
-            get
-            {
-                return rotation + parent.Rotation;
-            }
-
-            set
-            {
-                rotation = value;
-            }
-        }
-
         public RenderWorld(WorldArea world, PlainPureGameRenderer parent, ContentManager Content)
         {
             this.parent = parent;

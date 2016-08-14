@@ -12,20 +12,6 @@ namespace PureGame.Render.Renderable
         private BitmapFont bitmapFont;
         PlainPureGameRenderer game;
         ContentManager Content;
-        public float rotation = 0.0f;
-
-        public float Rotation
-        {
-            get
-            {
-                return rotation;
-            }
-
-            set
-            {
-                rotation = value;
-            }
-        }
 
         public PlainPureGameRendererDebug(PlainPureGameRenderer game, ContentManager Content)
         {
