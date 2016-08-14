@@ -53,13 +53,14 @@ namespace PureGame.Render.Renderable
 
         public void Draw(SpriteBatch sprite_batch, Camera2D camera)
         {
-            camera.LookAt(GetEntityScreenPosition(world.WorldEntities.Data.Entities[0]) + Offset);
+            Point focus = GetEntityScreenPosition(world.WorldEntities.Data.Entities[0]);
+            camera.LookAt(focus.ToVector2() + Offset);
             sprite_batch.Begin(transformMatrix: camera.GetViewMatrix());
             sprite_batch.Draw(Map);
             foreach (var e in world.Entities)
             {
                 RenderEntity r = GetRenderEntity(e);
-                r.Draw(sprite_batch, TileSize);
+                r.Draw(sprite_batch);
             }
             sprite_batch.End();
         }
@@ -83,7 +84,7 @@ namespace PureGame.Render.Renderable
             return entity_sprites[e.Id];
         }
 
-        public Vector2 GetEntityScreenPosition(EntityObject entity)
+        public Point GetEntityScreenPosition(EntityObject entity)
         {
             Vector2 position = entity.Position;
             var EntityToKey = world.WorldEntities.Data.EntityToKey;
@@ -100,9 +101,10 @@ namespace PureGame.Render.Renderable
             Content.Unload();
         }
 
-        public Vector2 GetScreenPosition(Vector2 pos)
+        public Point GetScreenPosition(Vector2 pos)
         {
-            return pos * TileSize;
+            Vector2 position = pos * TileSize;
+            return position.ToPoint();
         }
     }
 }

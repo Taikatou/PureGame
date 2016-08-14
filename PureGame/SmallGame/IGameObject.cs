@@ -15,5 +15,7 @@
         /// Gets the Id of this object. This is either set from the level data, or is a random Guid.
         /// </summary>
         string Id { get; set; }
+
+        void OnInit();
     }
 }

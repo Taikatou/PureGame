@@ -1,7 +1,6 @@
 ﻿using SmallGame;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using System;
 using Microsoft.Xna.Framework.Content;
 using PureGame.Engine.Common;
 using MonoGame.Extended.Maps.Tiled;

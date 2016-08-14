@@ -29,5 +29,10 @@
                 type = value;
             }
         }
+
+        public virtual void OnInit()
+        {
+
+        }
     }
 }

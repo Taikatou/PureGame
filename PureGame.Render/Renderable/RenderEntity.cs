@@ -83,10 +83,10 @@ namespace PureGame.Render.Renderable
             }
         }
 
-        public void Draw(SpriteBatch sprite_batch, Vector2 size)
+        public void Draw(SpriteBatch sprite_batch)
         {
-            Vector2 position_on_screen = parent.GetEntityScreenPosition(base_entity);
-            Rectangle rect = new Rectangle(position_on_screen.ToPoint(), size.ToPoint());
+            Point position_on_screen = parent.GetEntityScreenPosition(base_entity);
+            Rectangle rect = new Rectangle(position_on_screen, parent.TileSize.ToPoint());
             var sourceRectangle = currentAnimation.CurrentRectangle;
             sprite_batch.Draw(entity_texture, rect, sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0);
         }
@@ -99,8 +99,8 @@ namespace PureGame.Render.Renderable
 
         public void GetAnimation()
         {
-            Vector2 screen_position = parent.GetScreenPosition(previous_position);
-            Vector2 entity_position = parent.GetEntityScreenPosition(base_entity);
+            Point screen_position = parent.GetScreenPosition(previous_position);
+            Point entity_position = parent.GetEntityScreenPosition(base_entity);
             if (screen_position == entity_position)
             {
                 //standing
