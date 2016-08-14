@@ -5,11 +5,10 @@ using MonoGame.Extended;
 using MonoGame.Extended.Maps.Tiled;
 using PureGame.Engine;
 using System.Collections.Generic;
-using System;
 
 namespace PureGame.Render.Renderable
 {
-    public class RenderWorld : IRenderable
+    public class RenderWorld
     {
         private WorldArea world;
         private Dictionary<string, RenderEntity> entity_sprites;
