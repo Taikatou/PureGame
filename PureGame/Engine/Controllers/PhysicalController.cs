@@ -1,8 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using MonoGame.Extended.InputListeners;
-using System.Diagnostics;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.EntityData;
 
 namespace PureGame.Engine.Controllers
@@ -15,17 +11,9 @@ namespace PureGame.Engine.Controllers
         public bool Down = false;
         public bool A = false;
         public bool B = false;
-        public bool Moveing
-        {
-            get
-            {
-                bool moving = Right || Left || Up || Down;
-                return moving;
-            }
-        }
         private InputManager input_manager;
 
-        public Direction Facing
+        public Direction MoveDirection
         {
             get
             {
@@ -52,31 +40,16 @@ namespace PureGame.Engine.Controllers
             }
         }
 
-        public int speed = 400;
-
-        public int Speed
-        {
-            get
-            {
-                if(B)
-                {
-                    return speed / 2;
-                }
-                else
-                {
-                    return speed;
-                }
-            }
-        }
-
         public void Update(EntityObject entity, GameTime time)
         {
             input_manager.Update(time);
-            if(Moveing)
+            entity.RequestInteraction = A;
+            entity.RequestMovement = MoveDirection != Direction.None;
+            if (entity.RequestMovement)
             {
-                Debug.WriteLine("Moving entity : " + entity.Id);
-                entity.Position += DirectionMapper.GetDirection(Facing);
-                entity.Facing = Facing;
+                //Debug.WriteLine("Moving entity : " + entity.Id);
+                entity.MovementDirection = MoveDirection;
+                entity.Running = B;
             }
         }
 

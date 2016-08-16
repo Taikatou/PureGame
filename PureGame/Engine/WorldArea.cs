@@ -29,20 +29,13 @@ namespace PureGame.Engine
             Content = ContentManagerManager.RequestContentManager();
         }
 
-        public void AddMover(EntityMover mover)
-        {
-            WorldEntities.Movers.Add(mover);
-        }
-
         public List<MapObject> Maps => Objects.GetObjects<MapObject>();
 
-        public List<EntityObject> Entities => WorldEntities.Data.Entities;
-
-        public List<EntityMover> Movers => WorldEntities.Movers;
+        public List<EntityObject> Entities => EntityManager.Data.Entities;
 
         public EntityUpdateManager world_entities;
 
-        public EntityUpdateManager WorldEntities
+        public EntityUpdateManager EntityManager
         {
             get
             {
@@ -57,7 +50,7 @@ namespace PureGame.Engine
 
         public void Update(GameTime timer)
         {
-            WorldEntities.Update(timer);
+            EntityManager.Update(timer);
         }
 
         public void UnLoad()

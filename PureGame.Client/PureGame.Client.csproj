@@ -5,7 +5,7 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{29931A1E-58C7-4B5B-8E61-4B464BADC870}</ProjectGuid>
+    <ProjectGuid>{623D62EC-6E1C-4617-914C-B9F44ECCF310}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PureGame.Client</RootNamespace>
@@ -35,22 +35,20 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\PureGame.Render\PureGame.Render.csproj">
+      <Project>{495bf5a7-dea5-4b30-9b9b-4bb358cc60e3}</Project>
+      <Name>PureGame.Render</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PureGame\PureGame.csproj">
       <Project>{483d0287-2401-4822-893b-eba1b792e055}</Project>
       <Name>PureGame</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data.cs" />
-    <Compile Include="NetworkManager.cs" />
     <Compile Include="PureGameClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lidgren.Network.Portable.1.0.1\lib\portable-net45+sl50+win+wpa81+wp80\Lidgren.Network.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="MonoGame.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Extended.0.5.149\lib\MonoGame.Extended.dll</HintPath>
       <Private>True</Private>

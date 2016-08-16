@@ -18,6 +18,8 @@ namespace PureGame.Render.Renderable
         public Vector2 TileSize;
         public Vector2 Offset => TileSize / 2;
 
+        public static EntityObject FocusEntity { get; internal set; }
+
         public RenderWorld(WorldArea World)
         {
             this.World = World;
@@ -29,7 +31,7 @@ namespace PureGame.Render.Renderable
 
         public void Draw(SpriteBatch sprite_batch, Camera2D camera)
         {
-            Point focus = GetEntityScreenPosition(World.WorldEntities.Data.Entities[0]);
+            Point focus = GetEntityScreenPosition(FocusEntity);
             camera.LookAt(focus.ToVector2() + Offset);
             sprite_batch.Begin(transformMatrix: camera.GetViewMatrix());
             sprite_batch.Draw(Map);
@@ -62,7 +64,7 @@ namespace PureGame.Render.Renderable
         public Point GetEntityScreenPosition(EntityObject entity)
         {
             Vector2 position = entity.Position;
-            var EntityToKey = World.WorldEntities.Data.EntityToKey;
+            var EntityToKey = World.EntityManager.Data.EntityToKey;
             if (EntityToKey.ContainsKey(entity))
             {
                 float progress = EntityToKey[entity].Progress;

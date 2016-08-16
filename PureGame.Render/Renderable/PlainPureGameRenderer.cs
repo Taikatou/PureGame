@@ -1,8 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
+using PureGame.Engine.EntityData;
 
 namespace PureGame.Render.Renderable
 {
@@ -11,6 +13,14 @@ namespace PureGame.Render.Renderable
         private IPureGame game;
         private RenderWorld render_world;
         public Camera2D Camera;
+
+        public IPureGame Game
+        {
+            get
+            {
+                return game;
+            }
+        }
 
         public PlainPureGameRenderer(IPureGame game, ViewportAdapter viewport_adapter)
         {
@@ -33,6 +43,11 @@ namespace PureGame.Render.Renderable
                 render_world = new RenderWorld(game.Current);
             }
             render_world.Update(time);
+        }
+
+        public void ChangeFocus(EntityObject e)
+        {
+            RenderWorld.FocusEntity = e;
         }
     }
 }

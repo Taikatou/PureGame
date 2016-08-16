@@ -37,6 +37,6 @@ namespace PureGame
 
         public abstract void LoadWorld(string world_name, IFileReader reader);
 
-        public abstract void Update(GameTime time)
+        public abstract void Update(GameTime time);
     }
 }

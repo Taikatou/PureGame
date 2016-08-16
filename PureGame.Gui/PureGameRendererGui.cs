@@ -1,16 +1,17 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using PureGame.Engine.EntityData;
 using PureGame.Render.Renderable;
 
 namespace PureGame.Gui
 {
     public class PureGameRendererGui : IPureGameRenderer
     {
-        public PlainPureGameRenderer game;
-        public PureGameRendererGui(PlainPureGameRenderer game)
+        public IPureGameRenderer GameRenderer;
+        public PureGameRendererGui(PlainPureGameRenderer GameRenderer)
         {
-            this.game = game;
+            this.GameRenderer = GameRenderer;
             rotation = 90.0f;
         }
 
@@ -29,14 +30,27 @@ namespace PureGame.Gui
             }
         }
 
+        public IPureGame Game
+        {
+            get
+            {
+                return GameRenderer.Game;
+            }
+        }
+
         public void Draw(SpriteBatch sprite_batch)
         {
-            game.Draw(sprite_batch);
+            GameRenderer.Draw(sprite_batch);
         }
 
         public void Update(GameTime timer)
         {
-            game.Update(timer);
+            GameRenderer.Update(timer);
+        }
+
+        public void ChangeFocus(EntityObject e)
+        {
+            GameRenderer.ChangeFocus(e);
         }
     }
 }

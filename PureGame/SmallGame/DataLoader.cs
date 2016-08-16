@@ -108,8 +108,6 @@ namespace SmallGame
             obj.Type = Type;
             obj.Id = raw.Id;
 
-            obj.Script = raw.Script;
-
             if (string.IsNullOrWhiteSpace(obj.Id))
             {
                 obj.Id = IdFactory.NewId;

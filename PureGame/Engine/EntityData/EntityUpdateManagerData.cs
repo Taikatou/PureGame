@@ -16,7 +16,7 @@ namespace PureGame.Engine.EntityData
 
         public EntityUpdateManagerData(List<EntityObject> Entities)
         {
-            this.Entities = Entities;
+            this.Entities = new List<EntityObject>();
             ExpiringTiles = new List<ExpiringKey<Vector2>>();
             EntityToKey = new Dictionary<EntityObject, ExpiringKey<Vector2>>();
             KeyToEntity = new Dictionary<ExpiringKey<Vector2>, EntityObject>();
@@ -24,8 +24,7 @@ namespace PureGame.Engine.EntityData
             SpatialHash = new Dictionary<Vector2, EntityObject>();
             foreach (EntityObject e in Entities)
             {
-                IdHash[e.Id] = e;
-                SpatialHash[e.Position] = e;
+                AddEntity(e);
             }
         }
 
@@ -69,6 +68,11 @@ namespace PureGame.Engine.EntityData
         {
             bool contains = !(SpatialHash.ContainsKey(e.Position) || IdHash.ContainsKey(e.Id));
             return contains;
+        }
+
+        public bool EntityCurrentlyMoving(EntityObject e)
+        {
+            return EntityToKey.ContainsKey(e);
         }
     }
 }

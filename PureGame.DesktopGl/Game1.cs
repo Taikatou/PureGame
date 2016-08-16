@@ -2,16 +2,21 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.ViewportAdapters;
+using PureGame.Engine.Controllers;
+using PureGame.Engine.EntityData;
 using PureGame.Render.Renderable;
 
 namespace PureGame.DesktopGl
 {
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        IPureGameRenderer game;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+        private IPureGameRenderer GameRenderer;
         public int Width = 800, Height = 480;
+        private EntityObject player_entity;
+
+        private IController controller;
 
         public Game1()
         {
@@ -29,7 +34,11 @@ namespace PureGame.DesktopGl
             var g = new PlainPureGame(Content);
             g.LoadWorld("level01.json", new FileReader());
             var g2 = new PlainPureGameRenderer(g, viewport_adapter);
-            game = new PlainPureGameRendererDebug(g2);
+            GameRenderer = new PlainPureGameRendererDebug(g2);
+            player_entity = new EntityObject(new Vector2(4, 4), "Test");
+            GameRenderer.ChangeFocus(player_entity);
+            GameRenderer.Game.Current.Entities.Add(player_entity);
+            controller = new PhysicalController();
         }
         protected override void UnloadContent()
         {
@@ -38,14 +47,14 @@ namespace PureGame.DesktopGl
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            game.Update(gameTime);
+            GameRenderer.Update(gameTime);
             base.Update(gameTime);
         }
-        protected override void Draw(GameTime gameTime)
+        protected override void Draw(GameTime time)
         {
             GraphicsDevice.Clear(Color.Black);
-
-            game.Draw(spriteBatch);
+            controller.Update(player_entity, time);
+            GameRenderer.Draw(spriteBatch);
         }
     }
 }

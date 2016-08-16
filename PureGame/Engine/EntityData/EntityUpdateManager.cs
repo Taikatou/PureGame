@@ -3,51 +3,59 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System;
 using MonoGame.Extended.Maps.Tiled;
+using PureGame.Engine.Controllers;
 
 namespace PureGame.Engine.EntityData
 {
     public class EntityUpdateManager
     {
         public EntityUpdateManagerData Data;
-        public List<EntityMover> Movers;
         private WorldArea parent;
 
         public EntityUpdateManager(List<EntityObject> entities, WorldArea parent)
         {
             Data = new EntityUpdateManagerData(entities);
-            Movers = new List<EntityMover>();
             this.parent = parent;
-        }
-
-        public void AddEntity(EntityObject e)
-        {
-            Data.AddEntity(e);
         }
 
         public void Update(GameTime time)
         {
-            Vector2 previous_position;
-            foreach(EntityMover m in Movers)
+            foreach (var e in Data.Entities)
             {
-                if(!Data.EntityToKey.ContainsKey(m.Entity))
+                if (e.RequestMovement && !Data.EntityCurrentlyMoving(e))
                 {
-                    previous_position = m.Entity.Position;
-                    m.Update(time);
-                    if (previous_position != m.Entity.Position)
-                    {
-                        if (ValidPosition(m.Entity.Position))
-                        {
-                            var movement_key = new ExpiringKey<Vector2>(previous_position, m.Speed);
-                            Data.AddEntityKey(m.Entity, movement_key);
-                        }
-                        else
-                        {
-                            m.Entity.Position = previous_position;
-                        }
-                    }
+                    ProccessMovement(e);
+                }
+                if(e.RequestInteraction)
+                {
+                    ProccessInteraction(e);
                 }
             }
             Data.Update(time);
+        }
+
+        public void ProccessInteraction(EntityObject e)
+        {
+            Vector2 new_position = e.Position + e.FacingPosition;
+            if (Data.SpatialHash.ContainsKey(new_position))
+            {
+                EntityObject interact_entity = Data.SpatialHash[new_position];
+                Debug.WriteLine(e.Id + " Interact with " + interact_entity.Id);
+                interact_entity.Interact(e);
+            }
+        }
+
+        public void ProccessMovement(EntityObject e)
+        {
+            Vector2 new_position = e.Position + e.MovementPosition;
+            if (ValidPosition(new_position))
+            {
+                var movement_key = new ExpiringKey<Vector2>(e.Position, e.Speed);
+                Data.AddEntityKey(e, movement_key);
+                e.Position = new_position;
+                e.FacingDirection = e.MovementDirection;
+            }
+            e.RequestMovement = false;
         }
 
         private bool ValidPosition(Vector2 position)

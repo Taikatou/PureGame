@@ -1,4 +1,5 @@
-﻿using PureGame.Engine;
+﻿using System;
+using PureGame.Engine;
 using SmallGame;
 using Microsoft.Xna.Framework;
 
@@ -6,8 +7,6 @@ namespace PureGame.Client
 {
     public class PureGameClient : IPureGame
     {
-        IPureGame game;
-        NetworkManager network_manger;
         public WorldArea Current
         {
             get
@@ -41,15 +40,14 @@ namespace PureGame.Client
 
         public void Update(GameTime time)
         {
-            network_manger.Update(time);
-            game.Update(time);
+            throw new NotImplementedException();
         }
+
+        IPureGame game;
 
         public PureGameClient(IPureGame game)
         {
             this.game = game;
-            network_manger = new NetworkManager();
-            network_manger.Start();
         }
     }
 }
