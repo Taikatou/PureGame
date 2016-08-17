@@ -33,18 +33,18 @@ namespace PureGame.Engine
 
         public List<EntityObject> Entities => EntityManager.Data.Entities;
 
-        public EntityUpdateManager world_entities;
+        public EntityUpdateManager entity_manager;
 
         public EntityUpdateManager EntityManager
         {
             get
             {
-                if(world_entities == null)
+                if(entity_manager == null)
                 {
                     List<EntityObject> e = Objects.GetObjects<EntityObject>();
-                    world_entities = new EntityUpdateManager(e, this);
+                    entity_manager = new EntityUpdateManager(e, this);
                 }
-                return world_entities;
+                return entity_manager;
             }
         }
 

@@ -80,6 +80,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PureGame.Client\PureGame.Client.csproj">
+      <Project>{623d62ec-6e1c-4617-914c-b9f44eccf310}</Project>
+      <Name>PureGame.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PureGame.Gui\PureGame.Gui.csproj">
       <Project>{1836813d-c2ab-4654-b6c5-c6ba72bf5644}</Project>
       <Name>PureGame.Gui</Name>

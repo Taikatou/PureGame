@@ -1,9 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System;
-using MonoGame.Extended.Maps.Tiled;
-using PureGame.Engine.Controllers;
 
 namespace PureGame.Engine.EntityData
 {
@@ -53,8 +50,8 @@ namespace PureGame.Engine.EntityData
                 var movement_key = new ExpiringKey<Vector2>(e.Position, e.Speed);
                 Data.AddEntityKey(e, movement_key);
                 e.Position = new_position;
-                e.FacingDirection = e.MovementDirection;
             }
+            e.FacingDirection = e.MovementDirection;
             e.RequestMovement = false;
         }
 

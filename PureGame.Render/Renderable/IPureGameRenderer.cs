@@ -4,14 +4,15 @@ using PureGame.Engine.EntityData;
 
 namespace PureGame.Render.Renderable
 {
-    public interface IPureGameRenderer
+    public interface IPureGameRenderer :  IPureGame
     {
         void Draw(SpriteBatch sprite_batch);
-        void Update(GameTime time);
         IPureGame Game
         {
             get;
         }
         void ChangeFocus(EntityObject e);
+
+        IPureGame Parent { get; set; }
     }
 }

@@ -10,5 +10,7 @@ namespace PureGame
         void Update(GameTime time);
         WorldArea Current { get; set; }
         DataLoader DataLoader { get; set; }
+        IPureGame Parent { get; set; }
+        void OnWorldChange();
     }
 }

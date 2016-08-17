@@ -64,10 +64,10 @@ namespace PureGame.Render.Renderable
         public Point GetEntityScreenPosition(EntityObject entity)
         {
             Vector2 position = entity.Position;
-            var EntityToKey = World.EntityManager.Data.EntityToKey;
-            if (EntityToKey.ContainsKey(entity))
+            var WorldData = World.EntityManager.Data;
+            if (WorldData.EntityCurrentlyMoving(entity))
             {
-                float progress = EntityToKey[entity].Progress;
+                float progress = WorldData.EntityToKey[entity].Progress;
                 position -= (entity.FacingPosition * progress);
             }
             return GetScreenPosition(position);

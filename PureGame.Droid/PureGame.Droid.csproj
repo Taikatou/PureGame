@@ -67,11 +67,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activity1.cs" />
+    <Compile Include="FileReader.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\level01.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\level01.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
@@ -83,6 +90,7 @@
     <AndroidResource Include="Resources\Drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\Images\" />
     <Folder Include="Resources\Layout\" />
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +104,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PureGame.Gui\PureGame.Gui.csproj">
+      <Project>{1836813d-c2ab-4654-b6c5-c6ba72bf5644}</Project>
+      <Name>PureGame.Gui</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PureGame.Render\PureGame.Render.csproj">
+      <Project>{495bf5a7-dea5-4b30-9b9b-4bb358cc60e3}</Project>
+      <Name>PureGame.Render</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PureGame\PureGame.csproj">
+      <Project>{483d0287-2401-4822-893b-eba1b792e055}</Project>
+      <Name>PureGame</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

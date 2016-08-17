@@ -1,6 +1,7 @@
 ﻿using PureGame.Engine;
 using SmallGame;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace PureGame
 {
@@ -8,6 +9,9 @@ namespace PureGame
     {
         public WorldArea current;
         public DataLoader data_loader { get; private set; }
+        public AbstractPureGame()
+        {
+        }
 
         public WorldArea Current
         {
@@ -35,8 +39,27 @@ namespace PureGame
             }
         }
 
+        private IPureGame parent;
+
+        public IPureGame Parent
+        {
+            get
+            {
+                return parent;
+            }
+            set
+            {
+                parent = value;
+            }
+        }
+
         public abstract void LoadWorld(string world_name, IFileReader reader);
 
         public abstract void Update(GameTime time);
+
+        public virtual void OnWorldChange()
+        {
+            parent?.OnWorldChange();
+        }
     }
 }

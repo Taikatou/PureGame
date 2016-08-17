@@ -34,21 +34,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\PureGame.Render\PureGame.Render.csproj">
-      <Project>{495bf5a7-dea5-4b30-9b9b-4bb358cc60e3}</Project>
-      <Name>PureGame.Render</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PureGame\PureGame.csproj">
-      <Project>{483d0287-2401-4822-893b-eba1b792e055}</Project>
-      <Name>PureGame</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="PureGameClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Mono.Android">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoAndroid\v6.0\Mono.Android.dll</HintPath>
+    </Reference>
     <Reference Include="MonoGame.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Extended.0.5.149\lib\MonoGame.Extended.dll</HintPath>
       <Private>True</Private>
@@ -56,9 +48,21 @@
     <Reference Include="MonoGame.Framework">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="Photon3DotNet">
+      <HintPath>..\..\..\..\Downloads\Photon-Xamarin-Sdk_v4-0-0-4\libs\Debug\Photon3DotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="PhotonLoadbalancingApi">
+      <HintPath>..\..\..\..\Downloads\Photon-Xamarin-Sdk_v4-0-0-4\libs\Debug\PhotonLoadbalancingApi.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PureGame\PureGame.csproj">
+      <Project>{483d0287-2401-4822-893b-eba1b792e055}</Project>
+      <Name>PureGame</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
