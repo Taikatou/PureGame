@@ -11,7 +11,5 @@ namespace PureGame.Render.Renderable
             get;
         }
         void ChangeFocus(EntityObject e);
-
-        IPureGame Parent { get; set; }
     }
 }
