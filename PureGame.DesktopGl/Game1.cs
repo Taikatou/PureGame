@@ -34,11 +34,10 @@ namespace PureGame.DesktopGl
             var game_renderer = new PlainPureGameRenderer(game_client, viewport_adapter);
             GameRenderer = new PlainPureGameRendererDebug(game_renderer);
             game.LoadWorld("level01.json", new FileReader());
-            var player_entity = new EntityObject(new Vector2(4, 4), "Test");
+            var player_entity = new PlayerEntityObject(new Vector2(4, 4), "Test");
             game_client.SetPlayer(player_entity, new PhysicalController());
             GameRenderer.ChangeFocus(player_entity);
         }
-
         protected override void UnloadContent()
         {
         }

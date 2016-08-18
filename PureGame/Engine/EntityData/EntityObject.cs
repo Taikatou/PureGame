@@ -17,6 +17,7 @@ namespace PureGame.Engine.EntityData
         private int RunningSpeed = 250;
         public bool Running = false;
         public bool CurrentlyInteracting = false;
+        public Direction FacingDirection;
         public int Speed
         {
             get
@@ -46,8 +47,6 @@ namespace PureGame.Engine.EntityData
             Type = "EntityObject";
         }
 
-        public Direction FacingDirection;
-
         public Vector2 FacingPosition
         {
             get
@@ -64,13 +63,19 @@ namespace PureGame.Engine.EntityData
             }
         }
 
+        //interactions in
         public void Interact(EntityObject interact_with)
         {
             if (!CurrentlyInteracting)
             {
                 Debug.WriteLine(Id + " Interact with " + interact_with.Id);
                 CurrentlyInteracting = true;
+                interact_with.InteractWith(this);
             }
+        }
+
+        public virtual void InteractWith(EntityObject interact_with)
+        {
         }
     }
 }

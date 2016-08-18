@@ -15,6 +15,7 @@ namespace PureGame.Engine.Controllers
         {
             get
             {
+                // Return cached direction
                 if(CachedMovement >= 0 && Buttons[CachedMovement].Active)
                 {
                     return (Direction)CachedMovement;
@@ -23,6 +24,7 @@ namespace PureGame.Engine.Controllers
                 {
                     CachedMovement = -1;
                 }
+                // Else look for another button
                 for(int i = 0; i < (int)Direction.None; i++)
                 {
                     if(Buttons[i].Active)
@@ -32,19 +34,20 @@ namespace PureGame.Engine.Controllers
                         return (Direction)i;
                     }
                 }
+                // Else return false
                 return Direction.None;
             }
         }
 
-        public void Update(EntityObject entity, GameTime time)
+        public void Update(PlayerEntityObject entity, GameTime time)
         {
             input_manager.Update(time);
             entity.RequestInteraction = Buttons[(int)Controls.A].NewActive;
-            entity.RequestMovement = MoveDirection != Direction.None;
+            Direction CachedMoveDiection = MoveDirection;
+            entity.RequestMovement = CachedMoveDiection != Direction.None;
             if (entity.RequestMovement)
             {
-                Debug.WriteLine("Moving entity : " + entity.Id);
-                entity.MovementDirection = MoveDirection;
+                entity.MovementDirection = CachedMoveDiection;
                 entity.Running = Buttons[(int)Controls.B].Active;
             }
         }

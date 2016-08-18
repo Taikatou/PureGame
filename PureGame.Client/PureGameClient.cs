@@ -14,7 +14,10 @@ namespace PureGame.Client
         private LoadBalancingClient client;
         private string WorldName = "";
         private IController controller;
-        private EntityObject player_entity;
+        private PlayerEntityObject player_entity;
+        private IPureGame parent;
+        private Vector2 previous_message;
+        private IPureGame game;
 
         public WorldArea Current
         {
@@ -41,8 +44,6 @@ namespace PureGame.Client
                 game.DataLoader = value;
             }
         }
-
-        private IPureGame parent;
 
         public IPureGame Parent
         {
@@ -81,10 +82,6 @@ namespace PureGame.Client
             }
         }
 
-        private Vector2 previous_message;
-
-        private IPureGame game;
-
         public PureGameClient(IPureGame game)
         {
             this.game = game;
@@ -99,9 +96,9 @@ namespace PureGame.Client
             }
         }
 
-        public void SetPlayer(EntityObject e, IController c)
+        public void SetPlayer(PlayerEntityObject p, IController c)
         {
-            player_entity = e;
+            player_entity = p;
             controller = c;
             Current.Entities.Add(player_entity);
         }
