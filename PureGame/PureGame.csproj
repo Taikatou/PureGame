@@ -41,6 +41,7 @@
     <Compile Include="Engine\Controllers\IController.cs" />
     <Compile Include="Engine\Controllers\InputManager.cs" />
     <Compile Include="Engine\Controllers\PhysicalController.cs" />
+    <Compile Include="Engine\Controllers\SmartButton.cs" />
     <Compile Include="Engine\EntityData\EntityObject.cs" />
     <Compile Include="Engine\EntityData\EntityUpdateManager.cs" />
     <Compile Include="Engine\EntityData\EntityUpdateManagerData.cs" />

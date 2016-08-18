@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.Controllers;
 using SmallGame;
+using System.Diagnostics;
 
 namespace PureGame.Engine.EntityData
 {
@@ -15,6 +16,7 @@ namespace PureGame.Engine.EntityData
         private int WalkingSpeed = 500;
         private int RunningSpeed = 250;
         public bool Running = false;
+        public bool CurrentlyInteracting = false;
         public int Speed
         {
             get
@@ -64,7 +66,11 @@ namespace PureGame.Engine.EntityData
 
         public void Interact(EntityObject interact_with)
         {
-
+            if (!CurrentlyInteracting)
+            {
+                Debug.WriteLine(Id + " Interact with " + interact_with.Id);
+                CurrentlyInteracting = true;
+            }
         }
     }
 }

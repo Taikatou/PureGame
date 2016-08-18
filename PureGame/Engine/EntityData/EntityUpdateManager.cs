@@ -37,7 +37,6 @@ namespace PureGame.Engine.EntityData
             if (Data.SpatialHash.ContainsKey(new_position))
             {
                 EntityObject interact_entity = Data.SpatialHash[new_position];
-                Debug.WriteLine(e.Id + " Interact with " + interact_entity.Id);
                 interact_entity.Interact(e);
             }
         }

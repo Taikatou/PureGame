@@ -30,10 +30,10 @@ namespace PureGame.DesktopGl
             spriteBatch = new SpriteBatch(GraphicsDevice);
             BoxingViewportAdapter viewport_adapter = new BoxingViewportAdapter(Window, GraphicsDevice, Width, Height);
             var game = new PlainPureGame(Content);
-            game.LoadWorld("level01.json", new FileReader());
             var game_client = new PureGameClient(game);
             var game_renderer = new PlainPureGameRenderer(game_client, viewport_adapter);
             GameRenderer = new PlainPureGameRendererDebug(game_renderer);
+            game.LoadWorld("level01.json", new FileReader());
             var player_entity = new EntityObject(new Vector2(4, 4), "Test");
             game_client.SetPlayer(player_entity, new PhysicalController());
             GameRenderer.ChangeFocus(player_entity);

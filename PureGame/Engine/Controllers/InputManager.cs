@@ -42,22 +42,22 @@ namespace PureGame.Engine.Controllers
             switch (key)
             {
                 case Keys.Left:
-                    controller.Left = down;
+                    controller.Buttons[(int)Controls.Left].ChangeValue(down);
                     break;
                 case Keys.Right:
-                    controller.Right = down;
+                    controller.Buttons[(int)Controls.Right].ChangeValue(down);
                     break;
                 case Keys.Up:
-                    controller.Up = down;
+                    controller.Buttons[(int)Controls.Up].ChangeValue(down);
                     break;
                 case Keys.Down:
-                    controller.Down = down;
+                    controller.Buttons[(int)Controls.Down].ChangeValue(down);
                     break;
                 case Keys.A:
-                    controller.A = down;
+                    controller.Buttons[(int)Controls.A].ChangeValue(down);
                     break;
                 case Keys.B:
-                    controller.B = down;
+                    controller.Buttons[(int)Controls.B].ChangeValue(down);
                     break;
             }
             Debug.WriteLine(string.Format("{0}: {1}", key.ToString(), down));

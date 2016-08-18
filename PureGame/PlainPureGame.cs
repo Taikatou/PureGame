@@ -19,6 +19,7 @@ namespace PureGame
         public override void LoadWorld(string world_name, IFileReader reader)
         {
             Current = DataLoader.Load<WorldArea>(world_name, reader);
+            Parent.OnWorldChange();
         }
 
         public override void Update(GameTime time)

@@ -17,7 +17,6 @@ namespace PureGame.Render.Renderable
             game.Parent = this;
             Camera = new Camera2D(viewport_adapter);
             Camera.Zoom = 0.25f;
-            render_world = new RenderWorld(game.Current);
         }
 
         public override void Draw(SpriteBatch sprite_batch)

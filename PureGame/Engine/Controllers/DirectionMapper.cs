@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PureGame.Engine.Controllers
 {
-    public enum Direction { Right, Left, Up, Down, None };
+    public enum Direction { Left, Right, Up, Down, None };
     public class DirectionMapper
     {
         protected Dictionary<Direction, Vector2> MappedDirections;
