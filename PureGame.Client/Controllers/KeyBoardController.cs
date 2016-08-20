@@ -6,24 +6,25 @@ using System.Diagnostics;
 
 namespace PureGame.Client.Controllers
 {
-    public class PhysicalController : IController
+    public class KeyBoardController : IController
     {
         public SmartButton [] Buttons;
         private InputManager input_manager;
-        public int CachedMovement = -1;
+        public const int CachedMovementResetValue = -1;
+        public int CachedMovement = CachedMovementResetValue;
 
         public Direction MoveDirection
         {
             get
             {
                 // Return cached direction
-                if(CachedMovement >= 0 && Buttons[CachedMovement].Active)
+                if(CachedMovement != CachedMovementResetValue && Buttons[CachedMovement].Active)
                 {
                     return (Direction)CachedMovement;
                 }
                 else
                 {
-                    CachedMovement = -1;
+                    CachedMovement = CachedMovementResetValue;
                 }
                 // Else look for another button
                 for(int i = 0; i < (int)Direction.None; i++)
@@ -53,7 +54,7 @@ namespace PureGame.Client.Controllers
             }
         }
 
-        public PhysicalController()
+        public KeyBoardController()
         {
             input_manager = new InputManager(this);
             var ControlsCount = Enum.GetNames(typeof(Controls)).Length;

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.Controllers;
 using PureGame.Engine.EntityData;
 
@@ -137,9 +136,12 @@ namespace PureGame.Client
             }
         }
 
+        IPureGame world;
+
         BaseEntity base_entity;
-        public PlayerEntity(Vector2 Position, string Id, bool isLocal = false, string FileName = "CharacterSheet", Direction FacingDirection = Direction.Down)
+        public PlayerEntity(Vector2 Position, string Id, string FileName, Direction FacingDirection = Direction.Down, IPureGame world = null)
         {
+            this.world = world;
             base_entity = new BaseEntity(Position, Id, FileName, FacingDirection);
         }
 
@@ -151,6 +153,7 @@ namespace PureGame.Client
         public void Interact(IEntity interact_entity)
         {
             interact_entity.InteractWith(this);
+            world?.LoadWorld("Data/level01.json");
         }
     }
 }

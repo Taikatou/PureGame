@@ -7,7 +7,7 @@ namespace PureGame.Client.Controllers
 {
     public class InputManager
     {
-        private PhysicalController controller;
+        private KeyBoardController controller;
         private InputListenerManager input_manager;
 
         public void Update(GameTime time)
@@ -15,7 +15,7 @@ namespace PureGame.Client.Controllers
             input_manager.Update(time);
         }
 
-        public InputManager(PhysicalController controller)
+        public InputManager(KeyBoardController controller)
         {
             this.controller = controller;
             InputListenerManager input_manager = new InputListenerManager();
@@ -37,7 +37,7 @@ namespace PureGame.Client.Controllers
             this.input_manager = input_manager;
         }
 
-        public void KeyAction(PhysicalController controller, Keys key, bool down)
+        public void KeyAction(KeyBoardController controller, Keys key, bool down)
         {
             switch (key)
             {

@@ -55,9 +55,9 @@ namespace PureGame.Render.Renderable
 
         public abstract void Draw(SpriteBatch sprite_batch);
 
-        public void LoadWorld(string world_name, IFileReader reader)
+        public void LoadWorld(string world_name)
         {
-            game.LoadWorld(world_name, reader);
+            game.LoadWorld(world_name);
         }
 
         public virtual void OnWorldChange()

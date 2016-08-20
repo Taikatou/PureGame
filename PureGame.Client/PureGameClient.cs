@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using PureGame.Engine.Controllers;
 using PureGame.Engine;
 using PureGame.Client.Controllers;
 
@@ -62,13 +61,17 @@ namespace PureGame.Client
             controller = c;
         }
 
-        public void LoadWorld(string world_name, IFileReader reader)
+        public void LoadWorld(string world_name)
         {
-            game.LoadWorld(world_name, reader);
+            game.LoadWorld(world_name);
         }
 
         public void OnWorldChange()
         {
+            if(player_entity != null)
+            {
+                game.World.AddEntity(player_entity);
+            }
             parent.OnWorldChange();
         }
     }

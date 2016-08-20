@@ -1,20 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using PureGame.Engine;
-using PureGame.Engine.EntityData;
 
 namespace PureGame
 {
     public class PlainPureGame : AbstractPureGame
     {
-        public PlainPureGame(ContentManager content)
+        public IFileReader file_reader;
+        public PlainPureGame(ContentManager content, IFileReader file_reader)
         {
+            this.file_reader = file_reader;
             ContentManagerManager.Instance = new ContentManagerManager(content);
         }
 
-        public override void LoadWorld(string world_name, IFileReader reader)
+        public override void LoadWorld(string world_name)
         {
-            World = new WorldArea(world_name, reader);
+            World = new WorldArea(world_name, file_reader);
             Parent.OnWorldChange();
         }
 
