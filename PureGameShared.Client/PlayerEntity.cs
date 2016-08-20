@@ -1,10 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExitGames.Client.Photon.LoadBalancing;
+using Microsoft.Xna.Framework;
 using PureGame.Engine.Controllers;
 using PureGame.Engine.EntityData;
 
 namespace PureGame.Client
 {
-    public class PlayerEntity : IEntity
+    public class PlayerEntity : Player, IEntity
     {
         public static Direction[] reverse_directions;
         public static Direction[] ReverseDirections
@@ -123,9 +124,10 @@ namespace PureGame.Client
             }
         }
         BaseEntity base_entity;
-        public PlayerEntity(Vector2 Position, string Id, bool isLocal = false, string FileName = "CharacterSheet", Direction FacingDirection = Direction.Down)
+        public PlayerEntity(Vector2 Position, string Name, int Id, bool isLocal = false, string FileName = "CharacterSheet", Direction FacingDirection = Direction.Down)
+            : base(Name, Id, isLocal)
         {
-            base_entity = new BaseEntity(Position, Id, FileName, FacingDirection);
+            base_entity = new BaseEntity(Position, Name, FileName, FacingDirection);
         }
 
         public void InteractWith(IEntity interact_with)
