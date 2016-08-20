@@ -1,9 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using PureGame.Engine.Controllers;
 using PureGame.Engine.EntityData;
 using System;
 using System.Diagnostics;
 
-namespace PureGame.Engine.Controllers
+namespace PureGame.Client.Controllers
 {
     public class PhysicalController : IController
     {
@@ -48,6 +49,7 @@ namespace PureGame.Engine.Controllers
             if (entity.RequestMovement)
             {
                 entity.MovementDirection = CachedMoveDiection;
+                entity.Running = Buttons[(int)Controls.B].NewActive;
             }
         }
 

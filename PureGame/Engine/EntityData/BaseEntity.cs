@@ -9,7 +9,6 @@ namespace PureGame.Engine.EntityData
     {
         private int WalkingSpeed = 500;
         private int RunningSpeed = 250;
-        public bool Running = false;
         public bool CurrentlyInteracting = false;
         public override int Speed
         {
