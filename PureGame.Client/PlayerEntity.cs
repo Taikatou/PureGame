@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using PureGame.Engine.Controllers;
 using PureGame.Engine.EntityData;
 
@@ -122,6 +123,20 @@ namespace PureGame.Client
                 return base_entity.Speed;
             }
         }
+
+        public bool Running
+        {
+            get
+            {
+                return base_entity.Running;
+            }
+
+            set
+            {
+                base_entity.Running = value;
+            }
+        }
+
         BaseEntity base_entity;
         public PlayerEntity(Vector2 Position, string Id, bool isLocal = false, string FileName = "CharacterSheet", Direction FacingDirection = Direction.Down)
         {

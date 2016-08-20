@@ -1,22 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
-using PureGame.Engine.EntityData;
 using PureGame.Engine.Controllers;
 using PureGame.Engine;
+using PureGame.Client.Controllers;
 
 namespace PureGame.Client
 {
-    /// <summary>Delegate to get notified of joining/leaving players (see OnEventJoin and OnEventLeave).</summary>
-    public delegate void EventPlayerListChangeDelegate(PlayerEntity particlePlayer);
     public class PureGameClient : IPureGame
     {
         private IController controller;
-        public EventPlayerListChangeDelegate OnEventJoin;
-
-        /// <summary>Can be used to be notified when a player leaves the room (Photon: EvLeave).</summary>
-        public EventPlayerListChangeDelegate OnEventLeave;
         private PlayerEntity player_entity;
-        //public new PlayerEntity LocalPlayer { get { return (PlayerEntity)base.LocalPlayer; } }
-        //AppId = "4d493591-adb3-4b41-b40f-0e0a4c4955ce";
         public PlayerEntity Player
         {
             get

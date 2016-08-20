@@ -1,4 +1,4 @@
-﻿namespace PureGame.Engine.Controllers
+﻿namespace PureGame.Client.Controllers
 {
     public class SmartButton
     {

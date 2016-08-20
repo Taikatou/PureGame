@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.EntityData;
 
-namespace PureGame.Engine.Controllers
+namespace PureGame.Client.Controllers
 {
     enum Controls { Left, Right, Up, Down, A, B}
     public interface IController

@@ -3,8 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.ViewportAdapters;
 using PureGame.Client;
+using PureGame.Client.Controllers;
 using PureGame.Engine.Controllers;
-using PureGame.Engine.EntityData;
 using PureGame.Render.Renderable;
 
 namespace PureGame.DesktopGl

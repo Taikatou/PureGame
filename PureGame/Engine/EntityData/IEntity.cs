@@ -12,6 +12,7 @@ namespace PureGame.Engine.EntityData
         Vector2 Position { get; set; }
         bool RequestInteraction { get; set; }
         bool RequestMovement { get; set; }
+        bool Running { get; set; }
         int Speed { get; }
 
         void Interact(IEntity interact_entity);

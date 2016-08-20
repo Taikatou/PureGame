@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using PureGame.Engine.Controllers;
 
 namespace PureGame.Engine.EntityData
@@ -12,6 +13,7 @@ namespace PureGame.Engine.EntityData
         public bool request_interaction = false;
         public Direction movement_direction;
         public Direction facing_direction;
+        public bool running;
         public string id;
         public Direction FacingDirection
         {
@@ -106,6 +108,19 @@ namespace PureGame.Engine.EntityData
             set
             {
                 file_name = value;
+            }
+        }
+
+        public bool Running
+        {
+            get
+            {
+                return running;
+            }
+
+            set
+            {
+                running = value;
             }
         }
 
