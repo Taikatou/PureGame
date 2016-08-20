@@ -13,7 +13,7 @@ namespace PureGame.Render.Renderable
 {
     public class RenderEntity
     {
-        private EntityObject base_entity;
+        private IEntity base_entity;
         private Texture2D entity_texture;
         private RenderWorld parent;
         //Right Left Up Down
@@ -24,7 +24,7 @@ namespace PureGame.Render.Renderable
 
         private Animation currentAnimation;
         private Vector2 previous_position;
-        public RenderEntity(EntityObject base_entity, RenderWorld parent, ContentManager content)
+        public RenderEntity(IEntity base_entity, RenderWorld parent, ContentManager content)
         {
             this.parent = parent;
             this.base_entity = base_entity;

@@ -61,6 +61,14 @@
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="Photon3DotNet, Version=4.0.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Downloads\Photon-Xamarin-Sdk_v4-0-0-4\libs\Debug\Photon3DotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="PhotonLoadbalancingApi, Version=4.0.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Downloads\Photon-Xamarin-Sdk_v4-0-0-4\libs\Debug\PhotonLoadbalancingApi.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>

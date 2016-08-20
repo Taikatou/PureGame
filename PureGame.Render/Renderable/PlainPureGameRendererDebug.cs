@@ -40,7 +40,6 @@ namespace PureGame.Render.Renderable
             fps_counter.Update(timer);
         }
 
-        public override void ChangeFocus(EntityObject e)
         {
             GameRenderer.ChangeFocus(e);
         }

@@ -8,23 +8,23 @@ namespace PureGame.Engine.EntityData
     public class EntityUpdateManagerData
     {
         public List<ExpiringKey<Vector2>> ExpiringTiles;
-        public Dictionary<ExpiringKey<Vector2>, EntityObject> KeyToEntity;
-        public Dictionary<EntityObject, ExpiringKey<Vector2>> EntityToKey;
-        public Dictionary<Vector2, EntityObject> SpatialHash;
-        public Dictionary<string, EntityObject> IdHash;
-        public List<EntityObject> Entities;
+        public Dictionary<ExpiringKey<Vector2>, IEntity> KeyToEntity;
+        public Dictionary<IEntity, ExpiringKey<Vector2>> EntityToKey;
+        public Dictionary<Vector2, IEntity> SpatialHash;
+        public Dictionary<string, IEntity> IdHash;
+        public List<IEntity> Entities;
 
         public EntityUpdateManagerData()
         {
-            Entities = new List<EntityObject>();
+            Entities = new List<IEntity>();
             ExpiringTiles = new List<ExpiringKey<Vector2>>();
-            EntityToKey = new Dictionary<EntityObject, ExpiringKey<Vector2>>();
-            KeyToEntity = new Dictionary<ExpiringKey<Vector2>, EntityObject>();
-            IdHash = new Dictionary<string, EntityObject>();
-            SpatialHash = new Dictionary<Vector2, EntityObject>();
+            EntityToKey = new Dictionary<IEntity, ExpiringKey<Vector2>>();
+            KeyToEntity = new Dictionary<ExpiringKey<Vector2>, IEntity>();
+            IdHash = new Dictionary<string, IEntity>();
+            SpatialHash = new Dictionary<Vector2, IEntity>();
         }
 
-        public void AddEntity(EntityObject e)
+        public void AddEntity(IEntity e)
         {
             if (ContainsEntity(e))
             {
@@ -34,7 +34,7 @@ namespace PureGame.Engine.EntityData
             }
         }
 
-        public void AddEntityKey(EntityObject e, ExpiringKey<Vector2> key)
+        public void AddEntityKey(IEntity e, ExpiringKey<Vector2> key)
         {
             ExpiringTiles.Add(key);
             EntityToKey[e] = key;
@@ -60,13 +60,13 @@ namespace PureGame.Engine.EntityData
             }
         }
 
-        public bool ContainsEntity(EntityObject e)
+        public bool ContainsEntity(IEntity e)
         {
             bool contains = !(SpatialHash.ContainsKey(e.Position) || IdHash.ContainsKey(e.Id));
             return contains;
         }
 
-        public bool EntityCurrentlyMoving(EntityObject e)
+        public bool EntityCurrentlyMoving(IEntity e)
         {
             return EntityToKey.ContainsKey(e);
         }

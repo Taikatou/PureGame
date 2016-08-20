@@ -33,11 +33,10 @@ namespace PureGame.Engine
             Map = JsonConvert.DeserializeObject<MapObject>(json_string);
         }
 
-        public List<EntityObject> Entities => EntityManager.Data.Entities;
+        public List<IEntity> Entities => EntityManager.Data.Entities;
 
         public MapObject Map;
 
-        public void AddEntity(EntityObject e)
         {
             EntityManager.Data.AddEntity(e);
         }

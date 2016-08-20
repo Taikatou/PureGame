@@ -7,7 +7,7 @@ namespace PureGame
     {
         void LoadWorld(string world_name, IFileReader reader);
         void Update(GameTime time);
-        WorldArea Current { get; set; }
+        WorldArea World { get; set; }
         IPureGame Parent { get; set; }
         void OnWorldChange();
     }
