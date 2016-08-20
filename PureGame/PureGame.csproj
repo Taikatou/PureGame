@@ -42,10 +42,11 @@
     <Compile Include="Engine\Controllers\InputManager.cs" />
     <Compile Include="Engine\Controllers\PhysicalController.cs" />
     <Compile Include="Engine\Controllers\SmartButton.cs" />
-    <Compile Include="Engine\EntityData\EntityObject.cs" />
+    <Compile Include="Engine\EntityData\AbstractBaseEntity.cs" />
+    <Compile Include="Engine\EntityData\BaseEntity.cs" />
     <Compile Include="Engine\EntityData\EntityUpdateManager.cs" />
     <Compile Include="Engine\EntityData\EntityUpdateManagerData.cs" />
-    <Compile Include="Engine\EntityData\PlayerEntityObject.cs" />
+    <Compile Include="Engine\EntityData\IEntity.cs" />
     <Compile Include="Engine\ExpiringKey.cs" />
     <Compile Include="Engine\MapObject.cs" />
     <Compile Include="Engine\WorldArea.cs" />

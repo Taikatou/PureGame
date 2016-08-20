@@ -30,7 +30,7 @@ namespace PureGame.Render.Renderable
             render_world.Update(time);
         }
 
-        public override void ChangeFocus(EntityObject e)
+        public override void ChangeFocus(IEntity e)
         {
             RenderWorld.FocusEntity = e;
         }
@@ -38,7 +38,7 @@ namespace PureGame.Render.Renderable
         public override void OnWorldChange()
         {
             render_world?.UnLoad();
-            render_world = new RenderWorld(game.Current);
+            render_world = new RenderWorld(game.World);
         }
     }
 }

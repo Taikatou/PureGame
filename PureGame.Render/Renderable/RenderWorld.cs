@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.Maps.Tiled;
 using PureGame.Engine;
+using PureGame.Engine.Controllers;
 using PureGame.Engine.EntityData;
 using System.Collections.Generic;
 
@@ -18,7 +19,7 @@ namespace PureGame.Render.Renderable
         public Vector2 TileSize;
         public Vector2 Offset => TileSize / 2;
 
-        public static EntityObject FocusEntity { get; internal set; }
+        public static IEntity FocusEntity { get; internal set; }
 
         public RenderWorld(WorldArea World)
         {
@@ -52,7 +53,7 @@ namespace PureGame.Render.Renderable
             }
         }
 
-        public RenderEntity GetRenderEntity(EntityObject e)
+        public RenderEntity GetRenderEntity(IEntity e)
         {
             if (!entity_sprites.ContainsKey(e.Id))
             {
@@ -61,14 +62,15 @@ namespace PureGame.Render.Renderable
             return entity_sprites[e.Id];
         }
 
-        public Point GetEntityScreenPosition(EntityObject entity)
+        public Point GetEntityScreenPosition(IEntity entity)
         {
             Vector2 position = entity.Position;
             var WorldData = World.EntityManager.Data;
             if (WorldData.EntityCurrentlyMoving(entity))
             {
                 float progress = WorldData.EntityToKey[entity].Progress;
-                position -= (entity.FacingPosition * progress);
+                var FacingPosition = DirectionMapper.GetMovementFromDirection(entity.FacingDirection);
+                position -= (FacingPosition * progress);
             }
             return GetScreenPosition(position);
         }

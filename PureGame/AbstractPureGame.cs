@@ -6,21 +6,21 @@ namespace PureGame
 {
     public abstract class AbstractPureGame : IPureGame
     {
-        public WorldArea current;
         public AbstractPureGame()
         {
         }
 
-        public WorldArea Current
+        public WorldArea world;
+        public WorldArea World
         {
             get
             {
-                return current;
+                return world;
             }
 
             set
             {
-                current = value;
+                world = value;
             }
         }
 

@@ -6,5 +6,6 @@ namespace PureGame.Engine.Controllers
     enum Controls { Left, Right, Up, Down, A, B}
     public interface IController
     {
+        void Update(IEntity entity, GameTime time);
     }
 }

@@ -34,7 +34,7 @@ namespace PureGame.DesktopGl
             GameClient = new PureGameClient(game);
             var game_renderer = new PlainPureGameRenderer(GameClient, viewport_adapter);
             GameRenderer = new PlainPureGameRendererDebug(game_renderer);
-            var player_entity = new PlayerEntityObject(new Vector2(4, 4), "Test");
+            var player_entity = new PlayerEntity(new Vector2(4, 4), "Test");
             GameClient.SetPlayer(player_entity, new PhysicalController());
             LoadWorld("Data/level01.json");
         }
@@ -43,9 +43,9 @@ namespace PureGame.DesktopGl
         {
             GameRenderer.Game.LoadWorld(world_name, new FileReader());
             GameRenderer.ChangeFocus(GameClient.Player);
-            var entity = new PlayerEntityObject(new Vector2(2, 4), "Test2");
-            GameRenderer.Game.Current.AddEntity(GameClient.Player);
-            GameRenderer.Game.Current.AddEntity(entity);
+            var entity = new PlayerEntity(new Vector2(2, 4), "Test2");
+            GameRenderer.Game.World.AddEntity(GameClient.Player);
+            GameRenderer.Game.World.AddEntity(entity);
         }
 
         protected override void UnloadContent()

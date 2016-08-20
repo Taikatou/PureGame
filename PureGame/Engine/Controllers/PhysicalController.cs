@@ -39,7 +39,7 @@ namespace PureGame.Engine.Controllers
             }
         }
 
-        public void Update(PlayerEntityObject entity, GameTime time)
+        public void Update(IEntity entity, GameTime time)
         {
             input_manager.Update(time);
             entity.RequestInteraction = Buttons[(int)Controls.A].NewActive;
@@ -48,7 +48,6 @@ namespace PureGame.Engine.Controllers
             if (entity.RequestMovement)
             {
                 entity.MovementDirection = CachedMoveDiection;
-                entity.Running = Buttons[(int)Controls.B].Active;
             }
         }
 

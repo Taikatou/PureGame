@@ -35,6 +35,7 @@ namespace PureGame.Gui
             GameRenderer.Update(timer);
         }
 
+        public override void ChangeFocus(IEntity e)
         {
             GameRenderer.ChangeFocus(e);
         }

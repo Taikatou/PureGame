@@ -37,6 +37,7 @@ namespace PureGame.Engine
 
         public MapObject Map;
 
+        public void AddEntity(IEntity e)
         {
             EntityManager.Data.AddEntity(e);
         }

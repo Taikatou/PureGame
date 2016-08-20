@@ -13,16 +13,16 @@ namespace PureGame.Render.Renderable
 {
     public abstract class AbstractPureGameRenderer : IPureGameRenderer
     {
-        public WorldArea Current
+        public WorldArea World
         {
             get
             {
-                return Game.Current;
+                return Game.World;
             }
 
             set
             {
-                Game.Current = value;
+                Game.World = value;
             }
         }
 
@@ -51,7 +51,7 @@ namespace PureGame.Render.Renderable
             }
         }
 
-        public abstract void ChangeFocus(EntityObject e);
+        public abstract void ChangeFocus(IEntity e);
 
         public abstract void Draw(SpriteBatch sprite_batch);
 

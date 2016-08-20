@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using PureGame.Engine.Controllers;
 using System.Diagnostics;
 
 namespace PureGame.Engine.EntityData
@@ -30,19 +31,21 @@ namespace PureGame.Engine.EntityData
             Data.Update(time);
         }
 
-        public void ProccessInteraction(EntityObject e)
+        public void ProccessInteraction(IEntity e)
         {
-            Vector2 new_position = e.Position + e.FacingPosition;
+            var FacingPosition = DirectionMapper.GetMovementFromDirection(e.FacingDirection);
+            Vector2 new_position = e.Position + FacingPosition;
             if (Data.SpatialHash.ContainsKey(new_position))
             {
-                EntityObject interact_entity = Data.SpatialHash[new_position];
+                IEntity interact_entity = Data.SpatialHash[new_position];
                 e.Interact(interact_entity);
             }
         }
 
-        public void ProccessMovement(EntityObject e)
+        public void ProccessMovement(IEntity e)
         {
-            Vector2 new_position = e.Position + e.MovementPosition;
+            var MovementPosition = DirectionMapper.GetMovementFromDirection(e.MovementDirection);
+            Vector2 new_position = e.Position + MovementPosition;
             if (ValidPosition(new_position))
             {
                 var movement_key = new ExpiringKey<Vector2>(e.Position, e.Speed);
