@@ -53,12 +53,6 @@
     <Compile Include="IPureGame.cs" />
     <Compile Include="PlainPureGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SmallGame\BaseGameObject.cs" />
-    <Compile Include="SmallGame\DataLoader.cs" />
-    <Compile Include="SmallGame\GameLevel.cs" />
-    <Compile Include="SmallGame\GameObjectCollection.cs" />
-    <Compile Include="SmallGame\IdFactory.cs" />
-    <Compile Include="SmallGame\IGameObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

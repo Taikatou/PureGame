@@ -7,18 +7,38 @@ namespace PureGame.Engine.Controllers
     public class DirectionMapper
     {
         protected Dictionary<Direction, Vector2> MappedDirections;
+        protected Dictionary<Vector2, Direction> ReverseMappedDirections;
         public DirectionMapper()
         {
             MappedDirections = new Dictionary<Direction, Vector2>();
-            MappedDirections[Direction.Up] = new Vector2(0, -1);
-            MappedDirections[Direction.Down] = new Vector2(0, 1);
-            MappedDirections[Direction.Left] = new Vector2(-1, 0);
-            MappedDirections[Direction.Right] = new Vector2(1, 0);
+            ReverseMappedDirections = new Dictionary<Vector2, Direction>();
+            AddDirection(Direction.Up, new Vector2(0, -1));
+            AddDirection(Direction.Down, new Vector2(0, 1));
+            AddDirection(Direction.Left, new Vector2(-1, 0));
+            AddDirection(Direction.Right, new Vector2(1, 0));
         }
 
-        public static Vector2 GetDirection(Direction Facing)
+        public void AddDirection(Direction d, Vector2 m)
+        {
+            MappedDirections[d] = m;
+            ReverseMappedDirections[m] = d;
+        }
+
+        public static Vector2 GetMovementFromDirection(Direction Facing)
         {
             return Instance.MappedDirections[Facing];
+        }
+
+        public static Direction GetDirectionFromMovment(Vector2 Movement)
+        {
+            if(!Instance.ReverseMappedDirections.ContainsKey(Movement))
+            {
+                return Direction.None;
+            }
+            else
+            {
+                return Instance.ReverseMappedDirections[Movement];
+            }
         }
 
         protected static DirectionMapper instance;

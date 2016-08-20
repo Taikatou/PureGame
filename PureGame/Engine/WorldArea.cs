@@ -1,14 +1,14 @@
-﻿using SmallGame;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using PureGame.Engine.Common;
 using MonoGame.Extended.Maps.Tiled;
 using PureGame.Engine.EntityData;
+using Newtonsoft.Json;
 
 namespace PureGame.Engine
 {
-    public class WorldArea : GameLevel
+    public class WorldArea
     {
         public ContentManager Content;
         public CollisionTiledMap collision_map;
@@ -18,20 +18,29 @@ namespace PureGame.Engine
             {
                 if(collision_map == null)
                 {
-                    TiledMap map = Maps[0].GetTiledMap(Content);
+                    TiledMap map = Map.GetTiledMap(Content);
                     collision_map = new CollisionTiledMap(map);
                 }
                 return collision_map;
             }
         }
-        public WorldArea()
+        public string Name;
+        public WorldArea(string world_name, IFileReader reader)
         {
+            Name = world_name;
             Content = ContentManagerManager.RequestContentManager();
+            string json_string = reader.ReadAllText(world_name);
+            Map = JsonConvert.DeserializeObject<MapObject>(json_string);
         }
 
-        public List<MapObject> Maps => Objects.GetObjects<MapObject>();
-
         public List<EntityObject> Entities => EntityManager.Data.Entities;
+
+        public MapObject Map;
+
+        public void AddEntity(EntityObject e)
+        {
+            EntityManager.Data.AddEntity(e);
+        }
 
         public EntityUpdateManager entity_manager;
 
@@ -41,8 +50,7 @@ namespace PureGame.Engine
             {
                 if(entity_manager == null)
                 {
-                    List<EntityObject> e = Objects.GetObjects<EntityObject>();
-                    entity_manager = new EntityUpdateManager(e, this);
+                    entity_manager = new EntityUpdateManager(this);
                 }
                 return entity_manager;
             }

@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using MonoGame.Extended.Maps.Tiled;
-using SmallGame;
 using System.Diagnostics;
 
 namespace PureGame.Engine
 {
-    public class MapObject : BaseIGameObject
+    public class MapObject
     {
         public string MapName;
         public MapObject()

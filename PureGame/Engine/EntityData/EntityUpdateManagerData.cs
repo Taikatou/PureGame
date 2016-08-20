@@ -14,18 +14,14 @@ namespace PureGame.Engine.EntityData
         public Dictionary<string, EntityObject> IdHash;
         public List<EntityObject> Entities;
 
-        public EntityUpdateManagerData(List<EntityObject> Entities)
+        public EntityUpdateManagerData()
         {
-            this.Entities = new List<EntityObject>();
+            Entities = new List<EntityObject>();
             ExpiringTiles = new List<ExpiringKey<Vector2>>();
             EntityToKey = new Dictionary<EntityObject, ExpiringKey<Vector2>>();
             KeyToEntity = new Dictionary<ExpiringKey<Vector2>, EntityObject>();
             IdHash = new Dictionary<string, EntityObject>();
             SpatialHash = new Dictionary<Vector2, EntityObject>();
-            foreach (EntityObject e in Entities)
-            {
-                AddEntity(e);
-            }
         }
 
         public void AddEntity(EntityObject e)

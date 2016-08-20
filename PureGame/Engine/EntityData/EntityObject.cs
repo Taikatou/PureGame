@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.Controllers;
-using SmallGame;
 using System.Diagnostics;
 
 namespace PureGame.Engine.EntityData
 {
-    public class EntityObject : BaseIGameObject
+    public class EntityObject
     {
         public string FileName;
         //This is not supposed to be changed directly only through entityManager
@@ -18,6 +17,7 @@ namespace PureGame.Engine.EntityData
         public bool Running = false;
         public bool CurrentlyInteracting = false;
         public Direction FacingDirection;
+        public string Id;
         public int Speed
         {
             get
@@ -33,25 +33,19 @@ namespace PureGame.Engine.EntityData
             }
         }
 
-        public EntityObject()
-        {
-
-        }
-
         public EntityObject(Vector2 Position, string Id, string FileName="CharacterSheet", Direction FacingDirection = Direction.Down)
         {
             this.Position = Position;
             this.FileName = FileName;
             this.FacingDirection = FacingDirection;
             this.Id = Id;
-            Type = "EntityObject";
         }
 
         public Vector2 FacingPosition
         {
             get
             {
-                return DirectionMapper.GetDirection(FacingDirection);
+                return DirectionMapper.GetMovementFromDirection(FacingDirection);
             }
         }
 
@@ -59,7 +53,7 @@ namespace PureGame.Engine.EntityData
         {
             get
             {
-                return DirectionMapper.GetDirection(MovementDirection);
+                return DirectionMapper.GetMovementFromDirection(MovementDirection);
             }
         }
 
@@ -69,7 +63,6 @@ namespace PureGame.Engine.EntityData
             if (!CurrentlyInteracting)
             {
                 Debug.WriteLine(Id + " Interact with " + interact_with.Id);
-                CurrentlyInteracting = true;
                 interact_with.InteractWith(this);
             }
         }

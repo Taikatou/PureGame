@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace PureGame.Engine.EntityData
@@ -9,9 +8,9 @@ namespace PureGame.Engine.EntityData
         public EntityUpdateManagerData Data;
         private WorldArea parent;
 
-        public EntityUpdateManager(List<EntityObject> entities, WorldArea parent)
+        public EntityUpdateManager(WorldArea parent)
         {
-            Data = new EntityUpdateManagerData(entities);
+            Data = new EntityUpdateManagerData();
             this.parent = parent;
         }
 
@@ -37,7 +36,7 @@ namespace PureGame.Engine.EntityData
             if (Data.SpatialHash.ContainsKey(new_position))
             {
                 EntityObject interact_entity = Data.SpatialHash[new_position];
-                interact_entity.Interact(e);
+                e.Interact(interact_entity);
             }
         }
 

@@ -24,7 +24,7 @@ namespace PureGame.Render.Renderable
         {
             this.World = World;
             Content = ContentManagerManager.RequestContentManager();
-            Map = World.Maps[0].GetTiledMap(Content);
+            Map = World.Map.GetTiledMap(Content);
             TileSize = new Vector2(Map.TileWidth, Map.TileHeight);
             entity_sprites = new Dictionary<string, RenderEntity>();
         }

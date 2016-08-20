@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.BitmapFonts;
 using PureGame.Engine;
+using PureGame.Engine.Controllers;
 using PureGame.Engine.EntityData;
 
 namespace PureGame.Render.Renderable
@@ -19,6 +20,7 @@ namespace PureGame.Render.Renderable
         public PlainPureGameRendererDebug(IPureGameRenderer GameRenderer)
         {
             this.GameRenderer = GameRenderer;
+            game = GameRenderer;
             GameRenderer.Parent = this;
             fps_counter = new FramesPerSecondCounter();
             string file_name = string.Format("Fonts/{0}", "montserrat-32");

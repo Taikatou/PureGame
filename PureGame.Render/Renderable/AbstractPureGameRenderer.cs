@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PureGame.Engine;
 using PureGame.Engine.EntityData;
-using SmallGame;
+using PureGame.Engine.Controllers;
 
 namespace PureGame.Render.Renderable
 {
@@ -17,25 +17,12 @@ namespace PureGame.Render.Renderable
         {
             get
             {
-                throw new NotImplementedException();
+                return Game.Current;
             }
 
             set
             {
-                throw new NotImplementedException();
-            }
-        }
-
-        public DataLoader DataLoader
-        {
-            get
-            {
-                return Game.DataLoader;
-            }
-
-            set
-            {
-                Game.DataLoader = value;
+                Game.Current = value;
             }
         }
 

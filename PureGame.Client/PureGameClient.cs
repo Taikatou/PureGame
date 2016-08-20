@@ -1,5 +1,4 @@
-﻿using SmallGame;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using ExitGames.Client.Photon.LoadBalancing;
 using System;
 using PureGame.Engine.EntityData;
@@ -15,6 +14,13 @@ namespace PureGame.Client
         private string WorldName = "";
         private IController controller;
         private PlayerEntityObject player_entity;
+        public PlayerEntityObject Player
+        {
+            get
+            {
+                return player_entity;
+            }
+        }
         private IPureGame parent;
         private Vector2 previous_message;
         private IPureGame game;
@@ -29,19 +35,6 @@ namespace PureGame.Client
             set
             {
                 game.Current = value;
-            }
-        }
-
-        public DataLoader DataLoader
-        {
-            get
-            {
-                return game.DataLoader;
-            }
-
-            set
-            {
-                game.DataLoader = value;
             }
         }
 
@@ -100,7 +93,6 @@ namespace PureGame.Client
         {
             player_entity = p;
             controller = c;
-            Current.Entities.Add(player_entity);
         }
 
         void OnApplicationQuit()

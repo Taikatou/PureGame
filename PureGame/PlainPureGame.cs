@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using PureGame.Engine;
 using PureGame.Engine.EntityData;
-using SmallGame;
 
 namespace PureGame
 {
@@ -11,14 +10,11 @@ namespace PureGame
         public PlainPureGame(ContentManager content)
         {
             ContentManagerManager.Instance = new ContentManagerManager(content);
-            DataLoader = new DataLoader();
-            DataLoader.RegisterParser(StandardGameObjectParser.For<EntityObject>(),
-                                      StandardGameObjectParser.For<MapObject>());
         }
 
         public override void LoadWorld(string world_name, IFileReader reader)
         {
-            Current = DataLoader.Load<WorldArea>(world_name, reader);
+            Current = new WorldArea(world_name, reader);
             Parent.OnWorldChange();
         }
 
