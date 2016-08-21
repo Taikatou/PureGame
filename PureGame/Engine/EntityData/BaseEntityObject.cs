@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.Controllers;
+using PureGame.SmallGame;
 using System.Diagnostics;
 
 namespace PureGame.Engine.EntityData
@@ -55,7 +56,6 @@ namespace PureGame.Engine.EntityData
 
         }
 
-        //interactions in
         public void Interact(BaseEntityObject interact_with)
         {
             if (!CurrentlyInteracting)
@@ -79,9 +79,11 @@ namespace PureGame.Engine.EntityData
             }
         }
 
-        public override void OnInit()
+        WorldArea world;
+
+        public override void OnInit(GameLevel lvl)
         {
-            
+            world = (WorldArea)lvl;
         }
     }
 }

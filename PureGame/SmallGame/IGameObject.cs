@@ -16,6 +16,6 @@
         /// </summary>
         string Id { get; set; }
 
-        void OnInit();
+        void OnInit(GameLevel lvl);
     }
 }

@@ -225,7 +225,7 @@ namespace PureGame.SmallGame
                         if (parsedObj is IGameObject)
                         {
                             IGameObject game_object = (IGameObject)parsedObj;
-                            game_object.OnInit();
+                            game_object.OnInit(lvl);
                             lvl.Objects.Add(game_object);
                         }
                     }

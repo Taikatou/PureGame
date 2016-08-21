@@ -7,8 +7,8 @@ namespace PureGame.Client
     public class PureGameClient : IPureGame
     {
         private IController controller;
-        private PlayerEntity player_entity;
-        public PlayerEntity Player
+        private Player player_entity;
+        public Player Player
         {
             get
             {
@@ -45,7 +45,7 @@ namespace PureGame.Client
 
         public void Update(GameTime time)
         {
-            controller?.Update(player_entity, time);
+            controller?.Update(player_entity.BaseEntity, time);
             game.Update(time);
         }
 
@@ -55,7 +55,7 @@ namespace PureGame.Client
             game.Parent = this;
         }
 
-        public void SetPlayer(PlayerEntity p, IController c)
+        public void SetPlayer(Player p, IController c)
         {
             player_entity = p;
             controller = c;
@@ -70,7 +70,7 @@ namespace PureGame.Client
         {
             if(player_entity != null)
             {
-                game.World.AddEntity(player_entity);
+                game.World.AddEntity(player_entity.BaseEntity);
             }
             parent.OnWorldChange();
         }

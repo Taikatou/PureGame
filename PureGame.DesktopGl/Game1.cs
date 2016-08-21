@@ -5,6 +5,7 @@ using MonoGame.Extended.ViewportAdapters;
 using PureGame.Client;
 using PureGame.Client.Controllers;
 using PureGame.Engine.Controllers;
+using PureGame.Engine.EntityData;
 using PureGame.Render.Renderable;
 using PureGame.Universe;
 
@@ -35,7 +36,8 @@ namespace PureGame.DesktopGl
             GameClient = new PureGameClient(game);
             var game_renderer = new PlainPureGameRenderer(GameClient, viewport_adapter);
             GameRenderer = new PlainPureGameRendererDebug(game_renderer);
-            var player_entity = new PlayerEntity(new Vector2(4, 4), "Test", "CharacterSheet", Direction.Down, game);
+            BaseEntityObject BaseEntity = new BaseEntityObject(new Vector2(4, 4), "Test", "CharacterSheet", Direction.Down);
+            var player_entity = new Player(game, BaseEntity);
             GameClient.SetPlayer(player_entity, new KeyBoardController());
             LoadWorld("level01.json");
         }
@@ -43,10 +45,8 @@ namespace PureGame.DesktopGl
         public virtual void LoadWorld(string world_name)
         {
             GameRenderer.Game.LoadWorld(world_name);
-            GameRenderer.ChangeFocus(GameClient.Player);
-            var entity = new PlayerEntity(new Vector2(2, 4), "Test2", "CharacterSheet", Direction.Down, GameRenderer.Game);
-            GameRenderer.Game.World.AddEntity(GameClient.Player);
-            GameRenderer.Game.World.AddEntity(entity);
+            GameRenderer.ChangeFocus(GameClient.Player.BaseEntity);
+            GameRenderer.Game.World.AddEntity(GameClient.Player.BaseEntity);
         }
 
         protected override void UnloadContent()

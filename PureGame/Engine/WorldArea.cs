@@ -7,7 +7,6 @@ using PureGame.Engine.EntityData;
 using System.Diagnostics;
 using PureGame.Engine.Controllers;
 using PureGame.SmallGame;
-using System;
 
 namespace PureGame.Engine
 {
@@ -33,13 +32,16 @@ namespace PureGame.Engine
         {
             foreach (var e in EntityManager.Entities)
             {
-                if (e.RequestMovement && !EntityManager.EntityCurrentlyMoving(e))
+                if(!EntityManager.EntityCurrentlyMoving(e))
                 {
-                    ProccessMovement(e);
-                }
-                if (e.RequestInteraction)
-                {
-                    ProccessInteraction(e);
+                    if (e.RequestMovement)
+                    {
+                        ProccessMovement(e);
+                    }
+                    if (e.RequestInteraction)
+                    {
+                        ProccessInteraction(e);
+                    }
                 }
             }
             EntityManager.Update(time);
