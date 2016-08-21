@@ -28,7 +28,7 @@ namespace PureGame.Render.Renderable
         {
             this.parent = parent;
             this.base_entity = base_entity;
-            entity_texture = Loader.LoadTexture(content, base_entity.FileName);
+            entity_texture = AssetLoader.LoadTexture(content, base_entity.FileName);
             walking = new Animation[4];
             walking[(int)Direction.Down] = new Animation();
             walking[(int)Direction.Down].AddFrame(new Rectangle(0, 0, 16, 16), TimeSpan.FromSeconds(.25));

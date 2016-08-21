@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PureGame.Render.Common
 {
-    public class Loader
+    public class AssetLoader
     {
         public static Texture2D LoadTexture(ContentManager content, string file_name)
         {

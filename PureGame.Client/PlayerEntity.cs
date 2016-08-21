@@ -153,7 +153,7 @@ namespace PureGame.Client
         public void Interact(IEntity interact_entity)
         {
             interact_entity.InteractWith(this);
-            world?.LoadWorld("Data/level01.json");
+            world?.LoadWorld("level01.json");
         }
     }
 }

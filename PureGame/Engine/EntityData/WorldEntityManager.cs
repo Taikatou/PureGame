@@ -1,11 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using PureGame.Engine.Controllers;
 using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace PureGame.Engine.EntityData
 {
 
-    public class EntityUpdateManagerData
+    public class WorldEntityManager
     {
         public List<ExpiringKey<Vector2>> ExpiringTiles;
         public Dictionary<ExpiringKey<Vector2>, IEntity> KeyToEntity;
@@ -14,7 +15,7 @@ namespace PureGame.Engine.EntityData
         public Dictionary<string, IEntity> IdHash;
         public List<IEntity> Entities;
 
-        public EntityUpdateManagerData()
+        public WorldEntityManager()
         {
             Entities = new List<IEntity>();
             ExpiringTiles = new List<ExpiringKey<Vector2>>();
