@@ -7,6 +7,7 @@ using PureGame.Engine.EntityData;
 using System.Diagnostics;
 using PureGame.Engine.Controllers;
 using PureGame.SmallGame;
+using System;
 
 namespace PureGame.Engine
 {
@@ -25,46 +26,44 @@ namespace PureGame.Engine
 
         public void Update(GameTime time)
         {
-            foreach (var e in EntityManager.Entities)
-            {
-                if(!EntityManager.EntityCurrentlyMoving(e))
-                {
-                    if (e.RequestMovement)
-                    {
-                        ProccessMovement(e);
-                    }
-                    if (e.RequestInteraction)
-                    {
-                        ProccessInteraction(e);
-                    }
-                }
-            }
             EntityManager.Update(time);
         }
 
         public void ProccessInteraction(IEntity e)
         {
-            var FacingPosition = DirectionMapper.GetMovementFromDirection(e.FacingDirection);
-            Vector2 new_position = e.Position + FacingPosition;
-            if (EntityManager.SpatialHash.ContainsKey(new_position))
+            if (!EntityManager.EntityCurrentlyMoving(e))
             {
-                IEntity interact_entity = EntityManager.SpatialHash[new_position];
-                e.Interact(interact_entity);
+                var FacingPosition = DirectionMapper.GetMovementFromDirection(e.FacingDirection);
+                Vector2 new_position = e.Position + FacingPosition;
+                if (EntityManager.SpatialHash.ContainsKey(new_position))
+                {
+                    IEntity interact_entity = EntityManager.SpatialHash[new_position];
+                    e.Interact(interact_entity);
+                }
             }
         }
 
         public void ProccessMovement(IEntity e)
         {
-            var MovementPosition = DirectionMapper.GetMovementFromDirection(e.MovementDirection);
-            Vector2 new_position = e.Position + MovementPosition;
-            if (ValidPosition(new_position))
+            if (!EntityManager.EntityCurrentlyMoving(e))
             {
-                var movement_key = new ExpiringKey<Vector2>(e.Position, e.GetSpeed());
-                EntityManager.AddEntityKey(e, movement_key);
-                e.Position = new_position;
+                Debug.WriteLine("in");
+                var MovementPosition = DirectionMapper.GetMovementFromDirection(e.MovementDirection);
+                Vector2 new_position = e.Position + MovementPosition;
+                if (ValidPosition(new_position))
+                {
+                    var movement_key = new ExpiringKey<Vector2>(e.Position, e.GetSpeed());
+                    EntityManager.AddEntityKey(e, movement_key);
+                    e.Position = new_position;
+                }
+                e.FacingDirection = e.MovementDirection;
             }
-            e.FacingDirection = e.MovementDirection;
-            e.RequestMovement = false;
+        }
+
+        public void AddEntity(BaseEntityObject e)
+        {
+            EntityManager.AddEntity(e);
+            e.OnInit(this);
         }
 
         private bool ValidPosition(Vector2 position)
@@ -90,6 +89,7 @@ namespace PureGame.Engine
             foreach(BaseEntityObject e in Objects.GetObjects<BaseEntityObject>())
             {
                 EntityManager.AddEntity(e);
+                e.OnInit(this);
             }
         }
     }

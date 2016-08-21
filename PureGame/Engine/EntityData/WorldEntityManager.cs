@@ -50,15 +50,20 @@ namespace PureGame.Engine.EntityData
                 ExpiringTiles[i].Update(time);
                 if (ExpiringTiles[i].TimeLeft <= 0)
                 {
-                    Vector2 position = ExpiringTiles[i].Key;
-                    Debug.WriteLine("Remove tile : " + position);
-                    var EntitiyObject = KeyToEntity[ExpiringTiles[i]];
-                    SpatialHash.Remove(position);
-                    EntityToKey.Remove(EntitiyObject);
-                    KeyToEntity.Remove(ExpiringTiles[i]);
-                    ExpiringTiles.RemoveAt(i);
+                    RemoveTile(i);
                 }
             }
+        }
+
+        public void RemoveTile(int i)
+        {
+            Vector2 position = ExpiringTiles[i].Key;
+            Debug.WriteLine("Remove tile : " + position);
+            var EntitiyObject = KeyToEntity[ExpiringTiles[i]];
+            SpatialHash.Remove(position);
+            EntityToKey.Remove(EntitiyObject);
+            KeyToEntity.Remove(ExpiringTiles[i]);
+            ExpiringTiles.RemoveAt(i);
         }
 
         public bool ContainsEntity(IEntity e)

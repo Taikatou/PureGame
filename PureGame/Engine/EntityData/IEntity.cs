@@ -10,13 +10,12 @@ namespace PureGame.Engine.EntityData
         string FileName { get; set; }
         Direction MovementDirection { get; set; }
         Vector2 Position { get; set; }
-        bool RequestInteraction { get; set; }
-        bool RequestMovement { get; set; }
+        void RequestInteraction();
+        void RequestMovement();
         bool Running { get; set; }
         int GetSpeed();
 
         void Interact(IEntity interact_entity);
         void InteractWith(IEntity baseEntity);
-        void SetPureGame(IPureGame Game);
     }
 }

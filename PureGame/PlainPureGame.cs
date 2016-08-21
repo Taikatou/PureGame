@@ -1,7 +1,5 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using PureGame.Engine.EntityData;
 using PureGame.Loader;
 
 namespace PureGame
@@ -21,10 +19,6 @@ namespace PureGame
         {
             World = world_loader.Load(world_name, file_reader);
             //add world call back to entities
-            foreach(var e in World.Entities)
-            {
-                e.SetPureGame(this);
-            }
             Parent?.OnWorldChange();
         }
 

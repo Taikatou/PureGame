@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using PureGame.Engine.Controllers;
 using PureGame.SmallGame;
 
@@ -9,8 +10,6 @@ namespace PureGame.Engine.EntityData
         public string file_name;
         //This is not supposed to be changed directly only through entityManager
         public Vector2 position;
-        public bool request_movement = false;
-        public bool request_interaction = false;
         public Direction movement_direction;
         public Direction facing_direction;
         public bool running;
@@ -53,32 +52,6 @@ namespace PureGame.Engine.EntityData
             }
         }
 
-        public bool RequestInteraction
-        {
-            get
-            {
-                return request_interaction;
-            }
-
-            set
-            {
-                request_interaction = value;
-            }
-        }
-
-        public bool RequestMovement
-        {
-            get
-            {
-                return request_movement;
-            }
-
-            set
-            {
-                request_movement = value;
-            }
-        }
-
         public abstract int GetSpeed();
 
         public string FileName
@@ -109,7 +82,8 @@ namespace PureGame.Engine.EntityData
 
         public abstract void Interact(IEntity interact_entity);
         public abstract void InteractWith(IEntity interact_with);
-
-        public abstract void SetPureGame(IPureGame Game);
+        public abstract void RequestInteraction();
+        public abstract void RequestMovement();
+        public abstract void OnInit(GameLevel lvl);
     }
 }
