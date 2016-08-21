@@ -44,6 +44,7 @@
     <Compile Include="Engine\EntityData\BaseEntityObject.cs" />
     <Compile Include="Engine\EntityData\WorldEntityManager.cs" />
     <Compile Include="Engine\EntityData\IEntity.cs" />
+    <Compile Include="Engine\Events\IEvent.cs" />
     <Compile Include="Engine\ExpiringKey.cs" />
     <Compile Include="Engine\MapObject.cs" />
     <Compile Include="Engine\WorldArea.cs" />

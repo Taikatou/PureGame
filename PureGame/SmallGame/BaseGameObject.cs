@@ -29,10 +29,5 @@
                 type = value;
             }
         }
-
-        public virtual void OnInit(GameLevel lvl)
-        {
-
-        }
     }
 }

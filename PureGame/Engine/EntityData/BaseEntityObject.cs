@@ -78,12 +78,5 @@ namespace PureGame.Engine.EntityData
                 interact_with.InteractWith(this);
             }
         }
-
-        WorldArea world;
-
-        public override void OnInit(GameLevel lvl)
-        {
-            world = (WorldArea)lvl;
-        }
     }
 }
