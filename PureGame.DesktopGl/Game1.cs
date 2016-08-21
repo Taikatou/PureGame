@@ -6,6 +6,7 @@ using PureGame.Client;
 using PureGame.Client.Controllers;
 using PureGame.Engine.Controllers;
 using PureGame.Engine.EntityData;
+using PureGame.Gui;
 using PureGame.Render.Renderable;
 using PureGame.Universe;
 
@@ -36,7 +37,8 @@ namespace PureGame.DesktopGl
             BaseEntityObject Player = new BaseEntityObject(new Vector2(4, 4), "Test", "CharacterSheet", Direction.Down);
             GameClient = new PureGameClient(game, Player, new KeyBoardController(game));
             var game_renderer = new PlainPureGameRenderer(GameClient, viewport_adapter);
-            GameRenderer = new PlainPureGameRendererDebug(game_renderer);
+            var game_renderer_debug = new PlainPureGameRendererDebug(game_renderer);
+            GameRenderer = new PureGameRendererGui(game_renderer_debug);
             LoadWorld("level01.json");
         }
 
