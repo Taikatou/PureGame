@@ -38,7 +38,6 @@
     <Compile Include="Controllers\InputManager.cs" />
     <Compile Include="Controllers\KeyBoardController.cs" />
     <Compile Include="Controllers\SmartButton.cs" />
-    <Compile Include="Player.cs" />
     <Compile Include="PureGameClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

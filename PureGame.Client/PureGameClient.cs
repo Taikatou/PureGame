@@ -1,20 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine;
 using PureGame.Client.Controllers;
+using PureGame.Engine.EntityData;
 
 namespace PureGame.Client
 {
     public class PureGameClient : IPureGame
     {
+        public BaseEntityObject Player;
         private IController controller;
-        private Player player_entity;
-        public Player Player
-        {
-            get
-            {
-                return player_entity;
-            }
-        }
         private IPureGame parent;
         private IPureGame game;
 
@@ -45,19 +39,15 @@ namespace PureGame.Client
 
         public void Update(GameTime time)
         {
-            controller?.Update(player_entity.BaseEntity, time);
+            controller?.Update(Player, time);
             game.Update(time);
         }
 
-        public PureGameClient(IPureGame game)
+        public PureGameClient(IPureGame game, BaseEntityObject p, IController c)
         {
             this.game = game;
             game.Parent = this;
-        }
-
-        public void SetPlayer(Player p, IController c)
-        {
-            player_entity = p;
+            Player = p;
             controller = c;
         }
 
@@ -68,10 +58,6 @@ namespace PureGame.Client
 
         public void OnWorldChange()
         {
-            if(player_entity != null)
-            {
-                game.World.AddEntity(player_entity.BaseEntity);
-            }
             parent.OnWorldChange();
         }
     }

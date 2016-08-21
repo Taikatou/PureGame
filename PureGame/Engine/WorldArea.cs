@@ -23,11 +23,6 @@ namespace PureGame.Engine
             EntityManager = new WorldEntityManager();
         }
 
-        public void AddEntity(IEntity e)
-        {
-            EntityManager.AddEntity(e);
-        }
-
         public void Update(GameTime time)
         {
             foreach (var e in EntityManager.Entities)
