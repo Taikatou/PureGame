@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.Controllers;
-using PureGame.SmallGame;
 using System.Diagnostics;
 
 namespace PureGame.Engine.EntityData
@@ -10,18 +9,15 @@ namespace PureGame.Engine.EntityData
         private int WalkingSpeed = 500;
         private int RunningSpeed = 250;
         public bool CurrentlyInteracting = false;
-        public override int Speed
+        public override int GetSpeed()
         {
-            get
+            if(Running)
             {
-                if(Running)
-                {
-                    return RunningSpeed;
-                }
-                else
-                {
-                    return WalkingSpeed;
-                }
+                return RunningSpeed;
+            }
+            else
+            {
+                return WalkingSpeed;
             }
         }
 
@@ -68,6 +64,7 @@ namespace PureGame.Engine.EntityData
         public override void InteractWith(IEntity interact_with)
         {
             FacingDirection = ReverseDirections[(int)interact_with.FacingDirection];
+            // face the other entity
         }
 
         public override void Interact(IEntity interact_with)
@@ -76,7 +73,14 @@ namespace PureGame.Engine.EntityData
             {
                 Debug.WriteLine(Id + " Interact with " + interact_with.Id);
                 interact_with.InteractWith(this);
+                CurrentlyInteracting = false;
             }
+        }
+
+        IPureGame PureGame;
+        public override void SetPureGame(IPureGame PureGame)
+        {
+            this.PureGame = PureGame;
         }
     }
 }

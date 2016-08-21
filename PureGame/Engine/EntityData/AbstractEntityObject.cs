@@ -79,10 +79,7 @@ namespace PureGame.Engine.EntityData
             }
         }
 
-        public abstract int Speed
-        {
-            get;
-        }
+        public abstract int GetSpeed();
 
         public string FileName
         {
@@ -112,5 +109,7 @@ namespace PureGame.Engine.EntityData
 
         public abstract void Interact(IEntity interact_entity);
         public abstract void InteractWith(IEntity interact_with);
+
+        public abstract void SetPureGame(IPureGame Game);
     }
 }

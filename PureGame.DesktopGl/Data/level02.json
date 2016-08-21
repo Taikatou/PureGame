@@ -1,0 +1,20 @@
+﻿{
+  "Name": "level",
+  "Metadata": { },
+  "Objects": [
+    {
+      "Type": "MapObject",
+      "Data": {
+        "MapName": "untitled"
+      }
+    },
+    {
+      "Type": "BaseEntityObject",
+      "Data": {
+        "file_name": "CharacterSheet",
+        "position": "1, 2",
+        "Id" :  "test"
+      }
+    }
+  ]
+}

@@ -1,4 +1,6 @@
-﻿namespace PureGame.SmallGame
+﻿using System;
+
+namespace PureGame.SmallGame
 {
     public class BaseGameObject : IGameObject
     {

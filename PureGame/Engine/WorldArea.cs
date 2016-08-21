@@ -59,7 +59,7 @@ namespace PureGame.Engine
             Vector2 new_position = e.Position + MovementPosition;
             if (ValidPosition(new_position))
             {
-                var movement_key = new ExpiringKey<Vector2>(e.Position, e.Speed);
+                var movement_key = new ExpiringKey<Vector2>(e.Position, e.GetSpeed());
                 EntityManager.AddEntityKey(e, movement_key);
                 e.Position = new_position;
             }

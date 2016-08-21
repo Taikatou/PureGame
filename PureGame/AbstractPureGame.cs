@@ -1,6 +1,7 @@
 ﻿using PureGame.Engine;
 using Microsoft.Xna.Framework;
 using System;
+using PureGame.Engine.EntityData;
 
 namespace PureGame
 {

@@ -13,9 +13,10 @@ namespace PureGame.Engine.EntityData
         bool RequestInteraction { get; set; }
         bool RequestMovement { get; set; }
         bool Running { get; set; }
-        int Speed { get; }
+        int GetSpeed();
 
         void Interact(IEntity interact_entity);
         void InteractWith(IEntity baseEntity);
+        void SetPureGame(IPureGame Game);
     }
 }
