@@ -14,8 +14,8 @@ namespace PureGame.Engine.EntityData
         void RequestMovement();
         bool Running { get; set; }
         int GetSpeed();
-
         void Interact(IEntity interact_entity);
         void InteractWith(IEntity baseEntity);
+        void OnInit(GameLevel lvl);
     }
 }
