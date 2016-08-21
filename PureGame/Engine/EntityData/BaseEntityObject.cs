@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.Controllers;
 using System.Diagnostics;
-using System;
 
 namespace PureGame.Engine.EntityData
 {
-    public class BaseEntity : AbstractBaseEntity
+    public class BaseEntityObject : AbstractEntityObject
     {
         private int WalkingSpeed = 500;
         private int RunningSpeed = 250;
@@ -25,7 +24,25 @@ namespace PureGame.Engine.EntityData
             }
         }
 
-        public BaseEntity(Vector2 Position, string Id, string FileName="CharacterSheet", Direction FacingDirection = Direction.Down)
+        public static Direction[] reverse_directions;
+        public static Direction[] ReverseDirections
+        {
+            get
+            {
+                if (reverse_directions == null)
+                {
+                    reverse_directions = new Direction[5];
+                    reverse_directions[(int)Direction.Left] = Direction.Right;
+                    reverse_directions[(int)Direction.Right] = Direction.Left;
+                    reverse_directions[(int)Direction.Up] = Direction.Down;
+                    reverse_directions[(int)Direction.Down] = Direction.Up;
+                    reverse_directions[(int)Direction.None] = Direction.None;
+                }
+                return reverse_directions;
+            }
+        }
+
+        public BaseEntityObject(Vector2 Position, string Id, string FileName="CharacterSheet", Direction FacingDirection = Direction.Down)
         {
             this.Position = Position;
             this.FileName = FileName;
@@ -33,8 +50,13 @@ namespace PureGame.Engine.EntityData
             this.Id = Id;
         }
 
+        public BaseEntityObject()
+        {
+
+        }
+
         //interactions in
-        public void Interact(BaseEntity interact_with)
+        public void Interact(BaseEntityObject interact_with)
         {
             if (!CurrentlyInteracting)
             {
@@ -45,7 +67,7 @@ namespace PureGame.Engine.EntityData
 
         public override void InteractWith(IEntity interact_with)
         {
-            
+            FacingDirection = ReverseDirections[(int)interact_with.FacingDirection];
         }
 
         public override void Interact(IEntity interact_with)
@@ -55,6 +77,11 @@ namespace PureGame.Engine.EntityData
                 Debug.WriteLine(Id + " Interact with " + interact_with.Id);
                 interact_with.InteractWith(this);
             }
+        }
+
+        public override void OnInit()
+        {
+            
         }
     }
 }

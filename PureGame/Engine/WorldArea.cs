@@ -4,41 +4,36 @@ using Microsoft.Xna.Framework.Content;
 using PureGame.Engine.Common;
 using MonoGame.Extended.Maps.Tiled;
 using PureGame.Engine.EntityData;
-using Newtonsoft.Json;
 using System.Diagnostics;
 using PureGame.Engine.Controllers;
+using PureGame.SmallGame;
+using System;
 
 namespace PureGame.Engine
 {
-    public class WorldArea
+    public class WorldArea : GameLevel
     {
         public ContentManager Content;
         public CollisionTiledMap CollisionMap;
-        public WorldEntityManager Data;
-        public string Name;
-        public List<IEntity> Entities => Data.Entities;
-        public MapObject Map;
-        public WorldArea(string world_name, IFileReader reader)
+        public WorldEntityManager EntityManager;
+        public List<IEntity> Entities => EntityManager.Entities;
+        public MapObject Map => Objects.GetObjects<MapObject>()[0];
+        public WorldArea()
         {
-            Name = world_name;
             Content = ContentManagerManager.RequestContentManager();
-            string json_string = reader.ReadAllText(world_name);
-            Map = JsonConvert.DeserializeObject<MapObject>(json_string);
-            Data = new WorldEntityManager();
-            TiledMap map = Map.GetTiledMap(Content);
-            CollisionMap = new CollisionTiledMap(map);
+            EntityManager = new WorldEntityManager();
         }
 
         public void AddEntity(IEntity e)
         {
-            Data.AddEntity(e);
+            EntityManager.AddEntity(e);
         }
 
         public void Update(GameTime time)
         {
-            foreach (var e in Data.Entities)
+            foreach (var e in EntityManager.Entities)
             {
-                if (e.RequestMovement && !Data.EntityCurrentlyMoving(e))
+                if (e.RequestMovement && !EntityManager.EntityCurrentlyMoving(e))
                 {
                     ProccessMovement(e);
                 }
@@ -47,16 +42,16 @@ namespace PureGame.Engine
                     ProccessInteraction(e);
                 }
             }
-            Data.Update(time);
+            EntityManager.Update(time);
         }
 
         public void ProccessInteraction(IEntity e)
         {
             var FacingPosition = DirectionMapper.GetMovementFromDirection(e.FacingDirection);
             Vector2 new_position = e.Position + FacingPosition;
-            if (Data.SpatialHash.ContainsKey(new_position))
+            if (EntityManager.SpatialHash.ContainsKey(new_position))
             {
-                IEntity interact_entity = Data.SpatialHash[new_position];
+                IEntity interact_entity = EntityManager.SpatialHash[new_position];
                 e.Interact(interact_entity);
             }
         }
@@ -68,7 +63,7 @@ namespace PureGame.Engine
             if (ValidPosition(new_position))
             {
                 var movement_key = new ExpiringKey<Vector2>(e.Position, e.Speed);
-                Data.AddEntityKey(e, movement_key);
+                EntityManager.AddEntityKey(e, movement_key);
                 e.Position = new_position;
             }
             e.FacingDirection = e.MovementDirection;
@@ -80,7 +75,7 @@ namespace PureGame.Engine
             bool within_limits = position.X >= 0 && position.Y >= 0 &&
                                  position.X < CollisionMap.TiledMap.Width &&
                                  position.Y < CollisionMap.TiledMap.Height;
-            bool entity_collision = !Data.SpatialHash.ContainsKey(position);
+            bool entity_collision = !EntityManager.SpatialHash.ContainsKey(position);
             bool map_collision = !CollisionMap.CheckCollision(position);
             Debug.WriteLine("Map collision: " + map_collision);
             return within_limits && entity_collision && map_collision;
@@ -89,6 +84,16 @@ namespace PureGame.Engine
         public void UnLoad()
         {
             Content?.Unload();
+        }
+
+        public override void OnInit()
+        {
+            TiledMap map = Map.GetTiledMap(Content);
+            CollisionMap = new CollisionTiledMap(map);
+            foreach(BaseEntityObject e in Objects.GetObjects<BaseEntityObject>())
+            {
+                EntityManager.AddEntity(e);
+            }
         }
     }
 }

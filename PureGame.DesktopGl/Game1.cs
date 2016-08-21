@@ -6,6 +6,7 @@ using PureGame.Client;
 using PureGame.Client.Controllers;
 using PureGame.Engine.Controllers;
 using PureGame.Render.Renderable;
+using PureGame.Universe;
 
 namespace PureGame.DesktopGl
 {
@@ -30,7 +31,7 @@ namespace PureGame.DesktopGl
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             BoxingViewportAdapter viewport_adapter = new BoxingViewportAdapter(Window, GraphicsDevice, Width, Height);
-            var game = new PlainPureGame(Content, new FileReader("Data"), new WorldLoader());
+            var game = new PlainPureGame(Content, new FileReader("Data"), new WorldManager());
             GameClient = new PureGameClient(game);
             var game_renderer = new PlainPureGameRenderer(GameClient, viewport_adapter);
             GameRenderer = new PlainPureGameRendererDebug(game_renderer);

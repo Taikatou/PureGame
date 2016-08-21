@@ -16,7 +16,8 @@ namespace PureGame.Engine
         public static ContentManager RequestContentManager()
         {
             ContentManager base_content = Instance.base_manager;
-            return new ContentManager(base_content.ServiceProvider, base_content.RootDirectory);
+            ContentManager new_manager = new ContentManager(base_content.ServiceProvider, base_content.RootDirectory);
+            return new_manager;
         }
     }
 }

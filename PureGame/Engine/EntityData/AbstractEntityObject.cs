@@ -1,10 +1,10 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.Controllers;
+using PureGame.SmallGame;
 
 namespace PureGame.Engine.EntityData
 {
-    public abstract class AbstractBaseEntity : IEntity
+    public abstract class AbstractEntityObject : BaseGameObject, IEntity
     {
         public string file_name;
         //This is not supposed to be changed directly only through entityManager
@@ -14,7 +14,6 @@ namespace PureGame.Engine.EntityData
         public Direction movement_direction;
         public Direction facing_direction;
         public bool running;
-        public string id;
         public Direction FacingDirection
         {
             get
@@ -25,19 +24,6 @@ namespace PureGame.Engine.EntityData
             set
             {
                 facing_direction = value;
-            }
-        }
-
-        public string Id
-        {
-            get
-            {
-                return id;
-            }
-
-            set
-            {
-                id = value;
             }
         }
 

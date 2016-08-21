@@ -40,8 +40,8 @@
     <Compile Include="Engine\Common\CollisionTiledMap.cs" />
     <Compile Include="Engine\ContentManagerManager.cs" />
     <Compile Include="Engine\DirectionMapper.cs" />
-    <Compile Include="Engine\EntityData\AbstractBaseEntity.cs" />
-    <Compile Include="Engine\EntityData\BaseEntity.cs" />
+    <Compile Include="Engine\EntityData\AbstractEntityObject.cs" />
+    <Compile Include="Engine\EntityData\BaseEntityObject.cs" />
     <Compile Include="Engine\EntityData\WorldEntityManager.cs" />
     <Compile Include="Engine\EntityData\IEntity.cs" />
     <Compile Include="Engine\ExpiringKey.cs" />
@@ -51,8 +51,16 @@
     <Compile Include="IPureGame.cs" />
     <Compile Include="Loader\ContentLoader.cs" />
     <Compile Include="Loader\IWorldLoader.cs" />
+    <Compile Include="Loader\WorldLoader.cs" />
     <Compile Include="PlainPureGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SmallGame\BaseGameObject.cs" />
+    <Compile Include="SmallGame\DataLoader.cs" />
+    <Compile Include="SmallGame\GameLevel.cs" />
+    <Compile Include="SmallGame\GameObjectCollection.cs" />
+    <Compile Include="SmallGame\IdFactory.cs" />
+    <Compile Include="SmallGame\IGameObject.cs" />
+    <Compile Include="SmallGame\Loadable.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

@@ -1,13 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.Controllers;
+using PureGame.SmallGame;
 
 namespace PureGame.Engine.EntityData
 {
-    public interface IEntity
+    public interface IEntity: IGameObject
     {
         Direction FacingDirection { get; set; }
         string FileName { get; set; }
-        string Id { get; set; }
         Direction MovementDirection { get; set; }
         Vector2 Position { get; set; }
         bool RequestInteraction { get; set; }
