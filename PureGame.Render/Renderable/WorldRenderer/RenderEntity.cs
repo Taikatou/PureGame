@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using PureGame.Engine;
 using PureGame.Engine.Controllers;
 using PureGame.Engine.EntityData;
 using PureGame.Render.Animate;
@@ -9,7 +8,7 @@ using PureGame.Render.Common;
 using System;
 using System.Diagnostics;
 
-namespace PureGame.Render.Renderable
+namespace PureGame.Render.Renderable.WorldRenderer
 {
     public class RenderEntity
     {

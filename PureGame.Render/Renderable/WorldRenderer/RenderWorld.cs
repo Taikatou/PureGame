@@ -8,7 +8,7 @@ using PureGame.Engine.Controllers;
 using PureGame.Engine.EntityData;
 using System.Collections.Generic;
 
-namespace PureGame.Render.Renderable
+namespace PureGame.Render.Renderable.WorldRenderer
 {
     public class RenderWorld
     {

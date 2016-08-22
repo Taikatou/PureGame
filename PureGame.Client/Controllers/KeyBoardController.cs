@@ -1,85 +1,46 @@
 ﻿using Microsoft.Xna.Framework;
-using PureGame.Engine.Controllers;
-using PureGame.Engine.EntityData;
+using Microsoft.Xna.Framework.Input;
 using System;
-using System.Diagnostics;
 
 namespace PureGame.Client.Controllers
 {
     public class KeyBoardController : IController
     {
-        public SmartButton [] Buttons;
-        private InputManager input_manager;
-        public const int CachedMovementResetValue = -1;
-        public int CachedMovement = CachedMovementResetValue;
-        public int Timer = 0;
-        public int TimerResetValue = 50;
+        public SmartControl [] buttons;
 
-        public Direction GetMovementDirection()
+        public void Update(GameTime time)
         {
-            // Return cached direction
-            if(CachedMovement != CachedMovementResetValue && Buttons[CachedMovement].Active)
+            KeyboardState state = Keyboard.GetState();
+            foreach (SmartControl b in Buttons)
             {
-                return (Direction)CachedMovement;
+                b.Update(state);
             }
-            else
+        }
+        public IPureGame game;
+
+        public SmartControl[] Buttons
+        {
+            get
             {
-                CachedMovement = CachedMovementResetValue;
+                return buttons;
             }
-            // Else look for another button
-            for(int i = 0; i < (int)Direction.None; i++)
+            set
             {
-                if(Buttons[i].Active)
-                {
-                    CachedMovement = i;
-                    Debug.WriteLine(i);
-                    return (Direction)i;
-                }
+                buttons = value;
             }
-            // Else return false
-            return Direction.None;
         }
 
-        public void Update(IEntity entity, GameTime time)
-        {
-            input_manager.Update(time);
-            if(Buttons[(int)Controls.A].NewActive)
-            {
-                entity.RequestInteraction();
-            }
-            Direction CachedMoveDiection = GetMovementDirection();
-            if(CachedMoveDiection != Direction.None)
-            {
-                bool entity_moving = game.World.EntityManager.EntityCurrentlyMoving(entity);
-                if (!entity_moving && entity.FacingDirection != CachedMoveDiection)
-                {
-                    entity.FacingDirection = CachedMoveDiection;
-                    Timer = TimerResetValue;
-                }
-                else if (Timer <= 0)
-                {
-                    entity.MovementDirection = CachedMoveDiection;
-                    // this order is important move then request movement
-                    entity.RequestMovement();
-                }
-                else
-                {
-                    Timer -= time.ElapsedGameTime.Milliseconds;
-                }
-            }
-            entity.Running = Buttons[(int)Controls.B].NewActive;
-        }
-        IPureGame game;
         public KeyBoardController(IPureGame game)
         {
             this.game = game;
-            input_manager = new InputManager(this);
             var ControlsCount = Enum.GetNames(typeof(Controls)).Length;
-            Buttons = new SmartButton[ControlsCount];
-            for(var i = 0; i < Buttons.Length; i++)
-            {
-                Buttons[i] = new SmartButton();
-            }
+            Buttons = new SmartControl[ControlsCount];
+            Buttons[(int)Controls.Left] = new SmartControl(Keys.Left);
+            Buttons[(int)Controls.Up] = new SmartControl(Keys.Up);
+            Buttons[(int)Controls.Down] = new SmartControl(Keys.Down);
+            Buttons[(int)Controls.Right] = new SmartControl(Keys.Right);
+            Buttons[(int)Controls.A] = new SmartControl(Keys.A);
+            Buttons[(int)Controls.B] = new SmartControl(Keys.B);
         }
     }
 }

@@ -2,15 +2,18 @@
 using PureGame.Engine;
 using PureGame.Client.Controllers;
 using PureGame.Engine.EntityData;
+using PureGame.Client.FocusLayers;
+using System.Collections.Generic;
 
 namespace PureGame.Client
 {
     public class PureGameClient : IPureGame
     {
         public BaseEntityObject Player;
-        private IController controller;
+        private KeyBoardController controller;
         private IPureGame parent;
         private IPureGame game;
+        public Stack<ILayer> Layers;
 
         public WorldArea World
         {
@@ -39,8 +42,9 @@ namespace PureGame.Client
 
         public void Update(GameTime time)
         {
-            controller?.Update(Player, time);
-            game.Update(time);
+            controller.Update(time);
+            Layers.Peek().UpdateController(controller, time);
+            Layers.Peek().UpdateData(time);
         }
 
         public PureGameClient(IPureGame game, BaseEntityObject p, IController c)
@@ -48,7 +52,9 @@ namespace PureGame.Client
             this.game = game;
             game.Parent = this;
             Player = p;
-            controller = c;
+            controller = (KeyBoardController)c;
+            Layers = new Stack<ILayer>();
+            Layers.Push(new PureGameLayer(p, game));
         }
 
         public void LoadWorld(string world_name)

@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
+using PureGame.Client;
 using PureGame.Engine.EntityData;
+using PureGame.Render.Renderable.WorldRenderer;
 
 namespace PureGame.Render.Renderable
 {
@@ -10,8 +12,7 @@ namespace PureGame.Render.Renderable
     {
         private RenderWorld render_world;
         public Camera2D Camera;
-
-        public PlainPureGameRenderer(IPureGame game, ViewportAdapter viewport_adapter)
+        public PlainPureGameRenderer(PureGameClient game, ViewportAdapter viewport_adapter)
         {
             this.game = game;
             game.Parent = this;

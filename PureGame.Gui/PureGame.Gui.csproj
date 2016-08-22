@@ -35,6 +35,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\PureGame.Client\PureGame.Client.csproj">
+      <Project>{623d62ec-6e1c-4617-914c-b9f44eccf310}</Project>
+      <Name>PureGame.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PureGame.Render\PureGame.Render.csproj">
       <Project>{495bf5a7-dea5-4b30-9b9b-4bb358cc60e3}</Project>
       <Name>PureGame.Render</Name>

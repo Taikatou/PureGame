@@ -35,6 +35,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\PureGame.Client\PureGame.Client.csproj">
+      <Project>{623d62ec-6e1c-4617-914c-b9f44eccf310}</Project>
+      <Name>PureGame.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PureGame\PureGame.csproj">
       <Project>{483d0287-2401-4822-893b-eba1b792e055}</Project>
       <Name>PureGame</Name>
@@ -49,8 +53,8 @@
     <Compile Include="Renderable\IPureGameRenderer.cs" />
     <Compile Include="Renderable\PlainPureGameRenderer.cs" />
     <Compile Include="Renderable\PlainPureGameRendererDebug.cs" />
-    <Compile Include="Renderable\RenderEntity.cs" />
-    <Compile Include="Renderable\RenderWorld.cs" />
+    <Compile Include="Renderable\WorldRenderer\RenderEntity.cs" />
+    <Compile Include="Renderable\WorldRenderer\RenderWorld.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
