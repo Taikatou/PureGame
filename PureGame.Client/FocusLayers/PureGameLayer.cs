@@ -12,10 +12,10 @@ namespace PureGame.Client.FocusLayers
         public int CachedMovement = CachedMovementResetValue;
         public int Timer = 0;
         public int TimerResetValue = 50;
-        private IEntity entity;
-        private IPureGame PureGame;
+        private EntityObject entity;
+        private PureGame PureGame;
 
-        public PureGameLayer(IEntity entity, IPureGame PureGame)
+        public PureGameLayer(EntityObject entity, PureGame PureGame)
         {
             this.PureGame = PureGame;
             this.entity = entity;
@@ -39,7 +39,6 @@ namespace PureGame.Client.FocusLayers
                 else if (Timer <= 0)
                 {
                     entity.MovementDirection = CachedMoveDiection;
-                    // this order is important move then request movement
                     entity.RequestMovement();
                 }
                 else

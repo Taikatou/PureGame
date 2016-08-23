@@ -8,38 +8,33 @@ using PureGame.Render.Renderable.WorldRenderer;
 
 namespace PureGame.Render.Renderable
 {
-    public class PlainPureGameRenderer : AbstractPureGameRenderer
+    public class PlainPureGameRenderer
     {
         private RenderWorld render_world;
         public Camera2D Camera;
-        public PlainPureGameRenderer(PureGameClient game, ViewportAdapter viewport_adapter)
+        public PureGameClient GameClient;
+        public PlainPureGameRenderer(PureGameClient GameClient, ViewportAdapter viewport_adapter)
         {
-            this.game = game;
-            game.Parent = this;
+            this.GameClient = GameClient;
             Camera = new Camera2D(viewport_adapter);
             Camera.Zoom = 0.25f;
+            render_world = new RenderWorld(GameClient.PureGame.World);
         }
 
-        public override void Draw(SpriteBatch sprite_batch)
+        public void Draw(SpriteBatch sprite_batch)
         {
             render_world.Draw(sprite_batch, Camera);
         }
 
-        public override void Update(GameTime time)
+        public void Update(GameTime time)
         {
-            Game.Update(time);
+            GameClient.Update(time);
             render_world.Update(time);
         }
 
-        public override void ChangeFocus(IEntity e)
+        public void ChangeFocus(EntityObject e)
         {
             RenderWorld.FocusEntity = e;
-        }
-
-        public override void OnWorldChange()
-        {
-            render_world?.UnLoad();
-            render_world = new RenderWorld(game.World);
         }
     }
 }
