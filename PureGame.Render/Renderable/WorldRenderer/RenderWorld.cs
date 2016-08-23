@@ -19,7 +19,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         public Vector2 TileSize;
         public Vector2 Offset => TileSize / 2;
 
-        public static IEntity FocusEntity { get; internal set; }
+        public static EntityObject FocusEntity { get; internal set; }
 
         public RenderWorld(WorldArea World)
         {
@@ -53,7 +53,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
             }
         }
 
-        public RenderEntity GetRenderEntity(IEntity e)
+        public RenderEntity GetRenderEntity(EntityObject e)
         {
             if (!entity_sprites.ContainsKey(e.Id))
             {
@@ -62,7 +62,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
             return entity_sprites[e.Id];
         }
 
-        public Point GetEntityScreenPosition(IEntity entity)
+        public Point GetEntityScreenPosition(EntityObject entity)
         {
             Vector2 position = entity.Position;
             var WorldData = World.EntityManager;

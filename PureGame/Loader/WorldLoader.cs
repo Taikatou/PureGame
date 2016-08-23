@@ -4,13 +4,13 @@ using PureGame.SmallGame;
 
 namespace PureGame.Loader
 {
-    public class WorldLoader : IWorldLoader
+    public class WorldLoader
     {
         private DataLoader DataLoader;
         public WorldLoader()
         {
             DataLoader = new DataLoader();
-            DataLoader.RegisterParser(StandardGameObjectParser.For<BaseEntityObject>(),
+            DataLoader.RegisterParser(StandardGameObjectParser.For<EntityObject>(),
                                       StandardGameObjectParser.For<MapObject>());
         }
         public WorldArea Load(string world_name, IFileReader file_reader)

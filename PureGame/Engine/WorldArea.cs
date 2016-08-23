@@ -7,16 +7,17 @@ using PureGame.Engine.EntityData;
 using System.Diagnostics;
 using PureGame.Engine.Controllers;
 using PureGame.SmallGame;
+using PureGame.MessageBus;
 using System;
 
 namespace PureGame.Engine
 {
-    public class WorldArea : GameLevel
+    public class WorldArea : GameLevel, ISubscriber
     {
         public ContentManager Content;
         public CollisionTiledMap CollisionMap;
         public WorldEntityManager EntityManager;
-        public List<IEntity> Entities => EntityManager.Entities;
+        public List<EntityObject> Entities => EntityManager.Entities;
         public MapObject Map => Objects.GetObjects<MapObject>()[0];
         public WorldArea()
         {
@@ -29,7 +30,7 @@ namespace PureGame.Engine
             EntityManager.Update(time);
         }
 
-        public void ProccessInteraction(IEntity e)
+        public void ProccessInteraction(EntityObject e)
         {
             if (!EntityManager.EntityCurrentlyMoving(e))
             {
@@ -37,13 +38,13 @@ namespace PureGame.Engine
                 Vector2 new_position = e.Position + FacingPosition;
                 if (EntityManager.SpatialHash.ContainsKey(new_position))
                 {
-                    IEntity interact_entity = EntityManager.SpatialHash[new_position];
+                    EntityObject interact_entity = EntityManager.SpatialHash[new_position];
                     e.Interact(interact_entity);
                 }
             }
         }
 
-        public void ProccessMovement(IEntity e)
+        public void ProccessMovement(EntityObject e)
         {
             if (!EntityManager.EntityCurrentlyMoving(e))
             {
@@ -60,10 +61,10 @@ namespace PureGame.Engine
             }
         }
 
-        public void AddEntity(BaseEntityObject e)
+        public void AddEntity(EntityObject e)
         {
             EntityManager.AddEntity(e);
-            e.OnInit(this);
+            e.SubscriptionName = Name;
         }
 
         private bool ValidPosition(Vector2 position)
@@ -84,12 +85,27 @@ namespace PureGame.Engine
 
         public override void OnInit()
         {
+            MessageManager.Instance.Subscribe(Name, this);
             TiledMap map = Map.GetTiledMap(Content);
             CollisionMap = new CollisionTiledMap(map);
-            foreach(BaseEntityObject e in Objects.GetObjects<BaseEntityObject>())
+            foreach(EntityObject e in Objects.GetObjects<EntityObject>())
             {
-                EntityManager.AddEntity(e);
-                e.OnInit(this);
+                AddEntity(e);
+            }
+        }
+
+        public void RecieveMessage(Message m)
+        {
+            EntityObject.MessageCode code = (EntityObject.MessageCode)m.Code;
+            switch (code)
+            {
+                case EntityObject.MessageCode.RequestInteraction:
+                    ProccessInteraction(EntityManager.IdHash[m.Value]);
+                    break;
+
+                case EntityObject.MessageCode.RequestMovement:
+                    ProccessMovement(EntityManager.IdHash[m.Value]);
+                    break;
             }
         }
     }

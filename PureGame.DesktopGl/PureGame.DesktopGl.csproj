@@ -95,10 +95,6 @@
       <Project>{495bf5a7-dea5-4b30-9b9b-4bb358cc60e3}</Project>
       <Name>PureGame.Render</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PureGame.Universe\PureGame.Universe.csproj">
-      <Project>{225696aa-c7ec-4256-a0d3-83eb2b3d9336}</Project>
-      <Name>PureGame.Universe</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PureGame\PureGame.csproj">
       <Project>{483d0287-2401-4822-893b-eba1b792e055}</Project>
       <Name>PureGame</Name>

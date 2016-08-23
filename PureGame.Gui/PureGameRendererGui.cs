@@ -5,27 +5,25 @@ using PureGame.Render.Renderable;
 
 namespace PureGame.Gui
 {
-    public class PureGameRendererGui : AbstractPureGameRenderer
+    public class PureGameRendererGui
     {
-        public IPureGameRenderer GameRenderer;
-        public PureGameRendererGui(IPureGameRenderer game)
+        public PlainPureGameRenderer GameRenderer;
+        public PureGameRendererGui(PlainPureGameRenderer GameRenderer)
         {
-            this.game = game;
-            game.Parent = this;
-            GameRenderer = game;
+            this.GameRenderer = GameRenderer;
         }
 
-        public override void Update(GameTime timer)
+        public void Update(GameTime timer)
         {
             GameRenderer.Update(timer);
         }
 
-        public override void ChangeFocus(IEntity e)
+        public void ChangeFocus(EntityObject e)
         {
             GameRenderer.ChangeFocus(e);
         }
 
-        public override void Draw(SpriteBatch sprite_batch)
+        public void Draw(SpriteBatch sprite_batch)
         {
             GameRenderer.Draw(sprite_batch);
         }

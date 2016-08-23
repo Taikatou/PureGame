@@ -9,10 +9,10 @@
       }
     },
     {
-      "Type": "BaseEntityObject",
+      "Type": "EntityObject",
       "Data": {
-        "file_name": "CharacterSheet",
-        "position": "1, 2",
+        "FileName": "CharacterSheet",
+        "Position": "1, 2",
         "Id" :  "test"
       }
     }

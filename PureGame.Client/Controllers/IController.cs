@@ -2,7 +2,7 @@
 
 namespace PureGame.Client.Controllers
 {
-    enum Controls { Left, Right, Up, Down, A, B}
+    enum Controls { Left, Right, Up, Down, A, B }
     public interface IController
     {
         void Update(GameTime time);

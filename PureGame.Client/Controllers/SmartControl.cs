@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework.Input;
-
-namespace PureGame.Client.Controllers
+﻿namespace PureGame.Client.Controllers
 {
     public abstract class SmartControl
     {
