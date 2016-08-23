@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PureGame.MessageBus
 {
@@ -6,6 +7,7 @@ namespace PureGame.MessageBus
     {
         private List<ISubscriber> Subscribers;
         public string Name;
+        public int Count => Subscribers.Count;
 
         public Subscription(string Name)
         {
@@ -24,6 +26,11 @@ namespace PureGame.MessageBus
             {
                 s.RecieveMessage(m);
             }
+        }
+
+        internal void UnSubscribe(ISubscriber subscriber)
+        {
+            Subscribers.Remove(subscriber);
         }
     }
 }

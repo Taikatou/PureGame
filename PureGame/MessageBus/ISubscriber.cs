@@ -1,6 +1,8 @@
-﻿namespace PureGame.MessageBus
+﻿using System;
+
+namespace PureGame.MessageBus
 {
-    public interface ISubscriber
+    public interface ISubscriber : IDisposable
     {
         void RecieveMessage(Message m);
     }

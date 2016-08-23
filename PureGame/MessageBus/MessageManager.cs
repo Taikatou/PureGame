@@ -42,5 +42,15 @@ namespace PureGame.MessageBus
         {
             GetSubscription(SubscriptionName).Subscribe(subscriber);
         }
+
+        public void UnSubscribe(string SubscriptionName, ISubscriber subscriber)
+        {
+            Subscription Sub = GetSubscription(SubscriptionName);
+            Sub.UnSubscribe(subscriber);
+            if(Sub.Count == 0)
+            {
+                Subscriptions.Remove(SubscriptionName);
+            }
+        }
     }
 }

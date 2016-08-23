@@ -8,7 +8,6 @@ using System.Diagnostics;
 using PureGame.Engine.Controllers;
 using PureGame.SmallGame;
 using PureGame.MessageBus;
-using System;
 
 namespace PureGame.Engine
 {
@@ -107,6 +106,11 @@ namespace PureGame.Engine
                     ProccessMovement(EntityManager.IdHash[m.Value]);
                     break;
             }
+        }
+
+        public void Dispose()
+        {
+            MessageManager.Instance.UnSubscribe(Name, this);
         }
     }
 }

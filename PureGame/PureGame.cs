@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using PureGame.Engine;
 using PureGame.Loader;
-using System.Diagnostics;
 
 namespace PureGame
 {
@@ -18,6 +17,7 @@ namespace PureGame
 
         public void LoadWorld(string world_name)
         {
+            World?.Dispose();
             World = WorldManager.Instance.Load(world_name, file_reader);
         }
 
