@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.Maps.Tiled;
+using MonoGame.Extended.ViewportAdapters;
 using PureGame.Engine;
 using PureGame.Engine.Controllers;
 using PureGame.Engine.EntityData;
@@ -10,7 +11,7 @@ using System.Collections.Generic;
 
 namespace PureGame.Render.Renderable.WorldRenderer
 {
-    public class RenderWorld
+    public class RenderWorld : IRenderable
     {
         public WorldArea World;
         private Dictionary<string, RenderEntity> entity_sprites;
@@ -18,23 +19,25 @@ namespace PureGame.Render.Renderable.WorldRenderer
         private TiledMap Map;
         public Vector2 TileSize;
         public Vector2 Offset => TileSize / 2;
-
-        public static EntityObject FocusEntity { get; internal set; }
-
-        public RenderWorld(WorldArea World)
+        public EntityObject FocusEntity;
+        private Camera2D Camera;
+        public RenderWorld(WorldArea World, ViewportAdapter ViewPort, EntityObject FocusEntity)
         {
+            this.FocusEntity = FocusEntity;
             this.World = World;
+            Camera = new Camera2D(ViewPort);
+            Camera.Zoom = 0.25f;
             Content = ContentManagerManager.RequestContentManager();
             Map = World.Map.GetTiledMap(Content);
             TileSize = new Vector2(Map.TileWidth, Map.TileHeight);
             entity_sprites = new Dictionary<string, RenderEntity>();
         }
 
-        public void Draw(SpriteBatch sprite_batch, Camera2D camera)
+        public void Draw(SpriteBatch sprite_batch)
         {
             Point focus = GetEntityScreenPosition(FocusEntity);
-            camera.LookAt(focus.ToVector2() + Offset);
-            sprite_batch.Begin(transformMatrix: camera.GetViewMatrix());
+            Camera.LookAt(focus.ToVector2() + Offset);
+            sprite_batch.Begin(transformMatrix: Camera.GetViewMatrix());
             sprite_batch.Draw(Map);
             foreach (var e in World.Entities)
             {

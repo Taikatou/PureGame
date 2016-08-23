@@ -1,40 +1,60 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
 using PureGame.Client;
 using PureGame.Engine.EntityData;
+using PureGame.MessageBus;
 using PureGame.Render.Renderable.WorldRenderer;
+using PureGame.Render.Renderable.RenderLayers;
+using PureGame.Client.FocusLayers;
 
 namespace PureGame.Render.Renderable
 {
-    public class PlainPureGameRenderer
+    public class PlainPureGameRenderer : ISubscriber
     {
-        private RenderWorld render_world;
-        public Camera2D Camera;
+        public ViewportAdapter ViewPort;
         public PureGameClient GameClient;
-        public PlainPureGameRenderer(PureGameClient GameClient, ViewportAdapter viewport_adapter)
+        public RenderLayer Render;
+        public EntityObject FocusEntity;
+        public PlainPureGameRenderer(PureGameClient GameClient, ViewportAdapter ViewPort, EntityObject FocusEntity)
         {
             this.GameClient = GameClient;
-            Camera = new Camera2D(viewport_adapter);
-            Camera.Zoom = 0.25f;
-            render_world = new RenderWorld(GameClient.PureGame.World);
+            this.ViewPort = ViewPort;
+            this.FocusEntity = FocusEntity;
+            MessageManager.Instance.Subscribe(GameClient.PureGame.Subscription, this);
         }
 
         public void Draw(SpriteBatch sprite_batch)
         {
-            render_world.Draw(sprite_batch, Camera);
+            Render.Draw(sprite_batch);
         }
 
         public void Update(GameTime time)
         {
             GameClient.Update(time);
-            render_world.Update(time);
+            Render.Update(time);
         }
 
-        public void ChangeFocus(EntityObject e)
+        public void RecieveMessage(Message m)
         {
-            RenderWorld.FocusEntity = e;
+            PureGame.MessageCode code = (PureGame.MessageCode)m.Code;
+            switch (code)
+            {
+                case PureGame.MessageCode.LayerChanged:
+                    break;
+                case PureGame.MessageCode.WorldChanged:
+                    ILayer layer = GameClient.Layers.Peek();
+                    Render = new RenderLayer(layer, ViewPort, FocusEntity);
+                    break;
+            }
+        }
+
+        public void Dispose()
+        {
+            //throw new NotImplementedException();
+            MessageManager.Instance.UnSubscribe(GameClient.PureGame.Subscription, this);
         }
     }
 }

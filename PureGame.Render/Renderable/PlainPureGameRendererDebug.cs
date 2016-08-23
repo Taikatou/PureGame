@@ -38,7 +38,7 @@ namespace PureGame.Render.Renderable
 
         public void ChangeFocus(EntityObject e)
         {
-            GameRenderer.ChangeFocus(e);
+            GameRenderer.FocusEntity = e;
         }
     }
 }

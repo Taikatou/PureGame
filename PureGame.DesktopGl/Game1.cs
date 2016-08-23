@@ -32,13 +32,14 @@ namespace PureGame.DesktopGl
             spriteBatch = new SpriteBatch(GraphicsDevice);
             BoxingViewportAdapter viewport_adapter = new BoxingViewportAdapter(Window, GraphicsDevice, Width, Height);
             var game = new PureGame(Content, new FileReader("Data"));
-            game.LoadWorld("level01.json");
             EntityObject Player = new EntityObject(new Vector2(4, 4), "Test", "CharacterSheet", Direction.Down);
-            game.World.AddEntity(Player);
             GameClient = new PureGameClient(game, Player, new KeyBoardController());
-            var game_renderer = new PlainPureGameRenderer(GameClient, viewport_adapter);
+            var game_renderer = new PlainPureGameRenderer(GameClient, viewport_adapter, Player);
             GameRenderer = new PlainPureGameRendererDebug(game_renderer);
             GameRenderer.ChangeFocus(Player);
+
+            game.LoadWorld("level01.json");
+            game.World.AddEntity(Player);
         }
 
         protected override void UnloadContent()

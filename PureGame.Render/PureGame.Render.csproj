@@ -49,8 +49,10 @@
     <Compile Include="Animate\AnimationFrame.cs" />
     <Compile Include="Common\Loader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderable\IRenderable.cs" />
     <Compile Include="Renderable\PlainPureGameRenderer.cs" />
     <Compile Include="Renderable\PlainPureGameRendererDebug.cs" />
+    <Compile Include="Renderable\RenderLayers\RenderLayer.cs" />
     <Compile Include="Renderable\WorldRenderer\RenderEntity.cs" />
     <Compile Include="Renderable\WorldRenderer\RenderWorld.cs" />
   </ItemGroup>

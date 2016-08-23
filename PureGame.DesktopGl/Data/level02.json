@@ -5,15 +5,7 @@
     {
       "Type": "MapObject",
       "Data": {
-        "MapName": "untitled"
-      }
-    },
-    {
-      "Type": "EntityObject",
-      "Data": {
-        "FileName": "CharacterSheet",
-        "Position": "1, 2",
-        "Id" :  "test"
+        "MapName": "level01"
       }
     }
   ]

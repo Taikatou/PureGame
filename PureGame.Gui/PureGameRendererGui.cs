@@ -7,8 +7,8 @@ namespace PureGame.Gui
 {
     public class PureGameRendererGui
     {
-        public PlainPureGameRenderer GameRenderer;
-        public PureGameRendererGui(PlainPureGameRenderer GameRenderer)
+        public PlainPureGameRendererDebug GameRenderer;
+        public PureGameRendererGui(PlainPureGameRendererDebug GameRenderer)
         {
             this.GameRenderer = GameRenderer;
         }

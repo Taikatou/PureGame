@@ -13,7 +13,7 @@ namespace PureGame.Client.FocusLayers
         public int Timer = 0;
         public int TimerResetValue = 50;
         private EntityObject entity;
-        private PureGame PureGame;
+        public PureGame PureGame;
 
         public PureGameLayer(EntityObject entity, PureGame PureGame)
         {
