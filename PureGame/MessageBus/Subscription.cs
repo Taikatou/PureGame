@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace PureGame.MessageBus
 {
     public class Subscription
     {
-        private List<ISubscriber> Subscribers;
+        private readonly List<ISubscriber> _subscribers;
         public string Name;
-        public int Count => Subscribers.Count;
+        public int Count => _subscribers.Count;
 
-        public Subscription(string Name)
+        public Subscription(string name)
         {
-            this.Name = Name;
-            Subscribers = new List<ISubscriber>();
+            Name = name;
+            _subscribers = new List<ISubscriber>();
         }
 
         public void Subscribe(ISubscriber s)
         {
-            Subscribers.Add(s);
+            _subscribers.Add(s);
         }
 
         public void SendMessage(Message m)
         {
-            foreach(ISubscriber s in Subscribers)
+            foreach(ISubscriber s in _subscribers)
             {
                 s.RecieveMessage(m);
             }
@@ -30,7 +29,7 @@ namespace PureGame.MessageBus
 
         internal void UnSubscribe(ISubscriber subscriber)
         {
-            Subscribers.Remove(subscriber);
+            _subscribers.Remove(subscriber);
         }
     }
 }

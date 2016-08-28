@@ -7,86 +7,117 @@ using MonoGame.Extended.ViewportAdapters;
 using PureGame.Engine;
 using PureGame.Engine.Controllers;
 using PureGame.Engine.EntityData;
+using PureGame.MessageBus;
 using System.Collections.Generic;
 
 namespace PureGame.Render.Renderable.WorldRenderer
 {
-    public class RenderWorld : IRenderable
+    public class RenderWorld : IRenderable, ISubscriber
     {
         public WorldArea World;
-        private Dictionary<string, RenderEntity> entity_sprites;
-        private ContentManager Content;
-        private TiledMap Map;
+        private readonly Dictionary<string, RenderEntity> _entitySprites;
+        private readonly ContentManager _content;
+        private readonly TiledMap _map;
         public Vector2 TileSize;
         public Vector2 Offset => TileSize / 2;
         public EntityObject FocusEntity;
-        private Camera2D Camera;
-        public RenderWorld(WorldArea World, ViewportAdapter ViewPort, EntityObject FocusEntity)
+        private readonly Camera2D _camera;
+        private List<RenderEntity> _toDraw;
+        public RenderWorld(WorldArea world, ViewportAdapter viewPort, EntityObject focusEntity)
         {
-            this.FocusEntity = FocusEntity;
-            this.World = World;
-            Camera = new Camera2D(ViewPort);
-            Camera.Zoom = 0.25f;
-            Content = ContentManagerManager.RequestContentManager();
-            Map = World.Map.GetTiledMap(Content);
-            TileSize = new Vector2(Map.TileWidth, Map.TileHeight);
-            entity_sprites = new Dictionary<string, RenderEntity>();
+            FocusEntity = focusEntity;
+            World = world;
+            _camera = new Camera2D(viewPort) {Zoom = 0.25f};
+            _content = ContentManagerManager.RequestContentManager();
+            _map = world.Map.Map;
+            TileSize = new Vector2(_map.TileWidth, _map.TileHeight);
+            _entitySprites = new Dictionary<string, RenderEntity>();
+            MessageManager.Instance.Subscribe(world.SubscriptionOut, this);
+            RefreshToDraw();
         }
 
-        public void Draw(SpriteBatch sprite_batch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             Point focus = GetEntityScreenPosition(FocusEntity);
-            Camera.LookAt(focus.ToVector2() + Offset);
-            sprite_batch.Begin(transformMatrix: Camera.GetViewMatrix());
-            sprite_batch.Draw(Map);
-            foreach (var e in World.Entities)
+            _camera.LookAt(focus.ToVector2() + Offset);
+            spriteBatch.Begin(transformMatrix: _camera.GetViewMatrix());
+            spriteBatch.Draw(_map);
+            foreach(RenderEntity r in _toDraw)
             {
-                RenderEntity r = GetRenderEntity(e);
-                r.Draw(sprite_batch);
+                r.Draw(spriteBatch);
             }
-            sprite_batch.End();
+            spriteBatch.End();
         }
 
         public void Update(GameTime time)
         {
-            foreach (var e in World.Entities)
+            foreach (RenderEntity r in _toDraw)
             {
-                RenderEntity r = GetRenderEntity(e);
                 r.Update(time);
             }
         }
 
         public RenderEntity GetRenderEntity(EntityObject e)
         {
-            if (!entity_sprites.ContainsKey(e.Id))
+            if (!_entitySprites.ContainsKey(e.Id))
             {
-                entity_sprites[e.Id] = new RenderEntity(e, this, Content);
+                _entitySprites[e.Id] = new RenderEntity(e, this, _content);
             }
-            return entity_sprites[e.Id];
+            return _entitySprites[e.Id];
         }
 
         public Point GetEntityScreenPosition(EntityObject entity)
         {
             Vector2 position = entity.Position;
-            var WorldData = World.EntityManager;
-            if (WorldData.EntityCurrentlyMoving(entity))
+            var worldData = World.EntityManager;
+            if (worldData.EntityCurrentlyMoving(entity))
             {
-                float progress = WorldData.EntityToKey[entity].Progress;
-                var FacingPosition = DirectionMapper.GetMovementFromDirection(entity.FacingDirection);
-                position -= (FacingPosition * progress);
+                float progress = worldData.EntityToKey[entity].Progress;
+                var facingPosition = DirectionMapper.GetMovementFromDirection(entity.FacingDirection);
+                position -= (facingPosition * progress);
             }
             return GetScreenPosition(position);
         }
 
         public void UnLoad()
         {
-            Content.Unload();
+            _content.Unload();
+            Dispose();
         }
 
         public Point GetScreenPosition(Vector2 pos)
         {
             Vector2 position = pos * TileSize;
             return position.ToPoint();
+        }
+
+        public void RefreshToDraw()
+        {
+            _toDraw = new List<RenderEntity>();
+            foreach(EntityObject e in World.EntityManager.Entities)
+            {
+                RenderEntity r = GetRenderEntity(e);
+                if(_camera.Contains(r.Rect) != ContainmentType.Disjoint)
+                {
+                    _toDraw.Add(r);
+                }
+            }
+        }
+
+        public void RecieveMessage(Message m)
+        {
+            WorldArea.MessageCode code = (WorldArea.MessageCode)m.Code;
+            switch (code)
+            {
+                case WorldArea.MessageCode.Refresh:
+                    RefreshToDraw();
+                    break;
+            }
+        }
+
+        public void Dispose()
+        {
+            MessageManager.Instance.UnSubscribe(World.Name, this);
         }
     }
 }

@@ -9,21 +9,21 @@ namespace PureGame.Render.Renderable.RenderLayers
 {
     public class RenderLayer : IRenderable
     {
-        IRenderable Render;
-        public RenderLayer(ILayer layer, ViewportAdapter ViewPort, EntityObject Focus)
+        private readonly IRenderable _render;
+        public RenderLayer(ILayer layer, ViewportAdapter viewPort, EntityObject focus)
         {
             PureGameLayer pg = (PureGameLayer)layer;
-            Render = new RenderWorld(pg.PureGame.World, ViewPort, Focus);
+            _render = new RenderWorld(pg.PureGame.WorldManager.CurrentWorld, viewPort, focus);
         }
 
         public void Update(GameTime time)
         {
-            Render.Update(time);
+            _render.Update(time);
         }
 
-        public void Draw(SpriteBatch sprite_batch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            Render.Draw(sprite_batch);
+            _render.Draw(spriteBatch);
         }
     }
 }

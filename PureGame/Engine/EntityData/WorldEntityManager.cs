@@ -16,17 +16,17 @@ namespace PureGame.Engine.EntityData
 
         public WorldEntityManager()
         {
+            IdHash = new Dictionary<string, EntityObject>();
             Entities = new List<EntityObject>();
             ExpiringTiles = new List<ExpiringKey<Vector2>>();
             EntityToKey = new Dictionary<EntityObject, ExpiringKey<Vector2>>();
             KeyToEntity = new Dictionary<ExpiringKey<Vector2>, EntityObject>();
-            IdHash = new Dictionary<string, EntityObject>();
             SpatialHash = new Dictionary<Vector2, EntityObject>();
         }
 
         public void AddEntity(EntityObject e)
         {
-            if (ContainsEntity(e))
+            if (!ContainsEntity(e))
             {
                 Entities.Add(e);
                 SpatialHash[e.Position] = e;
@@ -58,16 +58,16 @@ namespace PureGame.Engine.EntityData
         {
             Vector2 position = ExpiringTiles[i].Key;
             Debug.WriteLine("Remove tile : " + position);
-            var EntitiyObject = KeyToEntity[ExpiringTiles[i]];
+            var Entitiy = KeyToEntity[ExpiringTiles[i]];
             SpatialHash.Remove(position);
-            EntityToKey.Remove(EntitiyObject);
+            EntityToKey.Remove(Entitiy);
             KeyToEntity.Remove(ExpiringTiles[i]);
             ExpiringTiles.RemoveAt(i);
         }
 
         public bool ContainsEntity(EntityObject e)
         {
-            bool contains = !(SpatialHash.ContainsKey(e.Position) || IdHash.ContainsKey(e.Id));
+            bool contains = (SpatialHash.ContainsKey(e.Position) || IdHash.ContainsKey(e.Id));
             return contains;
         }
 

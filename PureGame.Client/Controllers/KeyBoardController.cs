@@ -6,35 +6,29 @@ namespace PureGame.Client.Controllers
 {
     public class KeyBoardController : IController
     {
-        public SmartKey [] buttons;
+        private readonly SmartKey[] _buttons;
 
         public void Update(GameTime time)
         {
             KeyboardState state = Keyboard.GetState();
-            foreach (SmartKey b in buttons)
+            foreach (SmartKey button in _buttons)
             {
-                b.Update(state);
+                button.Update(state);
             }
         }
 
-        public SmartControl[] Buttons
-        {
-            get
-            {
-                return buttons;
-            }
-        }
+        public SmartControl[] Buttons => _buttons;
 
         public KeyBoardController()
         {
-            var ControlsCount = Enum.GetNames(typeof(Controls)).Length;
-            buttons = new SmartKey[ControlsCount];
-            buttons[(int)Controls.Left] = new SmartKey(Keys.Left);
-            buttons[(int)Controls.Up] = new SmartKey(Keys.Up);
-            buttons[(int)Controls.Down] = new SmartKey(Keys.Down);
-            buttons[(int)Controls.Right] = new SmartKey(Keys.Right);
-            buttons[(int)Controls.A] = new SmartKey(Keys.A);
-            buttons[(int)Controls.B] = new SmartKey(Keys.B);
+            var controlsCount = Enum.GetNames(typeof(Controls)).Length;
+            _buttons = new SmartKey[controlsCount];
+            _buttons[(int)Controls.Left] = new SmartKey(Keys.Left);
+            _buttons[(int)Controls.Up] = new SmartKey(Keys.Up);
+            _buttons[(int)Controls.Down] = new SmartKey(Keys.Down);
+            _buttons[(int)Controls.Right] = new SmartKey(Keys.Right);
+            _buttons[(int)Controls.A] = new SmartKey(Keys.A);
+            _buttons[(int)Controls.B] = new SmartKey(Keys.B);
         }
     }
 }

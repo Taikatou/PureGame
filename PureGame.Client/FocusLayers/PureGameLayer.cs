@@ -2,7 +2,6 @@
 using PureGame.Client.Controllers;
 using PureGame.Engine.Controllers;
 using PureGame.Engine.EntityData;
-using System.Diagnostics;
 
 namespace PureGame.Client.FocusLayers
 {
@@ -10,43 +9,44 @@ namespace PureGame.Client.FocusLayers
     {
         public const int CachedMovementResetValue = -1;
         public int CachedMovement = CachedMovementResetValue;
-        public int Timer = 0;
+        public int Timer;
         public int TimerResetValue = 50;
-        private EntityObject entity;
+        private readonly EntityObject _entity;
         public PureGame PureGame;
 
-        public PureGameLayer(EntityObject entity, PureGame PureGame)
+        public PureGameLayer(EntityObject entity, PureGame pureGame)
         {
-            this.PureGame = PureGame;
-            this.entity = entity;
+            PureGame = pureGame;
+            _entity = entity;
+            Timer = 0;
         }
 
         public void UpdateController(IController controller, GameTime time)
         {
             if (controller.Buttons[(int)Controls.A].NewActive)
             {
-                entity.RequestInteraction();
+                _entity.RequestInteraction();
             }
-            Direction CachedMoveDiection = GetMovementDirection(controller);
-            if (CachedMoveDiection != Direction.None)
+            Direction cachedMoveDiection = GetMovementDirection(controller);
+            if (cachedMoveDiection != Direction.None)
             {
-                bool entity_moving = PureGame.World.EntityManager.EntityCurrentlyMoving(entity);
-                if (!entity_moving && entity.FacingDirection != CachedMoveDiection)
+                bool entityMoving = PureGame.WorldManager.CurrentWorld.EntityManager.EntityCurrentlyMoving(_entity);
+                if (!entityMoving && _entity.FacingDirection != cachedMoveDiection)
                 {
-                    entity.FacingDirection = CachedMoveDiection;
+                    _entity.FacingDirection = cachedMoveDiection;
                     Timer = TimerResetValue;
                 }
                 else if (Timer <= 0)
                 {
-                    entity.MovementDirection = CachedMoveDiection;
-                    entity.RequestMovement();
+                    _entity.MovementDirection = cachedMoveDiection;
+                    _entity.RequestMovement();
                 }
                 else
                 {
                     Timer -= time.ElapsedGameTime.Milliseconds;
                 }
             }
-            entity.Running = controller.Buttons[(int)Controls.B].Active;
+            _entity.Running = controller.Buttons[(int)Controls.B].Active;
         }
 
         public void UpdateData(GameTime time)
@@ -71,7 +71,6 @@ namespace PureGame.Client.FocusLayers
                 if (controller.Buttons[i].Active)
                 {
                     CachedMovement = i;
-                    Debug.WriteLine(i);
                     return (Direction)i;
                 }
             }

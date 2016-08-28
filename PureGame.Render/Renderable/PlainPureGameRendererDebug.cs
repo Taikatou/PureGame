@@ -10,30 +10,30 @@ namespace PureGame.Render.Renderable
 {
     public class PlainPureGameRendererDebug
     {
-        private FramesPerSecondCounter fps_counter;
-        private BitmapFont bitmapFont;
+        private readonly FramesPerSecondCounter _fpsCounter;
+        private readonly BitmapFont _bitmapFont;
         public PlainPureGameRenderer GameRenderer;
-        private ContentManager Content;
+        public readonly ContentManager Content;
 
-        public PlainPureGameRendererDebug(PlainPureGameRenderer GameRenderer)
+        public PlainPureGameRendererDebug(PlainPureGameRenderer gameRenderer, string fontName= "montserrat-32")
         {
-            this.GameRenderer = GameRenderer;
-            fps_counter = new FramesPerSecondCounter();
-            string file_name = string.Format("Fonts/{0}", "montserrat-32");
+            GameRenderer = gameRenderer;
+            _fpsCounter = new FramesPerSecondCounter();
+            string fileName = $"Fonts/{fontName}";
             Content = ContentManagerManager.RequestContentManager();
-            bitmapFont = Content.Load<BitmapFont>(file_name);
+            _bitmapFont = Content.Load<BitmapFont>(fileName);
         }
-        public void Draw(SpriteBatch sprite_batch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            GameRenderer.Draw(sprite_batch);
-            sprite_batch.Begin();
-            sprite_batch.DrawString(bitmapFont, $"FPS: {fps_counter.AverageFramesPerSecond:0}", Vector2.One, Color.AliceBlue);
-            sprite_batch.End();
+            GameRenderer.Draw(spriteBatch);
+            spriteBatch.Begin();
+            spriteBatch.DrawString(_bitmapFont, $"FPS: {_fpsCounter.AverageFramesPerSecond:0}", Vector2.One, Color.AliceBlue);
+            spriteBatch.End();
         }
         public void Update(GameTime timer)
         {
             GameRenderer.Update(timer);
-            fps_counter.Update(timer);
+            _fpsCounter.Update(timer);
         }
 
         public void ChangeFocus(EntityObject e)

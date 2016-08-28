@@ -1,8 +1,6 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using PureGame.Engine;
-using PureGame.Loader;
 using PureGame.MessageBus;
 
 namespace PureGame
@@ -10,26 +8,24 @@ namespace PureGame
     public class PureGame : ISubscriber
     {
         public enum MessageCode { WorldChanged, LayerChanged };
-        public IFileReader file_reader;
-        public WorldArea World;
+        public WorldManager WorldManager;
         public string Subscription = "PureGame";
-        public PureGame(ContentManager content, IFileReader file_reader)
+        public PureGame(ContentManager content, IFileReader fileReader)
         {
-            this.file_reader = file_reader;
-            ContentLoader.LoadContentManager(content);
+            WorldManager = new WorldManager(fileReader);
+            ContentManagerManager.Instance = new ContentManagerManager(content);
         }
 
-        public void LoadWorld(string world_name)
+        public void LoadWorld(string worldName)
         {
-            World?.Dispose();
-            World = WorldManager.Instance.Load(world_name, file_reader);
-            Message m = new Message((int)MessageCode.WorldChanged, "");
-            MessageManager.Instance.SendMessage(Subscription, m);
+            WorldManager.LoadWorld(worldName);
+            Message message = new Message((int)MessageCode.WorldChanged, "");
+            MessageManager.Instance.SendMessage(Subscription, message);
         }
 
         public void Update(GameTime time)
         {
-            World?.Update(time);
+            WorldManager.CurrentWorld?.Update(time);
         }
 
         public void RecieveMessage(Message m)

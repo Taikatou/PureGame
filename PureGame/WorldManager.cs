@@ -1,39 +1,34 @@
 ﻿using PureGame.Engine;
-using PureGame.Loader;
+using PureGame.Engine.EntityData;
+using PureGame.SmallGame;
 using System.Collections.Generic;
 
 namespace PureGame
 {
     public class WorldManager
     {
-        private Dictionary<string, WorldArea> Worlds;
-        private WorldLoader world_loader;
-        protected WorldManager()
+        private readonly Dictionary<string, WorldArea> _worlds;
+        private readonly IFileReader _fileReader;
+        private readonly DataLoader _dataLoader;
+        public WorldArea CurrentWorld;
+        public WorldManager(IFileReader fileReader)
         {
-            world_loader = new WorldLoader();
-            Worlds = new Dictionary<string, WorldArea>();
+            _fileReader = fileReader;
+            _worlds = new Dictionary<string, WorldArea>();
+            _dataLoader = new DataLoader();
+            _dataLoader.RegisterParser(StandardGameObjectParser.For<EntityObject>(),
+                                       StandardGameObjectParser.For<MapObject>());
         }
 
-        protected static WorldManager instance;
-        public static WorldManager Instance
+        public void LoadWorld(string worldName)
         {
-            get
+            CurrentWorld?.UnLoad();
+            if (!_worlds.ContainsKey(worldName))
             {
-                if(instance == null)
-                {
-                    instance = new WorldManager();
-                }
-                return instance;
+                _worlds[worldName] = _dataLoader.Load<WorldArea>(worldName, _fileReader);
             }
-        }
-
-        public WorldArea Load(string world_name, IFileReader file_reader)
-        {
-            if (!Worlds.ContainsKey(world_name))
-            {
-                Worlds[world_name] = world_loader.Load(world_name, file_reader);
-            }
-            return Worlds[world_name];
+            CurrentWorld = _worlds[worldName];
+            CurrentWorld.OnInit(CurrentWorld.Name + "Out");
         }
     }
 }

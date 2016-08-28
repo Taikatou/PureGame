@@ -27,7 +27,5 @@
         {
             Objects = new GameObjectCollection();
         }
-
-        public abstract void OnInit();
     }
 }

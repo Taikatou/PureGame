@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using PureGame.Engine.Common;
-using MonoGame.Extended.Maps.Tiled;
 using PureGame.Engine.EntityData;
 using System.Diagnostics;
 using PureGame.Engine.Controllers;
@@ -13,10 +10,11 @@ namespace PureGame.Engine
 {
     public class WorldArea : GameLevel, ISubscriber
     {
+        public enum MessageCode { Refresh }
         public ContentManager Content;
-        public CollisionTiledMap CollisionMap;
         public WorldEntityManager EntityManager;
-        public List<EntityObject> Entities => EntityManager.Entities;
+        private string _subscriptionIn => Name + "In";
+        public string SubscriptionOut;
         public MapObject Map => Objects.GetObjects<MapObject>()[0];
         public WorldArea()
         {
@@ -33,12 +31,12 @@ namespace PureGame.Engine
         {
             if (!EntityManager.EntityCurrentlyMoving(e))
             {
-                var FacingPosition = DirectionMapper.GetMovementFromDirection(e.FacingDirection);
-                Vector2 new_position = e.Position + FacingPosition;
-                if (EntityManager.SpatialHash.ContainsKey(new_position))
+                var facingPosition = DirectionMapper.GetMovementFromDirection(e.FacingDirection);
+                Vector2 newPosition = e.Position + facingPosition;
+                if (EntityManager.SpatialHash.ContainsKey(newPosition))
                 {
-                    EntityObject interact_entity = EntityManager.SpatialHash[new_position];
-                    e.Interact(interact_entity);
+                    EntityObject interactEntity = EntityManager.SpatialHash[newPosition];
+                    e.Interact(interactEntity);
                 }
             }
         }
@@ -47,46 +45,46 @@ namespace PureGame.Engine
         {
             if (!EntityManager.EntityCurrentlyMoving(e))
             {
-                Debug.WriteLine("in");
-                var MovementPosition = DirectionMapper.GetMovementFromDirection(e.MovementDirection);
-                Vector2 new_position = e.Position + MovementPosition;
-                if (ValidPosition(new_position))
+                var movementPosition = DirectionMapper.GetMovementFromDirection(e.MovementDirection);
+                Vector2 newPosition = e.Position + movementPosition;
+                if (ValidPosition(newPosition))
                 {
-                    var movement_key = new ExpiringKey<Vector2>(e.Position, e.GetSpeed());
-                    EntityManager.AddEntityKey(e, movement_key);
-                    e.Position = new_position;
+                    var movementKey = new ExpiringKey<Vector2>(e.Position, e.GetSpeed());
+                    EntityManager.AddEntityKey(e, movementKey);
+                    e.Position = newPosition;
                 }
                 e.FacingDirection = e.MovementDirection;
             }
         }
-
         public void AddEntity(EntityObject e)
         {
             EntityManager.AddEntity(e);
-            e.SubscriptionName = Name;
+            e.SubscriptionName = _subscriptionIn;
+            SendRefresh();
         }
 
         private bool ValidPosition(Vector2 position)
         {
-            bool within_limits = position.X >= 0 && position.Y >= 0 &&
-                                 position.X < CollisionMap.TiledMap.Width &&
-                                 position.Y < CollisionMap.TiledMap.Height;
-            bool entity_collision = !EntityManager.SpatialHash.ContainsKey(position);
-            bool map_collision = !CollisionMap.CheckCollision(position);
-            Debug.WriteLine("Map collision: " + map_collision);
-            return within_limits && entity_collision && map_collision;
+            bool withinLimits = position.X >= 0 && position.Y >= 0 &&
+                                 position.X < Map.Map.Width &&
+                                 position.Y < Map.Map.Height;
+            bool entityCollision = !EntityManager.SpatialHash.ContainsKey(position);
+            bool mapCollision = !Map.CheckCollision(position);
+            Debug.WriteLine("Map collision: " + mapCollision);
+            return withinLimits && entityCollision && mapCollision;
         }
 
         public void UnLoad()
         {
             Content?.Unload();
+            Map?.UnLoad();
         }
 
-        public override void OnInit()
+        public void OnInit(string subscriptionOut)
         {
-            MessageManager.Instance.Subscribe(Name, this);
-            TiledMap map = Map.GetTiledMap(Content);
-            CollisionMap = new CollisionTiledMap(map);
+            SubscriptionOut = subscriptionOut;
+            MessageManager.Instance.Subscribe(_subscriptionIn, this);
+            Map.OnInit();
             foreach(EntityObject e in Objects.GetObjects<EntityObject>())
             {
                 AddEntity(e);
@@ -95,7 +93,7 @@ namespace PureGame.Engine
 
         public void RecieveMessage(Message m)
         {
-            EntityObject.MessageCode code = (EntityObject.MessageCode)m.Code;
+            var code = (EntityObject.MessageCode)m.Code;
             switch (code)
             {
                 case EntityObject.MessageCode.RequestInteraction:
@@ -106,6 +104,14 @@ namespace PureGame.Engine
                     ProccessMovement(EntityManager.IdHash[m.Value]);
                     break;
             }
+            SendRefresh();
+        }
+
+        public void SendRefresh()
+        {
+            const int code = (int)(MessageCode.Refresh);
+            Message messageOut = new Message(code, "");
+            MessageManager.Instance.SendMessage(SubscriptionOut, messageOut);
         }
 
         public void Dispose()

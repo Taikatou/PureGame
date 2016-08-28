@@ -6,15 +6,15 @@ namespace PureGame.Render.Animate
 {
     public class Animation
     {
-        List<AnimationFrame> frames = new List<AnimationFrame>();
-        TimeSpan timeIntoAnimation;
+        private readonly List<AnimationFrame> _frames = new List<AnimationFrame>();
+        TimeSpan _timeIntoAnimation;
 
         TimeSpan Duration
         {
             get
             {
                 double totalSeconds = 0;
-                foreach (var frame in frames)
+                foreach (var frame in _frames)
                 {
                     totalSeconds += frame.Duration.TotalSeconds;
                 }
@@ -31,18 +31,18 @@ namespace PureGame.Render.Animate
                 Duration = duration
             };
 
-            frames.Add(newFrame);
+            _frames.Add(newFrame);
         }
 
         public void Update(GameTime gameTime)
         {
             double secondsIntoAnimation =
-                timeIntoAnimation.TotalSeconds + gameTime.ElapsedGameTime.TotalSeconds;
+                _timeIntoAnimation.TotalSeconds + gameTime.ElapsedGameTime.TotalSeconds;
 
 
             double remainder = secondsIntoAnimation % Duration.TotalSeconds;
 
-            timeIntoAnimation = TimeSpan.FromSeconds(remainder);
+            _timeIntoAnimation = TimeSpan.FromSeconds(remainder);
         }
 
         public Rectangle CurrentRectangle
@@ -52,10 +52,10 @@ namespace PureGame.Render.Animate
                 AnimationFrame currentFrame = null;
 
                 // See if we can find the frame
-                TimeSpan accumulatedTime;
-                foreach (var frame in frames)
+                foreach (var frame in _frames)
                 {
-                    if (accumulatedTime + frame.Duration >= timeIntoAnimation)
+                    TimeSpan accumulatedTime;
+                    if (accumulatedTime + frame.Duration >= _timeIntoAnimation)
                     {
                         currentFrame = frame;
                         break;
@@ -70,7 +70,7 @@ namespace PureGame.Render.Animate
                 // just in case timeIntoAnimation somehow exceeds Duration
                 if (currentFrame == null)
                 {
-                    currentFrame = frames[frames.Count - 1];
+                    currentFrame = _frames[_frames.Count - 1];
                 }
 
                 // If we found a frame, return its rectangle, otherwise

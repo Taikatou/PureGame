@@ -2,8 +2,8 @@
 {
     public abstract class SmartControl
     {
-        public bool Active = false;
-        public bool PreviouslyActive = false;
+        public bool Active;
+        public bool PreviouslyActive;
         public bool NewActive => Active && !PreviouslyActive;
 
         public void ChangeValue(bool down)

@@ -12,109 +12,109 @@ namespace PureGame.Render.Renderable.WorldRenderer
 {
     public class RenderEntity
     {
-        private EntityObject base_entity;
-        private Texture2D entity_texture;
-        private RenderWorld parent;
+        private readonly EntityObject _baseEntity;
+        private readonly Texture2D _entityTexture;
+        private RenderWorld _parent;
         //Right Left Up Down
-        private Animation[] walking;
-        private Animation[] standing;
+        private Animation[] _walking;
+        private Animation[] _standing;
 
-        private bool standing_timer = false;
+        private bool _standingTimer;
 
-        private Animation currentAnimation;
-        private Vector2 previous_position;
-        public RenderEntity(EntityObject base_entity, RenderWorld parent, ContentManager content)
+        private Animation _currentAnimation;
+        private Vector2 _previousPosition;
+        public RenderEntity(EntityObject baseEntity, RenderWorld parent, ContentManager content)
         {
-            this.parent = parent;
-            this.base_entity = base_entity;
-            entity_texture = AssetLoader.LoadTexture(content, base_entity.FileName);
-            walking = new Animation[4];
-            walking[(int)Direction.Down] = new Animation();
-            walking[(int)Direction.Down].AddFrame(new Rectangle(0, 0, 16, 16), TimeSpan.FromSeconds(.25));
-            walking[(int)Direction.Down].AddFrame(new Rectangle(16, 0, 16, 16), TimeSpan.FromSeconds(.25));
-            walking[(int)Direction.Down].AddFrame(new Rectangle(0, 0, 16, 16), TimeSpan.FromSeconds(.25));
-            walking[(int)Direction.Down].AddFrame(new Rectangle(32, 0, 16, 16), TimeSpan.FromSeconds(.25));
-            walking[(int)Direction.Up] = new Animation();
-            walking[(int)Direction.Up].AddFrame(new Rectangle(144, 0, 16, 16), TimeSpan.FromSeconds(.25));
-            walking[(int)Direction.Up].AddFrame(new Rectangle(160, 0, 16, 16), TimeSpan.FromSeconds(.25));
-            walking[(int)Direction.Up].AddFrame(new Rectangle(144, 0, 16, 16), TimeSpan.FromSeconds(.25));
-            walking[(int)Direction.Up].AddFrame(new Rectangle(176, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _parent = parent;
+            _baseEntity = baseEntity;
+            _entityTexture = AssetLoader.LoadTexture(content, baseEntity.FileName);
+            _walking = new Animation[4];
+            _walking[(int)Direction.Down] = new Animation();
+            _walking[(int)Direction.Down].AddFrame(new Rectangle(0, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _walking[(int)Direction.Down].AddFrame(new Rectangle(16, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _walking[(int)Direction.Down].AddFrame(new Rectangle(0, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _walking[(int)Direction.Down].AddFrame(new Rectangle(32, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _walking[(int)Direction.Up] = new Animation();
+            _walking[(int)Direction.Up].AddFrame(new Rectangle(144, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _walking[(int)Direction.Up].AddFrame(new Rectangle(160, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _walking[(int)Direction.Up].AddFrame(new Rectangle(144, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _walking[(int)Direction.Up].AddFrame(new Rectangle(176, 0, 16, 16), TimeSpan.FromSeconds(.25));
 
-            walking[(int)Direction.Left] = new Animation();
-            walking[(int)Direction.Left].AddFrame(new Rectangle(48, 0, 16, 16), TimeSpan.FromSeconds(.25));
-            walking[(int)Direction.Left].AddFrame(new Rectangle(64, 0, 16, 16), TimeSpan.FromSeconds(.25));
-            walking[(int)Direction.Left].AddFrame(new Rectangle(48, 0, 16, 16), TimeSpan.FromSeconds(.25));
-            walking[(int)Direction.Left].AddFrame(new Rectangle(80, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _walking[(int)Direction.Left] = new Animation();
+            _walking[(int)Direction.Left].AddFrame(new Rectangle(48, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _walking[(int)Direction.Left].AddFrame(new Rectangle(64, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _walking[(int)Direction.Left].AddFrame(new Rectangle(48, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _walking[(int)Direction.Left].AddFrame(new Rectangle(80, 0, 16, 16), TimeSpan.FromSeconds(.25));
 
-            walking[(int)Direction.Right] = new Animation();
-            walking[(int)Direction.Right].AddFrame(new Rectangle(96, 0, 16, 16), TimeSpan.FromSeconds(.25));
-            walking[(int)Direction.Right].AddFrame(new Rectangle(112, 0, 16, 16), TimeSpan.FromSeconds(.25));
-            walking[(int)Direction.Right].AddFrame(new Rectangle(96, 0, 16, 16), TimeSpan.FromSeconds(.25));
-            walking[(int)Direction.Right].AddFrame(new Rectangle(128, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _walking[(int)Direction.Right] = new Animation();
+            _walking[(int)Direction.Right].AddFrame(new Rectangle(96, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _walking[(int)Direction.Right].AddFrame(new Rectangle(112, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _walking[(int)Direction.Right].AddFrame(new Rectangle(96, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _walking[(int)Direction.Right].AddFrame(new Rectangle(128, 0, 16, 16), TimeSpan.FromSeconds(.25));
 
-            standing = new Animation[4];
-            standing[(int)Direction.Down] = new Animation();
-            standing[(int)Direction.Down].AddFrame(new Rectangle(0, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _standing = new Animation[4];
+            _standing[(int)Direction.Down] = new Animation();
+            _standing[(int)Direction.Down].AddFrame(new Rectangle(0, 0, 16, 16), TimeSpan.FromSeconds(.25));
 
-            standing[(int)Direction.Up] = new Animation();
-            standing[(int)Direction.Up].AddFrame(new Rectangle(144, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _standing[(int)Direction.Up] = new Animation();
+            _standing[(int)Direction.Up].AddFrame(new Rectangle(144, 0, 16, 16), TimeSpan.FromSeconds(.25));
 
-            standing[(int)Direction.Left] = new Animation();
-            standing[(int)Direction.Left].AddFrame(new Rectangle(48, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _standing[(int)Direction.Left] = new Animation();
+            _standing[(int)Direction.Left].AddFrame(new Rectangle(48, 0, 16, 16), TimeSpan.FromSeconds(.25));
 
-            standing[(int)Direction.Right] = new Animation();
-            standing[(int)Direction.Right].AddFrame(new Rectangle(96, 0, 16, 16), TimeSpan.FromSeconds(.25));
-            previous_position = base_entity.Position;
+            _standing[(int)Direction.Right] = new Animation();
+            _standing[(int)Direction.Right].AddFrame(new Rectangle(96, 0, 16, 16), TimeSpan.FromSeconds(.25));
+            _previousPosition = baseEntity.Position;
             GetAnimation();
         }
 
-        public void Draw(SpriteBatch sprite_batch)
+        private Point OnScreen => _parent.GetEntityScreenPosition(_baseEntity);
+        public Rectangle Rect => new Rectangle(OnScreen, _parent.TileSize.ToPoint());
+
+        public void Draw(SpriteBatch spriteBatch)
         {
-            Point position_on_screen = parent.GetEntityScreenPosition(base_entity);
-            Rectangle rect = new Rectangle(position_on_screen, parent.TileSize.ToPoint());
-            var sourceRectangle = currentAnimation.CurrentRectangle;
-            sprite_batch.Draw(entity_texture, rect, sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0);
+            var sourceRectangle = _currentAnimation.CurrentRectangle;
+            spriteBatch.Draw(_entityTexture, Rect, sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0);
         }
 
         public void Update(GameTime time)
         {
             GetAnimation();
-            currentAnimation.Update(time);
+            _currentAnimation.Update(time);
         }
 
         public void GetAnimation()
         {
-            Point screen_position = parent.GetScreenPosition(previous_position);
-            Point entity_position = parent.GetEntityScreenPosition(base_entity);
-            int direction = (int)base_entity.FacingDirection;
-            if (screen_position == entity_position)
+            Point screenPosition = _parent.GetScreenPosition(_previousPosition);
+            Point entityPosition = _parent.GetEntityScreenPosition(_baseEntity);
+            int direction = (int)_baseEntity.FacingDirection;
+            if (screenPosition == entityPosition)
             {
                 //standing
-                if (standing_timer)
+                if (_standingTimer)
                 {
-                    currentAnimation = standing[direction];
+                    _currentAnimation = _standing[direction];
                 }
                 else
                 {
-                    standing_timer = true;
+                    _standingTimer = true;
                     Debug.WriteLine("Start standing");
                 }
             }
             else
             {
                 //moving
-                if (standing_timer)
+                if (_standingTimer)
                 {
-                    standing_timer = false;
+                    _standingTimer = false;
                     Debug.WriteLine("Start walking");
                 }
                 else
                 {
-                    currentAnimation = walking[direction];
+                    _currentAnimation = _walking[direction];
                 }
-                //Debug.WriteLine("Walking: " + base_entity.Facing.ToString());
             }
-            previous_position = base_entity.Position;
+            _previousPosition = _baseEntity.Position;
         }
     }
 }

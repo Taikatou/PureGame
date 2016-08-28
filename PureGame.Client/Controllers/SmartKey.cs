@@ -4,7 +4,7 @@ namespace PureGame.Client.Controllers
 {
     public class SmartKey : SmartControl
     {
-        private Keys key;
+        private readonly Keys key;
 
         public SmartKey(Keys key)
         {

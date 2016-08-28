@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using PureGame;
 
 namespace PureGame.SmallGame
 {
@@ -89,10 +88,10 @@ namespace PureGame.SmallGame
     /// <summary>
     /// An ldop built for GameObjects.
     /// </summary>
-    /// <typeparam name="G"></typeparam>
-    public class GameObjectParser<G> : LevelDataObjectParser<G> where G : IGameObject
+    /// <typeparam name="TG"></typeparam>
+    public class GameObjectParser<TG> : LevelDataObjectParser<TG> where TG : GameObject
     {
-        public GameObjectParser() : base(typeof(G).Name)
+        public GameObjectParser() : base(typeof(TG).Name)
         {
 
         }
@@ -103,7 +102,7 @@ namespace PureGame.SmallGame
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="raw"></param>
-        protected override void PostParse(G obj, LevelDataObject raw)
+        protected override void PostParse(TG obj, LevelDataObject raw)
         {
             obj.Type = Type;
             obj.Id = raw.Id;
@@ -118,9 +117,9 @@ namespace PureGame.SmallGame
 
     public class StandardGameObjectParser
     {
-        public static StandardGameObjectParser<G> For<G>() where G : IGameObject
+        public static StandardGameObjectParser<TG> For<TG>() where TG : GameObject
         {
-            return new StandardGameObjectParser<G>();
+            return new StandardGameObjectParser<TG>();
         }
     }
 
@@ -128,17 +127,17 @@ namespace PureGame.SmallGame
     /// The standard game object parser will be able to parse basic objects. use it for this with simple fields.
     /// 
     /// </summary>
-    /// <typeparam name="G"></typeparam>
-    public class StandardGameObjectParser<G> : GameObjectParser<G> where G : IGameObject
+    /// <typeparam name="TG"></typeparam>
+    public class StandardGameObjectParser<TG> : GameObjectParser<TG> where TG : GameObject
     {
-        public override G Parse(LevelDataObject obj)
+        public override TG Parse(LevelDataObject obj)
         {
-            var g = Activator.CreateInstance<G>();
+            var g = Activator.CreateInstance<TG>();
 
             try
             {
                 var json = JsonConvert.SerializeObject(obj.Data);
-                g = (G)JsonConvert.DeserializeObject<G>(json);
+                g = (TG)JsonConvert.DeserializeObject<TG>(json);
             }
             catch (Exception ex)
             {
@@ -181,7 +180,6 @@ namespace PureGame.SmallGame
         /// Registering a parser will allow that parser to try and create objects from the level json. 
         /// You may only add one parser per type. 
         /// </summary>
-        /// <param name="parser"></param>
         public void RegisterParser(params LevelDataObjectParser[] parsers)
         {
             foreach (var p in parsers.ToList())
@@ -191,7 +189,7 @@ namespace PureGame.SmallGame
         }
 
         // terrible way to read a file. TODO: fix this shit.
-        private string AttemptToRead(string jsonPath, IFileReader reader)
+        public string AttemptToRead(string jsonPath, IFileReader reader)
         {
             string json = null;
             while (json == null)
@@ -222,11 +220,10 @@ namespace PureGame.SmallGame
                     if (validType && Parsers.ContainsKey(obj.Type))
                     {
                         var parsedObj = Parsers[obj.Type].ParseFunction(obj);
-                        if (parsedObj is IGameObject)
-                        {
-                            IGameObject game_object = (IGameObject)parsedObj;
-                            lvl.Objects.Add(game_object);
-                        }
+                        var o = parsedObj as GameObject;
+                        if (o == null) continue;
+                        GameObject gameObject = o;
+                        lvl.Objects.Add(gameObject);
                     }
                 }
                 return lvl;
@@ -244,7 +241,6 @@ namespace PureGame.SmallGame
         {
             var json = AttemptToRead(jsonPath, reader);
             var data = LoadJson<T>(json);
-            data.OnInit();
             return data;
         }
     }

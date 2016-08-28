@@ -9,22 +9,22 @@ namespace PureGame.Client
     public class PureGameClient
     {
         public EntityObject Player;
-        private KeyBoardController controller;
+        private readonly KeyBoardController _controller;
         public PureGame PureGame;
         public Stack<ILayer> Layers;
 
         public void Update(GameTime time)
         {
-            controller.Update(time);
-            Layers.Peek().UpdateController(controller, time);
+            _controller.Update(time);
+            Layers.Peek().UpdateController(_controller, time);
             Layers.Peek().UpdateData(time);
         }
 
-        public PureGameClient(PureGame PureGame, EntityObject p, IController c)
+        public PureGameClient(PureGame pureGame, EntityObject p, IController c)
         {
-            this.PureGame = PureGame;
+            PureGame = pureGame;
             Player = p;
-            controller = (KeyBoardController)c;
+            _controller = (KeyBoardController)c;
             Layers = new Stack<ILayer>();
             Layers.Push(new PureGameLayer(p, PureGame));
         }

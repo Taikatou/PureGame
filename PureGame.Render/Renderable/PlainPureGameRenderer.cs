@@ -1,12 +1,9 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
 using PureGame.Client;
 using PureGame.Engine.EntityData;
 using PureGame.MessageBus;
-using PureGame.Render.Renderable.WorldRenderer;
 using PureGame.Render.Renderable.RenderLayers;
 using PureGame.Client.FocusLayers;
 

@@ -4,16 +4,16 @@ namespace PureGame.MessageBus
 {
     public class MessageManager
     {
-        protected static MessageManager instance;
+        protected static MessageManager _instance;
         public static MessageManager Instance
         {
             get
             {
-                if(instance == null)
+                if(_instance == null)
                 {
-                    instance = new MessageManager();
+                    _instance = new MessageManager();
                 }
-                return instance;
+                return _instance;
             }
         }
 
@@ -24,32 +24,32 @@ namespace PureGame.MessageBus
             Subscriptions = new Dictionary<string, Subscription>();
         }
 
-        protected Subscription GetSubscription(string SubscriptionName)
+        protected Subscription GetSubscription(string subscriptionName)
         {
-            if (!Subscriptions.ContainsKey(SubscriptionName))
+            if (!Subscriptions.ContainsKey(subscriptionName))
             {
-                Subscriptions[SubscriptionName] = new Subscription(SubscriptionName);
+                Subscriptions[subscriptionName] = new Subscription(subscriptionName);
             }
-            return Subscriptions[SubscriptionName];
+            return Subscriptions[subscriptionName];
         }
 
-        public void SendMessage(string SubscriptionName, Message m)
+        public void SendMessage(string subscriptionName, Message m)
         {
-            GetSubscription(SubscriptionName).SendMessage(m);
+            GetSubscription(subscriptionName).SendMessage(m);
         }
 
-        public void Subscribe(string SubscriptionName, ISubscriber subscriber)
+        public void Subscribe(string subscriptionName, ISubscriber subscriber)
         {
-            GetSubscription(SubscriptionName).Subscribe(subscriber);
+            GetSubscription(subscriptionName).Subscribe(subscriber);
         }
 
-        public void UnSubscribe(string SubscriptionName, ISubscriber subscriber)
+        public void UnSubscribe(string subscriptionName, ISubscriber subscriber)
         {
-            Subscription Sub = GetSubscription(SubscriptionName);
+            Subscription Sub = GetSubscription(subscriptionName);
             Sub.UnSubscribe(subscriber);
             if(Sub.Count == 0)
             {
-                Subscriptions.Remove(SubscriptionName);
+                Subscriptions.Remove(subscriptionName);
             }
         }
     }

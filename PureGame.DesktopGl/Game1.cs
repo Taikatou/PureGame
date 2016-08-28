@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.ViewportAdapters;
 using PureGame.Client;
 using PureGame.Client.Controllers;
@@ -12,34 +11,30 @@ namespace PureGame.DesktopGl
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager graphics;
-        private SpriteBatch spriteBatch;
-        private PlainPureGameRendererDebug GameRenderer;
-        private PureGameClient GameClient;
+        private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
+        private PlainPureGameRendererDebug _gameRenderer;
+        private PureGameClient _gameClient;
         public int Width = 800, Height = 480;
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-        }
-        protected override void Initialize()
-        {
-            base.Initialize();
         }
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            BoxingViewportAdapter viewport_adapter = new BoxingViewportAdapter(Window, GraphicsDevice, Width, Height);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            BoxingViewportAdapter viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, Width, Height);
             var game = new PureGame(Content, new FileReader("Data"));
-            EntityObject Player = new EntityObject(new Vector2(4, 4), "Test", "CharacterSheet", Direction.Down);
-            GameClient = new PureGameClient(game, Player, new KeyBoardController());
-            var game_renderer = new PlainPureGameRenderer(GameClient, viewport_adapter, Player);
-            GameRenderer = new PlainPureGameRendererDebug(game_renderer);
-            GameRenderer.ChangeFocus(Player);
+            EntityObject player = new EntityObject(new Vector2(4, 4), "Test", "CharacterSheet", Direction.Down);
+            _gameClient = new PureGameClient(game, player, new KeyBoardController());
+            var gameRenderer = new PlainPureGameRenderer(_gameClient, viewportAdapter, player);
+            _gameRenderer = new PlainPureGameRendererDebug(gameRenderer);
+            _gameRenderer.ChangeFocus(player);
 
             game.LoadWorld("level01.json");
-            game.World.AddEntity(Player);
+            game.WorldManager.CurrentWorld.AddEntity(player);
         }
 
         protected override void UnloadContent()
@@ -48,13 +43,13 @@ namespace PureGame.DesktopGl
         }
         protected override void Update(GameTime gameTime)
         {
-            GameRenderer.Update(gameTime);
+            _gameRenderer.Update(gameTime);
             base.Update(gameTime);
         }
         protected override void Draw(GameTime time)
         {
             GraphicsDevice.Clear(Color.Black);
-            GameRenderer.Draw(spriteBatch);
+            _gameRenderer.Draw(_spriteBatch);
         }
     }
 }
