@@ -36,19 +36,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Engine\AI\EntityAI.cs" />
     <Compile Include="Engine\ContentManagerManager.cs" />
     <Compile Include="Engine\DirectionMapper.cs" />
     <Compile Include="Engine\EntityData\EntityObject.cs" />
-    <Compile Include="Engine\EntityData\WorldEntityManager.cs" />
-    <Compile Include="Engine\ExpiringKey.cs" />
+    <Compile Include="Engine\EntityData\EntityManager.cs" />
+    <Compile Include="Engine\World\ExpiringKey.cs" />
     <Compile Include="Engine\MapObject.cs" />
-    <Compile Include="Engine\WorldArea.cs" />
+    <Compile Include="Engine\World\WorldArea.cs" />
     <Compile Include="IFileReader.cs" />
-    <Compile Include="MessageBus\ISubscriber.cs" />
-    <Compile Include="MessageBus\Message.cs" />
-    <Compile Include="MessageBus\MessageManager.cs" />
-    <Compile Include="MessageBus\Subscription.cs" />
     <Compile Include="PureGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmallGame\GameObject.cs" />
@@ -57,7 +52,7 @@
     <Compile Include="SmallGame\GameObjectCollection.cs" />
     <Compile Include="SmallGame\IdFactory.cs" />
     <Compile Include="SmallGame\Loadable.cs" />
-    <Compile Include="WorldManager.cs" />
+    <Compile Include="Engine\World\WorldManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

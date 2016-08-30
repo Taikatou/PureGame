@@ -4,27 +4,39 @@ using PureGame.Engine.EntityData;
 using System.Diagnostics;
 using PureGame.Engine.Controllers;
 using PureGame.SmallGame;
-using PureGame.MessageBus;
 
-namespace PureGame.Engine
+namespace PureGame.Engine.World
 {
-    public class WorldArea : GameLevel, ISubscriber
+    public class WorldArea : GameLevel
     {
         public enum MessageCode { Refresh }
         public ContentManager Content;
-        public WorldEntityManager EntityManager;
-        private string _subscriptionIn => Name + "In";
-        public string SubscriptionOut;
-        public MapObject Map => Objects.GetObjects<MapObject>()[0];
+        public EntityManager EntityManager;
+        public MapObject Map;
+        public bool Updated;
         public WorldArea()
         {
+            Updated = false;
             Content = ContentManagerManager.RequestContentManager();
-            EntityManager = new WorldEntityManager();
+            EntityManager = new EntityManager();
         }
 
         public void Update(GameTime time)
         {
             EntityManager.Update(time);
+            foreach (var entity in EntityManager.Entities)
+            {
+                if (entity.RequentInteraction)
+                {
+                    ProccessInteraction(entity);
+                    entity.RequentInteraction = false;
+                }
+                if (entity.RequestMovement)
+                {
+                    ProccessMovement(entity);
+                    entity.RequestMovement = false;
+                }
+            }
         }
 
         public void ProccessInteraction(EntityObject e)
@@ -52,6 +64,7 @@ namespace PureGame.Engine
                     var movementKey = new ExpiringKey<Vector2>(e.Position, e.GetSpeed());
                     EntityManager.AddEntityKey(e, movementKey);
                     e.Position = newPosition;
+                    Updated = true;
                 }
                 e.FacingDirection = e.MovementDirection;
             }
@@ -59,15 +72,13 @@ namespace PureGame.Engine
         public void AddEntity(EntityObject e)
         {
             EntityManager.AddEntity(e);
-            e.SubscriptionName = _subscriptionIn;
-            SendRefresh();
         }
 
         private bool ValidPosition(Vector2 position)
         {
             bool withinLimits = position.X >= 0 && position.Y >= 0 &&
-                                 position.X < Map.Map.Width &&
-                                 position.Y < Map.Map.Height;
+                                position.X < Map.Map.Width &&
+                                position.Y < Map.Map.Height;
             bool entityCollision = !EntityManager.SpatialHash.ContainsKey(position);
             bool mapCollision = !Map.CheckCollision(position);
             Debug.WriteLine("Map collision: " + mapCollision);
@@ -80,43 +91,15 @@ namespace PureGame.Engine
             Map?.UnLoad();
         }
 
-        public void OnInit(string subscriptionOut)
+        public void OnInit()
         {
-            SubscriptionOut = subscriptionOut;
-            MessageManager.Instance.Subscribe(_subscriptionIn, this);
+            Map = Objects.GetObjects<MapObject>()[0];
             Map.OnInit();
+
             foreach(EntityObject e in Objects.GetObjects<EntityObject>())
             {
                 AddEntity(e);
             }
-        }
-
-        public void RecieveMessage(Message m)
-        {
-            var code = (EntityObject.MessageCode)m.Code;
-            switch (code)
-            {
-                case EntityObject.MessageCode.RequestInteraction:
-                    ProccessInteraction(EntityManager.IdHash[m.Value]);
-                    break;
-
-                case EntityObject.MessageCode.RequestMovement:
-                    ProccessMovement(EntityManager.IdHash[m.Value]);
-                    break;
-            }
-            SendRefresh();
-        }
-
-        public void SendRefresh()
-        {
-            const int code = (int)(MessageCode.Refresh);
-            Message messageOut = new Message(code, "");
-            MessageManager.Instance.SendMessage(SubscriptionOut, messageOut);
-        }
-
-        public void Dispose()
-        {
-            MessageManager.Instance.UnSubscribe(Name, this);
         }
     }
 }

@@ -7,12 +7,12 @@ using MonoGame.Extended.ViewportAdapters;
 using PureGame.Engine;
 using PureGame.Engine.Controllers;
 using PureGame.Engine.EntityData;
-using PureGame.MessageBus;
+using PureGame.Engine.World;
 using System.Collections.Generic;
 
 namespace PureGame.Render.Renderable.WorldRenderer
 {
-    public class RenderWorld : IRenderable, ISubscriber
+    public class RenderWorld : IRenderable
     {
         public WorldArea World;
         private readonly Dictionary<string, RenderEntity> _entitySprites;
@@ -32,7 +32,6 @@ namespace PureGame.Render.Renderable.WorldRenderer
             _map = world.Map.Map;
             TileSize = new Vector2(_map.TileWidth, _map.TileHeight);
             _entitySprites = new Dictionary<string, RenderEntity>();
-            MessageManager.Instance.Subscribe(world.SubscriptionOut, this);
             RefreshToDraw();
         }
 
@@ -51,6 +50,11 @@ namespace PureGame.Render.Renderable.WorldRenderer
 
         public void Update(GameTime time)
         {
+            if (World.Updated)
+            {
+                World.Updated = false;
+                RefreshToDraw();
+            }
             foreach (RenderEntity r in _toDraw)
             {
                 r.Update(time);
@@ -74,7 +78,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
             {
                 float progress = worldData.EntityToKey[entity].Progress;
                 var facingPosition = DirectionMapper.GetMovementFromDirection(entity.FacingDirection);
-                position -= (facingPosition * progress);
+                position -= facingPosition * progress;
             }
             return GetScreenPosition(position);
         }
@@ -82,7 +86,6 @@ namespace PureGame.Render.Renderable.WorldRenderer
         public void UnLoad()
         {
             _content.Unload();
-            Dispose();
         }
 
         public Point GetScreenPosition(Vector2 pos)
@@ -102,22 +105,6 @@ namespace PureGame.Render.Renderable.WorldRenderer
                     _toDraw.Add(r);
                 }
             }
-        }
-
-        public void RecieveMessage(Message m)
-        {
-            WorldArea.MessageCode code = (WorldArea.MessageCode)m.Code;
-            switch (code)
-            {
-                case WorldArea.MessageCode.Refresh:
-                    RefreshToDraw();
-                    break;
-            }
-        }
-
-        public void Dispose()
-        {
-            MessageManager.Instance.UnSubscribe(World.Name, this);
         }
     }
 }

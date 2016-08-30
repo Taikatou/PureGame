@@ -32,7 +32,6 @@ namespace PureGame.DesktopGl
             var gameRenderer = new PlainPureGameRenderer(_gameClient, viewportAdapter, player);
             _gameRenderer = new PlainPureGameRendererDebug(gameRenderer);
             _gameRenderer.ChangeFocus(player);
-
             game.LoadWorld("level01.json");
             game.WorldManager.CurrentWorld.AddEntity(player);
         }

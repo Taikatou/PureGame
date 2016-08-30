@@ -6,7 +6,6 @@ using PureGame.Engine.EntityData;
 using PureGame.Render.Animate;
 using PureGame.Render.Common;
 using System;
-using System.Diagnostics;
 
 namespace PureGame.Render.Renderable.WorldRenderer
 {
@@ -14,10 +13,10 @@ namespace PureGame.Render.Renderable.WorldRenderer
     {
         private readonly EntityObject _baseEntity;
         private readonly Texture2D _entityTexture;
-        private RenderWorld _parent;
+        private readonly RenderWorld _parent;
         //Right Left Up Down
-        private Animation[] _walking;
-        private Animation[] _standing;
+        private readonly Animation[] _walking;
+        private readonly Animation[] _standing;
 
         private bool _standingTimer;
 
@@ -98,7 +97,6 @@ namespace PureGame.Render.Renderable.WorldRenderer
                 else
                 {
                     _standingTimer = true;
-                    Debug.WriteLine("Start standing");
                 }
             }
             else
@@ -107,7 +105,6 @@ namespace PureGame.Render.Renderable.WorldRenderer
                 if (_standingTimer)
                 {
                     _standingTimer = false;
-                    Debug.WriteLine("Start walking");
                 }
                 else
                 {

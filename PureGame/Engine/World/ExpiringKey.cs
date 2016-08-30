@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace PureGame.Engine
+namespace PureGame.Engine.World
 {
     public class ExpiringKey <T>
     {
@@ -9,11 +9,11 @@ namespace PureGame.Engine
         public int TotalTime { get; }
         public float Progress => (float)TimeLeft / TotalTime;
 
-        public ExpiringKey(T Key, int Time)
+        public ExpiringKey(T key, int time)
         {
-            this.Key = Key;
-            TimeLeft = Time;
-            TotalTime = Time;
+            Key = key;
+            TimeLeft = time;
+            TotalTime = time;
         }
 
         public void Update(GameTime time)
