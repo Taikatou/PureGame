@@ -7,5 +7,6 @@ namespace PureGame.Client.FocusLayers
     {
         void UpdateController(IController controller, GameTime time);
         void UpdateData(GameTime time);
+        string Name { get; }
     }
 }

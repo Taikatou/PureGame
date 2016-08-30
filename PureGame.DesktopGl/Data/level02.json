@@ -5,7 +5,38 @@
     {
       "Type": "MapObject",
       "Data": {
-        "MapName": "level01"
+        "MapName": "level01",
+        "CollisionLayerName": "Collision Layer"
+      }
+    },
+    {
+      "Type": "EntityObject",
+      "Data": {
+        "FileName": "CharacterSheet",
+        "Position": "1, 2",
+      }
+    },
+    {
+      "Type": "EntityObject",
+      "Data": {
+        "FileName": "CharacterSheet",
+        "Position": "1, 1",
+        "Id": "test"
+      }
+    },
+    {
+      "Type": "EntityObject",
+      "Data": {
+        "FileName": "CharacterSheet",
+        "Position": "3, 2",
+      }
+    },
+    {
+      "Type": "EntityObject",
+      "Data": {
+        "FileName": "CharacterSheet",
+        "Position": "4, 5",
+        "Id": "test"
       }
     }
   ]

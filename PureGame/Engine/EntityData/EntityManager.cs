@@ -1,11 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Diagnostics;
+using PureGame.Engine.World;
 
 namespace PureGame.Engine.EntityData
 {
 
-    public class WorldEntityManager
+    public class EntityManager
     {
         public List<ExpiringKey<Vector2>> ExpiringTiles;
         public Dictionary<ExpiringKey<Vector2>, EntityObject> KeyToEntity;
@@ -14,7 +16,7 @@ namespace PureGame.Engine.EntityData
         public Dictionary<string, EntityObject> IdHash;
         public List<EntityObject> Entities;
 
-        public WorldEntityManager()
+        public EntityManager()
         {
             IdHash = new Dictionary<string, EntityObject>();
             Entities = new List<EntityObject>();
@@ -31,6 +33,19 @@ namespace PureGame.Engine.EntityData
                 Entities.Add(e);
                 SpatialHash[e.Position] = e;
                 IdHash[e.Id] = e;
+            }
+        }
+
+        public void RemoveEntity(string entityId)
+        {
+            if (IdHash.ContainsKey(entityId))
+            {
+                EntityObject entity = IdHash[entityId];
+                // start removing
+                IdHash.Remove(entityId);
+                EntityToKey.Remove(entity);
+                SpatialHash.Remove(entity.Position);
+                Entities.Remove(entity);
             }
         }
 
@@ -58,9 +73,9 @@ namespace PureGame.Engine.EntityData
         {
             Vector2 position = ExpiringTiles[i].Key;
             Debug.WriteLine("Remove tile : " + position);
-            var Entitiy = KeyToEntity[ExpiringTiles[i]];
+            var entitiy = KeyToEntity[ExpiringTiles[i]];
             SpatialHash.Remove(position);
-            EntityToKey.Remove(Entitiy);
+            EntityToKey.Remove(entitiy);
             KeyToEntity.Remove(ExpiringTiles[i]);
             ExpiringTiles.RemoveAt(i);
         }

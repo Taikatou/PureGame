@@ -3,55 +3,40 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.ViewportAdapters;
 using PureGame.Client;
 using PureGame.Engine.EntityData;
-using PureGame.MessageBus;
 using PureGame.Render.Renderable.RenderLayers;
-using PureGame.Client.FocusLayers;
 
 namespace PureGame.Render.Renderable
 {
-    public class PlainPureGameRenderer : ISubscriber
+    public class PlainPureGameRenderer
     {
         public ViewportAdapter ViewPort;
         public PureGameClient GameClient;
         public RenderLayer Render;
         public EntityObject FocusEntity;
-        public PlainPureGameRenderer(PureGameClient GameClient, ViewportAdapter ViewPort, EntityObject FocusEntity)
+        private string _layerName;
+        public PlainPureGameRenderer(PureGameClient gameClient, ViewportAdapter viewPort, EntityObject focusEntity)
         {
-            this.GameClient = GameClient;
-            this.ViewPort = ViewPort;
-            this.FocusEntity = FocusEntity;
-            MessageManager.Instance.Subscribe(GameClient.PureGame.Subscription, this);
+            GameClient = gameClient;
+            ViewPort = viewPort;
+            FocusEntity = focusEntity;
+            _layerName = "";
         }
 
-        public void Draw(SpriteBatch sprite_batch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            Render.Draw(sprite_batch);
+            Render.Draw(spriteBatch);
         }
 
         public void Update(GameTime time)
         {
             GameClient.Update(time);
-            Render.Update(time);
-        }
-
-        public void RecieveMessage(Message m)
-        {
-            PureGame.MessageCode code = (PureGame.MessageCode)m.Code;
-            switch (code)
+            var layer = GameClient.Layers.Peek();
+            if (_layerName != layer.Name)
             {
-                case PureGame.MessageCode.LayerChanged:
-                    break;
-                case PureGame.MessageCode.WorldChanged:
-                    ILayer layer = GameClient.Layers.Peek();
-                    Render = new RenderLayer(layer, ViewPort, FocusEntity);
-                    break;
+                Render = new RenderLayer(layer, ViewPort, FocusEntity);
+                _layerName = layer.Name;
             }
-        }
-
-        public void Dispose()
-        {
-            //throw new NotImplementedException();
-            MessageManager.Instance.UnSubscribe(GameClient.PureGame.Subscription, this);
+            Render.Update(time);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace PureGame.Render.Renderable
         public PlainPureGameRenderer GameRenderer;
         public readonly ContentManager Content;
 
-        public PlainPureGameRendererDebug(PlainPureGameRenderer gameRenderer, string fontName= "montserrat-32")
+        public PlainPureGameRendererDebug(PlainPureGameRenderer gameRenderer, string fontName="montserrat-32")
         {
             GameRenderer = gameRenderer;
             _fpsCounter = new FramesPerSecondCounter();

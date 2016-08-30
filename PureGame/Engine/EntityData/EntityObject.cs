@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.Controllers;
-using PureGame.MessageBus;
 using PureGame.SmallGame;
 using System.Diagnostics;
 
@@ -8,7 +7,6 @@ namespace PureGame.Engine.EntityData
 {
     public class EntityObject : GameObject
     {
-        public enum MessageCode { RequestInteraction, RequestMovement };
         private readonly int _walkingSpeed;
         private readonly int _runningSpeed;
         private bool _currentlyInteracting;
@@ -18,7 +16,8 @@ namespace PureGame.Engine.EntityData
         public Direction MovementDirection;
         public Direction FacingDirection;
         public bool Running;
-        public string SubscriptionName = "Entity";
+        public bool RequestMovement;
+        public bool RequentInteraction;
         public int GetSpeed()
         {
             return Running ? _runningSpeed : _walkingSpeed;
@@ -63,6 +62,7 @@ namespace PureGame.Engine.EntityData
             if (!_currentlyInteracting)
             {
                 FacingDirection = ReverseDirections[(int)interactWith.FacingDirection];
+                Debug.WriteLine("Move entity " + interactWith.Id);
                 _currentlyInteracting = true;
                 return true;
             }
@@ -79,20 +79,6 @@ namespace PureGame.Engine.EntityData
                     _currentlyInteracting = false;
                 }
             }
-        }
-
-        public void RequestInteraction()
-        {
-            const int code = (int)(MessageCode.RequestInteraction);
-            Message message = new Message(code, Id);
-            MessageManager.Instance.SendMessage(SubscriptionName, message);
-        }
-
-        public void RequestMovement()
-        {
-            const int code = (int)(MessageCode.RequestMovement);
-            Message message = new Message(code, Id);
-            MessageManager.Instance.SendMessage(SubscriptionName, message);
         }
     }
 }

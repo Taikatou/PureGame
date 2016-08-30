@@ -14,6 +14,11 @@ namespace PureGame.Client.FocusLayers
         private readonly EntityObject _entity;
         public PureGame PureGame;
 
+        public string Name
+        {
+            get { return PureGame.WorldManager.CurrentWorld.Name; }
+        }
+
         public PureGameLayer(EntityObject entity, PureGame pureGame)
         {
             PureGame = pureGame;
@@ -25,7 +30,7 @@ namespace PureGame.Client.FocusLayers
         {
             if (controller.Buttons[(int)Controls.A].NewActive)
             {
-                _entity.RequestInteraction();
+                _entity.RequentInteraction = true;
             }
             Direction cachedMoveDiection = GetMovementDirection(controller);
             if (cachedMoveDiection != Direction.None)
@@ -39,7 +44,7 @@ namespace PureGame.Client.FocusLayers
                 else if (Timer <= 0)
                 {
                     _entity.MovementDirection = cachedMoveDiection;
-                    _entity.RequestMovement();
+                    _entity.RequestMovement = true;
                 }
                 else
                 {

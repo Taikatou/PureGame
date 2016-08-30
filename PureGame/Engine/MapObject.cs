@@ -9,14 +9,10 @@ namespace PureGame.Engine
     public class MapObject : GameObject
     {
         public string MapName;
-
         public string CollisionLayerName;
-
         public TiledMap Map;
-
-        private readonly ContentManager _content;
-
         public TiledTileLayer TileCollisionLayer;
+        private readonly ContentManager _content;
 
         public bool CheckCollision(int x, int y)
         {
