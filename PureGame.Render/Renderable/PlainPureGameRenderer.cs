@@ -34,6 +34,7 @@ namespace PureGame.Render.Renderable
             if (_layerName != layer.Name)
             {
                 Render = new RenderLayer(layer, ViewPort, FocusEntity);
+                _layerName = layer.Name;
             }
             Render.Update(time);
         }
