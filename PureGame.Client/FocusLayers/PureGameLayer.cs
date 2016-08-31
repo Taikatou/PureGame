@@ -1,11 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
-using PureGame.Client.Controllers;
-using PureGame.Engine.Controllers;
+using PureGame.Engine;
+using PureGame.Engine.Controls;
 using PureGame.Engine.EntityData;
+using PureGame.Engine.World;
 
 namespace PureGame.Client.FocusLayers
 {
-    public class PureGameLayer : ILayer
+    public class PureGameLayer : ILayer, IWorldController
     {
         public const int CachedMovementResetValue = -1;
         public int CachedMovement = CachedMovementResetValue;
@@ -14,10 +15,9 @@ namespace PureGame.Client.FocusLayers
         private readonly EntityObject _entity;
         public PureGame PureGame;
 
-        public string Name
-        {
-            get { return PureGame.WorldManager.CurrentWorld.Name; }
-        }
+        public string Name => CurrentWorld.Name;
+
+        public WorldArea CurrentWorld => PureGame.WorldManager.CurrentWorld;
 
         public PureGameLayer(EntityObject entity, PureGame pureGame)
         {
@@ -30,12 +30,12 @@ namespace PureGame.Client.FocusLayers
         {
             if (controller.Buttons[(int)Controls.A].NewActive)
             {
-                _entity.RequentInteraction = true;
+                CurrentWorld.ProccessInteraction(_entity);
             }
             Direction cachedMoveDiection = GetMovementDirection(controller);
             if (cachedMoveDiection != Direction.None)
             {
-                bool entityMoving = PureGame.WorldManager.CurrentWorld.EntityManager.EntityCurrentlyMoving(_entity);
+                bool entityMoving = CurrentWorld.EntityManager.EntityCurrentlyMoving(_entity);
                 if (!entityMoving && _entity.FacingDirection != cachedMoveDiection)
                 {
                     _entity.FacingDirection = cachedMoveDiection;
@@ -44,7 +44,7 @@ namespace PureGame.Client.FocusLayers
                 else if (Timer <= 0)
                 {
                     _entity.MovementDirection = cachedMoveDiection;
-                    _entity.RequestMovement = true;
+                    CurrentWorld.ProccessMovement(_entity);
                 }
                 else
                 {
@@ -71,7 +71,7 @@ namespace PureGame.Client.FocusLayers
                 CachedMovement = CachedMovementResetValue;
             }
             // Else look for another button
-            for (int i = 0; i < (int)Direction.None; i++)
+            for (var i = 0; i < (int)Direction.None; i++)
             {
                 if (controller.Buttons[i].Active)
                 {
@@ -81,6 +81,11 @@ namespace PureGame.Client.FocusLayers
             }
             // Else return false
             return Direction.None;
+        }
+
+        public void Interact(IWorldController worldController)
+        {
+            
         }
     }
 }

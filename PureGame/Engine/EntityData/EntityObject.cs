@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using PureGame.Engine.Controllers;
 using PureGame.SmallGame;
 
 namespace PureGame.Engine.EntityData
@@ -14,6 +13,7 @@ namespace PureGame.Engine.EntityData
         public Direction MovementDirection;
         public Direction FacingDirection;
         public bool Running;
+        public int Speed => Running ? _runningSpeed : _walkingSpeed;
 
         private static Direction[] _reverseDirections;
         public static Direction[] ReverseDirections
