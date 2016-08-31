@@ -34,9 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\KeyBoardController.cs" />
-    <Compile Include="Controllers\SmartControl.cs" />
     <Compile Include="Controllers\SmartKey.cs" />
     <Compile Include="FocusLayers\ILayer.cs" />
     <Compile Include="FocusLayers\PureGameLayer.cs" />

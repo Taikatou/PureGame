@@ -6,18 +6,18 @@ namespace PureGame.Engine
     {
         public static ContentManagerManager Instance;
 
-        ContentManager base_manager;
+        private readonly ContentManager _baseManager;
 
-        public ContentManagerManager(ContentManager base_manager)
+        public ContentManagerManager(ContentManager baseManager)
         {
-            this.base_manager = base_manager;
+            _baseManager = baseManager;
         }
 
         public static ContentManager RequestContentManager()
         {
-            ContentManager base_content = Instance.base_manager;
-            ContentManager new_manager = new ContentManager(base_content.ServiceProvider, base_content.RootDirectory);
-            return new_manager;
+            ContentManager baseContent = Instance._baseManager;
+            ContentManager newManager = new ContentManager(baseContent.ServiceProvider, baseContent.RootDirectory);
+            return newManager;
         }
     }
 }

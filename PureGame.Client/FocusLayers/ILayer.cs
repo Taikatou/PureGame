@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using PureGame.Client.Controllers;
+using PureGame.Engine.Controls;
 
 namespace PureGame.Client.FocusLayers
 {

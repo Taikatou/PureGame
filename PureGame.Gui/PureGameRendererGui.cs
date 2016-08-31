@@ -8,9 +8,9 @@ namespace PureGame.Gui
     public class PureGameRendererGui
     {
         public PlainPureGameRendererDebug GameRenderer;
-        public PureGameRendererGui(PlainPureGameRendererDebug GameRenderer)
+        public PureGameRendererGui(PlainPureGameRendererDebug gameRenderer)
         {
-            this.GameRenderer = GameRenderer;
+            GameRenderer = gameRenderer;
         }
 
         public void Update(GameTime timer)
@@ -23,9 +23,9 @@ namespace PureGame.Gui
             GameRenderer.ChangeFocus(e);
         }
 
-        public void Draw(SpriteBatch sprite_batch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            GameRenderer.Draw(sprite_batch);
+            GameRenderer.Draw(spriteBatch);
         }
     }
 }

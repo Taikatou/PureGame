@@ -37,12 +37,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Engine\ContentManagerManager.cs" />
+    <Compile Include="Engine\Controls\SmartControl.cs" />
     <Compile Include="Engine\DirectionMapper.cs" />
     <Compile Include="Engine\EntityData\EntityObject.cs" />
     <Compile Include="Engine\EntityData\EntityManager.cs" />
+    <Compile Include="Engine\Controls\IController.cs" />
+    <Compile Include="Engine\StoryEngine\IStoryController.cs" />
+    <Compile Include="Engine\StoryEngine\StoryEngine.cs" />
     <Compile Include="Engine\World\ExpiringKey.cs" />
     <Compile Include="Engine\MapObject.cs" />
     <Compile Include="Engine\World\WorldArea.cs" />
+    <Compile Include="Engine\World\IWorldController.cs" />
     <Compile Include="IFileReader.cs" />
     <Compile Include="PureGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

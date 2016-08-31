@@ -5,7 +5,6 @@ using MonoGame.Extended;
 using MonoGame.Extended.Maps.Tiled;
 using MonoGame.Extended.ViewportAdapters;
 using PureGame.Engine;
-using PureGame.Engine.Controllers;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
 using System.Collections.Generic;

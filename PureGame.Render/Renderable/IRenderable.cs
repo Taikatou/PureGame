@@ -5,7 +5,7 @@ namespace PureGame.Render.Renderable
 {
     public interface IRenderable
     {
-        void Draw(SpriteBatch sprite_batch);
+        void Draw(SpriteBatch spriteBatch);
         void Update(GameTime time);
     }
 }

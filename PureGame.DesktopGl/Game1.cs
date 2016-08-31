@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.ViewportAdapters;
 using PureGame.Client;
 using PureGame.Client.Controllers;
-using PureGame.Engine.Controllers;
 using PureGame.Engine.EntityData;
 using PureGame.Render.Renderable;
 
@@ -27,7 +26,7 @@ namespace PureGame.DesktopGl
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             BoxingViewportAdapter viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, Width, Height);
             var game = new PureGame(Content, new FileReader("Data"));
-            EntityObject player = new EntityObject(new Vector2(4, 4), "Test", "CharacterSheet", Direction.Down);
+            EntityObject player = new EntityObject(new Vector2(4, 4), "Test", "CharacterSheet");
             _gameClient = new PureGameClient(game, player, new KeyBoardController());
             var gameRenderer = new PlainPureGameRenderer(_gameClient, viewportAdapter, player);
             _gameRenderer = new PlainPureGameRendererDebug(gameRenderer);

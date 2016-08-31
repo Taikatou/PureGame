@@ -20,7 +20,7 @@
         /// <summary>
         /// Gets the Name of the Level
         /// </summary>
-        public string Name { get { return Data.Name; } }
+        public string Name => Data.Name;
 
 
         protected GameLevel()

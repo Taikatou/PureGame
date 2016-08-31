@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
-namespace PureGame.Engine.Controllers
+namespace PureGame.Engine
 {
     public enum Direction { Left, Right, Up, Down, None };
     public class DirectionMapper
@@ -24,34 +24,24 @@ namespace PureGame.Engine.Controllers
             ReverseMappedDirections[m] = d;
         }
 
-        public static Vector2 GetMovementFromDirection(Direction Facing)
+        public static Vector2 GetMovementFromDirection(Direction facing)
         {
-            return Instance.MappedDirections[Facing];
+            return Instance.MappedDirections[facing];
         }
 
-        public static Direction GetDirectionFromMovment(Vector2 Movement)
+        public static Direction GetDirectionFromMovment(Vector2 movement)
         {
-            if(!Instance.ReverseMappedDirections.ContainsKey(Movement))
+            if(!Instance.ReverseMappedDirections.ContainsKey(movement))
             {
                 return Direction.None;
             }
             else
             {
-                return Instance.ReverseMappedDirections[Movement];
+                return Instance.ReverseMappedDirections[movement];
             }
         }
 
-        protected static DirectionMapper instance;
-        public static DirectionMapper Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new DirectionMapper();
-                }
-                return instance;
-            }
-        }
+        protected static DirectionMapper _instance;
+        public static DirectionMapper Instance => _instance ?? (_instance = new DirectionMapper());
     }
 }

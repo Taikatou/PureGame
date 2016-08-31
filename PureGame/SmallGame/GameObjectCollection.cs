@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace PureGame.SmallGame
@@ -10,7 +9,7 @@ namespace PureGame.SmallGame
 
         public Dictionary<string, List<GameObject>> Objects { get; set; }
 
-        private Dictionary<string, GameObject> _objectMap;
+        private readonly Dictionary<string, GameObject> _objectMap;
 
         public GameObjectCollection()
         {

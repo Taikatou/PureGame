@@ -4,15 +4,15 @@ namespace PureGame.DesktopGl
 {
     public class FileReader : IFileReader
     {
-        private readonly string HomePath;
+        private readonly string _homePath;
         public string ReadAllText(string jsonPath)
         {
-            return File.ReadAllText(HomePath + "/" + jsonPath);
+            return File.ReadAllText(_homePath + "/" + jsonPath);
         }
 
-        public FileReader(string HomePath="")
+        public FileReader(string homePath="")
         {
-            this.HomePath = HomePath;
+            _homePath = homePath;
         }
     }
 }

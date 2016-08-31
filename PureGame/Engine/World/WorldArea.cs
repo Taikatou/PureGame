@@ -2,41 +2,34 @@
 using Microsoft.Xna.Framework.Content;
 using PureGame.Engine.EntityData;
 using System.Diagnostics;
-using PureGame.Engine.Controllers;
 using PureGame.SmallGame;
+using System.Collections.Generic;
 
 namespace PureGame.Engine.World
 {
     public class WorldArea : GameLevel
     {
-        public enum MessageCode { Refresh }
         public ContentManager Content;
         public EntityManager EntityManager;
         public MapObject Map;
         public bool Updated;
+        private readonly Dictionary<EntityObject, IWorldController> _worldControllers;
         public WorldArea()
         {
             Updated = false;
             Content = ContentManagerManager.RequestContentManager();
             EntityManager = new EntityManager();
+            _worldControllers = new Dictionary<EntityObject, IWorldController>();
+        }
+
+        public void RegisterWorldController(IWorldController worldController, EntityObject entity)
+        {
+            _worldControllers[entity] = worldController;
         }
 
         public void Update(GameTime time)
         {
             EntityManager.Update(time);
-            foreach (var entity in EntityManager.Entities)
-            {
-                if (entity.RequentInteraction)
-                {
-                    ProccessInteraction(entity);
-                    entity.RequentInteraction = false;
-                }
-                if (entity.RequestMovement)
-                {
-                    ProccessMovement(entity);
-                    entity.RequestMovement = false;
-                }
-            }
         }
 
         public void ProccessInteraction(EntityObject e)
@@ -48,7 +41,11 @@ namespace PureGame.Engine.World
                 if (EntityManager.SpatialHash.ContainsKey(newPosition))
                 {
                     EntityObject interactEntity = EntityManager.SpatialHash[newPosition];
-                    e.Interact(interactEntity);
+                    if (_worldControllers.ContainsKey(interactEntity))
+                    {
+                        var interactWith = _worldControllers[interactEntity];
+                        _worldControllers[e].Interact(interactWith);
+                    }
                 }
             }
         }
@@ -61,7 +58,7 @@ namespace PureGame.Engine.World
                 Vector2 newPosition = e.Position + movementPosition;
                 if (ValidPosition(newPosition))
                 {
-                    var movementKey = new ExpiringKey<Vector2>(e.Position, e.GetSpeed());
+                    var movementKey = new ExpiringKey<Vector2>(e.Position, e.Speed);
                     EntityManager.AddEntityKey(e, movementKey);
                     e.Position = newPosition;
                     Updated = true;
@@ -95,10 +92,9 @@ namespace PureGame.Engine.World
         {
             Map = Objects.GetObjects<MapObject>()[0];
             Map.OnInit();
-
-            foreach(EntityObject e in Objects.GetObjects<EntityObject>())
+            foreach(var entity in Objects.GetObjects<EntityObject>())
             {
-                AddEntity(e);
+                AddEntity(entity);
             }
         }
     }

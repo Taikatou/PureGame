@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
+using PureGame.Engine.Controls;
 
 namespace PureGame.Client.Controllers
 {

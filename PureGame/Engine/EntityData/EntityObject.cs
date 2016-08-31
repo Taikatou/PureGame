@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.Controllers;
 using PureGame.SmallGame;
-using System.Diagnostics;
 
 namespace PureGame.Engine.EntityData
 {
@@ -9,19 +8,12 @@ namespace PureGame.Engine.EntityData
     {
         private readonly int _walkingSpeed;
         private readonly int _runningSpeed;
-        private bool _currentlyInteracting;
         public string FileName;
         //This is not supposed to be changed directly only through entityManager
         public Vector2 Position;
         public Direction MovementDirection;
         public Direction FacingDirection;
         public bool Running;
-        public bool RequestMovement;
-        public bool RequentInteraction;
-        public int GetSpeed()
-        {
-            return Running ? _runningSpeed : _walkingSpeed;
-        }
 
         private static Direction[] _reverseDirections;
         public static Direction[] ReverseDirections
@@ -55,30 +47,6 @@ namespace PureGame.Engine.EntityData
         {
             _walkingSpeed = 500;
             _runningSpeed = 250;
-        }
-
-        public bool InteractWith(EntityObject interactWith)
-        {
-            if (!_currentlyInteracting)
-            {
-                FacingDirection = ReverseDirections[(int)interactWith.FacingDirection];
-                Debug.WriteLine("Move entity " + interactWith.Id);
-                _currentlyInteracting = true;
-                return true;
-            }
-            return false;
-        }
-
-        public void Interact(EntityObject interactWith)
-        {
-            if (!_currentlyInteracting)
-            {
-                Debug.WriteLine(Id + " Interact with " + interactWith.Id);
-                if(interactWith.InteractWith(this))
-                {
-                    _currentlyInteracting = false;
-                }
-            }
         }
     }
 }
