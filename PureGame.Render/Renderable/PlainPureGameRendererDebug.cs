@@ -12,10 +12,10 @@ namespace PureGame.Render.Renderable
     {
         private readonly FramesPerSecondCounter _fpsCounter;
         private readonly BitmapFont _bitmapFont;
-        public PlainPureGameRenderer GameRenderer;
+        public IPureGameRenderer GameRenderer;
         public readonly ContentManager Content;
 
-        public PlainPureGameRendererDebug(PlainPureGameRenderer gameRenderer, string fontName="montserrat-32")
+        public PlainPureGameRendererDebug(IPureGameRenderer gameRenderer, string fontName="montserrat-32")
         {
             GameRenderer = gameRenderer;
             _fpsCounter = new FramesPerSecondCounter();
@@ -38,7 +38,7 @@ namespace PureGame.Render.Renderable
 
         public void ChangeFocus(EntityObject e)
         {
-            GameRenderer.FocusEntity = e;
+            GameRenderer.ChangeFocus(e);
         }
     }
 }

@@ -11,8 +11,8 @@ namespace PureGame.Client.Controllers
 
         public void Update(GameTime time)
         {
-            KeyboardState state = Keyboard.GetState();
-            foreach (SmartKey button in _buttons)
+            var state = Keyboard.GetState();
+            foreach (var button in _buttons)
             {
                 button.Update(state);
             }

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using PureGame.Engine.EntityData;
 using System.Diagnostics;
 using PureGame.SmallGame;
-using System.Collections.Generic;
+using PureGame.Engine.Events;
 
 namespace PureGame.Engine.World
 {
@@ -11,20 +11,13 @@ namespace PureGame.Engine.World
     {
         public ContentManager Content;
         public EntityManager EntityManager;
+        public TriggerManager TriggerManager;
         public MapObject Map;
         public bool Updated;
-        private readonly Dictionary<EntityObject, IWorldController> _worldControllers;
         public WorldArea()
         {
-            Updated = false;
+            Updated = true;
             Content = ContentManagerManager.RequestContentManager();
-            EntityManager = new EntityManager();
-            _worldControllers = new Dictionary<EntityObject, IWorldController>();
-        }
-
-        public void RegisterWorldController(IWorldController worldController, EntityObject entity)
-        {
-            _worldControllers[entity] = worldController;
         }
 
         public void Update(GameTime time)
@@ -37,15 +30,12 @@ namespace PureGame.Engine.World
             if (!EntityManager.EntityCurrentlyMoving(e))
             {
                 var facingPosition = DirectionMapper.GetMovementFromDirection(e.FacingDirection);
-                Vector2 newPosition = e.Position + facingPosition;
+                var newPosition = e.Position + facingPosition;
                 if (EntityManager.SpatialHash.ContainsKey(newPosition))
                 {
-                    EntityObject interactEntity = EntityManager.SpatialHash[newPosition];
-                    if (_worldControllers.ContainsKey(interactEntity))
-                    {
-                        var interactWith = _worldControllers[interactEntity];
-                        _worldControllers[e].Interact(interactWith);
-                    }
+                    var interactEntity = EntityManager.SpatialHash[newPosition];
+                    var direction = DirectionMapper.GetDirectionFromMovment(e.Position - interactEntity.Position);
+                    interactEntity.FacingDirection = direction;
                 }
             }
         }
@@ -55,12 +45,13 @@ namespace PureGame.Engine.World
             if (!EntityManager.EntityCurrentlyMoving(e))
             {
                 var movementPosition = DirectionMapper.GetMovementFromDirection(e.MovementDirection);
-                Vector2 newPosition = e.Position + movementPosition;
+                var newPosition = e.Position + movementPosition;
                 if (ValidPosition(newPosition))
                 {
                     var movementKey = new ExpiringKey<Vector2>(e.Position, e.Speed);
                     EntityManager.AddEntityKey(e, movementKey);
                     e.Position = newPosition;
+                    TriggerManager.Trigger(e);
                     Updated = true;
                 }
                 e.FacingDirection = e.MovementDirection;
@@ -73,12 +64,11 @@ namespace PureGame.Engine.World
 
         private bool ValidPosition(Vector2 position)
         {
-            bool withinLimits = position.X >= 0 && position.Y >= 0 &&
-                                position.X < Map.Map.Width &&
-                                position.Y < Map.Map.Height;
-            bool entityCollision = !EntityManager.SpatialHash.ContainsKey(position);
-            bool mapCollision = !Map.CheckCollision(position);
-            Debug.WriteLine("Map collision: " + mapCollision);
+            var withinLimits = position.X >= 0 && position.Y >= 0 &&
+                               position.X < Map.Map.Width &&
+                               position.Y < Map.Map.Height;
+            var entityCollision = !EntityManager.SpatialHash.ContainsKey(position);
+            var mapCollision = !Map.CheckCollision(position);
             return withinLimits && entityCollision && mapCollision;
         }
 
@@ -88,14 +78,12 @@ namespace PureGame.Engine.World
             Map?.UnLoad();
         }
 
-        public void OnInit()
+        public void OnInit(WorldManager worldManager)
         {
             Map = Objects.GetObjects<MapObject>()[0];
             Map.OnInit();
-            foreach(var entity in Objects.GetObjects<EntityObject>())
-            {
-                AddEntity(entity);
-            }
+            TriggerManager = new TriggerManager(Objects.GetObjects<TriggerObject>(), worldManager);
+            EntityManager = new EntityManager(Objects.GetObjects<EntityObject>());
         }
     }
 }

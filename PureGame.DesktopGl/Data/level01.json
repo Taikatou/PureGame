@@ -38,6 +38,12 @@
         "Position": "4, 5",
         "Id": "test"
       }
+    },
+    {
+      "Type": "TriggerObject",
+      "Data": {
+        "Position":  "0, 0" 
+      }  
     }
   ]
 }

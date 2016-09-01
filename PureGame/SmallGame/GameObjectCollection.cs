@@ -7,29 +7,29 @@ namespace PureGame.SmallGame
     public class GameObjectCollection
     {
 
-        public Dictionary<string, List<GameObject>> Objects { get; set; }
+        public Dictionary<string, List<IGameObject>> Objects { get; set; }
 
-        private readonly Dictionary<string, GameObject> _objectMap;
+        private readonly Dictionary<string, IGameObject> _objectMap;
 
         public GameObjectCollection()
         {
-            Objects = new Dictionary<string, List<GameObject>>();
-            _objectMap = new Dictionary<string, GameObject>();
+            Objects = new Dictionary<string, List<IGameObject>>();
+            _objectMap = new Dictionary<string, IGameObject>();
         }
 
-        public void Add(GameObject obj)
+        public void Add(IGameObject obj)
         {
             if (obj == null) return; // do nothing with a null object.
 
             if (!Objects.ContainsKey(obj.Type))
             {
-                Objects.Add(obj.Type, new List<GameObject>());
+                Objects.Add(obj.Type, new List<IGameObject>());
             }
             _objectMap.Add(obj.Id, obj);
             Objects[obj.Type].Add(obj);
         }
 
-        public List<T> GetObjects<T>() where T : GameObject
+        public List<T> GetObjects<T>() where T : IGameObject
         {
             if (Objects.ContainsKey(typeof(T).Name))
             {

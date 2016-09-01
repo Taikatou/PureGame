@@ -22,7 +22,6 @@
         /// </summary>
         public string Name => Data.Name;
 
-
         protected GameLevel()
         {
             Objects = new GameObjectCollection();

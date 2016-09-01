@@ -13,7 +13,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
     {
         private readonly EntityObject _baseEntity;
         private readonly Texture2D _entityTexture;
-        private readonly RenderWorld _parent;
+        private readonly RenderWorldLayer _parent;
         //Right Left Up Down
         private readonly Animation[] _walking;
         private readonly Animation[] _standing;
@@ -22,7 +22,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
 
         private Animation _currentAnimation;
         private Vector2 _previousPosition;
-        public RenderEntity(EntityObject baseEntity, RenderWorld parent, ContentManager content)
+        public RenderEntity(EntityObject baseEntity, RenderWorldLayer parent, ContentManager content)
         {
             _parent = parent;
             _baseEntity = baseEntity;

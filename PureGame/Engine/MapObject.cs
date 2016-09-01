@@ -6,9 +6,11 @@ using System.Diagnostics;
 
 namespace PureGame.Engine
 {
-    public class MapObject : GameObject
+    public class MapObject : IGameObject
     {
         public string MapName;
+        public string Id { get; set; }
+        public string Type { get; set; }
         public string CollisionLayerName;
         public TiledMap Map;
         public TiledTileLayer TileCollisionLayer;
@@ -16,16 +18,8 @@ namespace PureGame.Engine
 
         public bool CheckCollision(int x, int y)
         {
-            TiledTile t = TileCollisionLayer.GetTile(x, y);
-            if (t == null)
-            {
-                Debug.WriteLine("Tile does not exist at : " + x + ", " + y);
-            }
-            else
-            {
-                Debug.WriteLine("Tile's id at : " + x + ", " + y + " is " + t.Id);
-            }
-            return !(t == null || t.Id == 0);
+            var tile = TileCollisionLayer.GetTile(x, y);
+            return !(tile == null || tile.Id == 0);
         }
 
         public bool CheckCollision(Vector2 position)

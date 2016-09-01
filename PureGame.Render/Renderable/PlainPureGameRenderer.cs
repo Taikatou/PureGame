@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.ViewportAdapters;
 using PureGame.Client;
@@ -7,7 +8,7 @@ using PureGame.Render.Renderable.RenderLayers;
 
 namespace PureGame.Render.Renderable
 {
-    public class PlainPureGameRenderer
+    public class PlainPureGameRenderer : IPureGameRenderer
     {
         public ViewportAdapter ViewPort;
         public PureGameClient GameClient;
@@ -33,10 +34,16 @@ namespace PureGame.Render.Renderable
             var layer = GameClient.Layers.Peek();
             if (_layerName != layer.Name)
             {
+                Render?.UnLoad();
                 Render = new RenderLayer(layer, ViewPort, FocusEntity);
                 _layerName = layer.Name;
             }
             Render.Update(time);
+        }
+
+        public void ChangeFocus(EntityObject e)
+        {
+            FocusEntity = e;
         }
     }
 }

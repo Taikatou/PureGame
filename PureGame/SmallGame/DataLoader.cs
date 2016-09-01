@@ -89,7 +89,7 @@ namespace PureGame.SmallGame
     /// An ldop built for GameObjects.
     /// </summary>
     /// <typeparam name="TG"></typeparam>
-    public class GameObjectParser<TG> : LevelDataObjectParser<TG> where TG : GameObject
+    public class GameObjectParser<TG> : LevelDataObjectParser<TG> where TG : IGameObject
     {
         public GameObjectParser() : base(typeof(TG).Name)
         {
@@ -117,7 +117,7 @@ namespace PureGame.SmallGame
 
     public class StandardGameObjectParser
     {
-        public static StandardGameObjectParser<TG> For<TG>() where TG : GameObject
+        public static StandardGameObjectParser<TG> For<TG>() where TG : IGameObject
         {
             return new StandardGameObjectParser<TG>();
         }
@@ -128,7 +128,7 @@ namespace PureGame.SmallGame
     /// 
     /// </summary>
     /// <typeparam name="TG"></typeparam>
-    public class StandardGameObjectParser<TG> : GameObjectParser<TG> where TG : GameObject
+    public class StandardGameObjectParser<TG> : GameObjectParser<TG> where TG : IGameObject
     {
         public override TG Parse(LevelDataObject obj)
         {
@@ -149,7 +149,7 @@ namespace PureGame.SmallGame
 
     public class DataLoader
     {
-        public Dictionary<string, LevelDataObjectParser> Parsers { get; private set; }
+        public Dictionary<string, LevelDataObjectParser> Parsers { get; }
 
         public DataLoader() : this(new Dictionary<string, LevelDataObjectParser>())
         {
@@ -220,9 +220,9 @@ namespace PureGame.SmallGame
                     if (validType && Parsers.ContainsKey(obj.Type))
                     {
                         var parsedObj = Parsers[obj.Type].ParseFunction(obj);
-                        var o = parsedObj as GameObject;
+                        var o = parsedObj as IGameObject;
                         if (o == null) continue;
-                        GameObject gameObject = o;
+                        IGameObject gameObject = o;
                         lvl.Objects.Add(gameObject);
                     }
                 }

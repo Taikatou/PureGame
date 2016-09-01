@@ -17,7 +17,7 @@ namespace PureGame.Client.FocusLayers
 
         public string Name => CurrentWorld.Name;
 
-        public WorldArea CurrentWorld => PureGame.WorldManager.CurrentWorld;
+        public WorldArea CurrentWorld => PureGame.WorldManager.GetEntitysWorld(_entity);
 
         public PureGameLayer(EntityObject entity, PureGame pureGame)
         {

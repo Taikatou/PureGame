@@ -42,8 +42,8 @@
     <Compile Include="Engine\EntityData\EntityObject.cs" />
     <Compile Include="Engine\EntityData\EntityManager.cs" />
     <Compile Include="Engine\Controls\IController.cs" />
-    <Compile Include="Engine\StoryEngine\IStoryController.cs" />
-    <Compile Include="Engine\StoryEngine\StoryEngine.cs" />
+    <Compile Include="Engine\Events\TriggerManager.cs" />
+    <Compile Include="Engine\Events\TriggerObject.cs" />
     <Compile Include="Engine\World\ExpiringKey.cs" />
     <Compile Include="Engine\MapObject.cs" />
     <Compile Include="Engine\World\WorldArea.cs" />
@@ -51,7 +51,7 @@
     <Compile Include="IFileReader.cs" />
     <Compile Include="PureGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SmallGame\GameObject.cs" />
+    <Compile Include="SmallGame\IGameObject.cs" />
     <Compile Include="SmallGame\DataLoader.cs" />
     <Compile Include="SmallGame\GameLevel.cs" />
     <Compile Include="SmallGame\GameObjectCollection.cs" />
