@@ -5,7 +5,7 @@
     {
       "Type": "MapObject",
       "Data": {
-        "MapName": "untitled",
+        "MapName": "level01",
         "CollisionLayerName": "Collision Layer"
       }
     },

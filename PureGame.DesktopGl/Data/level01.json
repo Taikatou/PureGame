@@ -42,7 +42,8 @@
     {
       "Type": "TriggerObject",
       "Data": {
-        "Position":  "0, 0" 
+        "Position": "0, 0",
+        "EndPosition" :  "7, 1"
       }  
     }
   ]

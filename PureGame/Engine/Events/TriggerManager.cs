@@ -21,15 +21,22 @@ namespace PureGame.Engine.Events
             }
         }
 
-        public void Trigger(EntityObject entity)
+        public TileEvent Trigger(EntityObject entity)
         {
             var position = entity.Position;
+            TileEvent toReturn = new TileEvent(position);
             if (_spatialTriggers.ContainsKey(position))
             {
-                Debug.WriteLine("Activate trigger:" + position);
-                var newWorld = _spatialTriggers[position].Value;
-                _worldManager.AddEntity(entity, newWorld);
+                var trigger = _spatialTriggers[position];
+                toReturn.TriggerEvent += (sender, args) =>
+                {
+                    Debug.WriteLine("Activate trigger:" + position);
+                    var newWorld = trigger.Value;
+                    entity.Position = trigger.EndPosition;
+                    _worldManager.AddEntity(entity, newWorld);
+                };
             }
+            return toReturn;
         }
     }
 }

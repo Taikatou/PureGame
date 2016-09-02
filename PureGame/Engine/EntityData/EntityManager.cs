@@ -1,14 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using PureGame.Engine.Events;
 using PureGame.Engine.World;
 
 namespace PureGame.Engine.EntityData
 {
     public class EntityManager
     {
-        public List<ExpiringKey<Vector2>> ExpiringTiles;
-        public Dictionary<ExpiringKey<Vector2>, EntityObject> KeyToEntity;
-        public Dictionary<EntityObject, ExpiringKey<Vector2>> EntityToKey;
+        public List<ExpiringKey<TileEvent>> ExpiringTiles;
+        public Dictionary<ExpiringKey<TileEvent>, EntityObject> KeyToEntity;
+        public Dictionary<EntityObject, ExpiringKey<TileEvent>> EntityToKey;
         public Dictionary<Vector2, EntityObject> SpatialHash;
         public Dictionary<string, EntityObject> IdHash;
         public List<EntityObject> Entities;
@@ -17,9 +18,9 @@ namespace PureGame.Engine.EntityData
         {
             IdHash = new Dictionary<string, EntityObject>();
             Entities = new List<EntityObject>();
-            ExpiringTiles = new List<ExpiringKey<Vector2>>();
-            EntityToKey = new Dictionary<EntityObject, ExpiringKey<Vector2>>();
-            KeyToEntity = new Dictionary<ExpiringKey<Vector2>, EntityObject>();
+            ExpiringTiles = new List<ExpiringKey<TileEvent>>();
+            EntityToKey = new Dictionary<EntityObject, ExpiringKey<TileEvent>>();
+            KeyToEntity = new Dictionary<ExpiringKey<TileEvent>, EntityObject>();
             SpatialHash = new Dictionary<Vector2, EntityObject>();
             foreach (var entity in entities)
             {
@@ -55,7 +56,7 @@ namespace PureGame.Engine.EntityData
             }
         }
 
-        public void AddEntityKey(EntityObject e, ExpiringKey<Vector2> key)
+        public void AddEntityKey(EntityObject e, ExpiringKey<TileEvent> key)
         {
             ExpiringTiles.Add(key);
             EntityToKey[e] = key;
@@ -77,11 +78,12 @@ namespace PureGame.Engine.EntityData
 
         public void RemoveTile(int i)
         {
-            var position = ExpiringTiles[i].Key;
+            var position = ExpiringTiles[i].Key.Position;
             var entitiy = KeyToEntity[ExpiringTiles[i]];
             SpatialHash.Remove(position);
             EntityToKey.Remove(entitiy);
             KeyToEntity.Remove(ExpiringTiles[i]);
+            ExpiringTiles[i].Key.Trigger();
             ExpiringTiles.RemoveAt(i);
         }
 

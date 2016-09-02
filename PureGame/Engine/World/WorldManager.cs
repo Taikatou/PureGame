@@ -58,9 +58,9 @@ namespace PureGame.Engine.World
 
         public void Update(GameTime time)
         {
-            foreach (var world in _worldList)
+            for (var i = 0; i < _worldList.Count; i++)
             {
-                world.Update(time);
+                _worldList[i].Update(time);
             }
         }
     }

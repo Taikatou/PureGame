@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using PureGame.Engine.EntityData;
-using System.Diagnostics;
 using PureGame.SmallGame;
 using PureGame.Engine.Events;
 
@@ -12,32 +12,59 @@ namespace PureGame.Engine.World
         public ContentManager Content;
         public EntityManager EntityManager;
         public TriggerManager TriggerManager;
+        public Dictionary<EntityObject, EntityObject> Interactions;
         public MapObject Map;
         public bool Updated;
         public WorldArea()
         {
             Updated = true;
             Content = ContentManagerManager.RequestContentManager();
+            Interactions = new Dictionary<EntityObject, EntityObject>();
         }
 
-        public void Update(GameTime time)
-        {
-            EntityManager.Update(time);
-        }
+        public void Update(GameTime time) => EntityManager.Update(time);
 
-        public void ProccessInteraction(EntityObject e)
+        public void ProccessInteraction(EntityObject entity)
         {
-            if (!EntityManager.EntityCurrentlyMoving(e))
+            if (!(entity.CurrentlyInteracting || EntityManager.EntityCurrentlyMoving(entity)))
             {
-                var facingPosition = DirectionMapper.GetMovementFromDirection(e.FacingDirection);
-                var newPosition = e.Position + facingPosition;
+                var facingPosition = DirectionMapper.GetMovementFromDirection(entity.FacingDirection);
+                var newPosition = entity.Position + facingPosition;
                 if (EntityManager.SpatialHash.ContainsKey(newPosition))
                 {
                     var interactEntity = EntityManager.SpatialHash[newPosition];
-                    var direction = DirectionMapper.GetDirectionFromMovment(e.Position - interactEntity.Position);
-                    interactEntity.FacingDirection = direction;
+                    ProccessInteraction(entity, interactEntity);
                 }
             }
+        }
+
+        public void ProccessInteraction(EntityObject entity, EntityObject interactWith)
+        {
+            if (!interactWith.CurrentlyInteracting)
+            {
+                //Move entity to face
+                var directionVector = entity.Position - interactWith.Position;
+                var direction = DirectionMapper.GetDirectionFromMovment(directionVector);
+                interactWith.FacingDirection = direction;
+                //start interaction
+                AddInteraction(entity, interactWith);
+            }
+        }
+
+        public void AddInteraction(EntityObject entity, EntityObject interactWith)
+        {
+            interactWith.CurrentlyInteracting = true;
+            entity.CurrentlyInteracting = true;
+            Interactions[entity] = interactWith;
+            Interactions[interactWith] = entity;
+        }
+
+        public void RemoveInteraction(EntityObject entity, EntityObject interactWith)
+        {
+            interactWith.CurrentlyInteracting = true;
+            entity.CurrentlyInteracting = true;
+            Interactions.Remove(entity);
+            Interactions.Remove(interactWith);
         }
 
         public void ProccessMovement(EntityObject e)
@@ -48,10 +75,10 @@ namespace PureGame.Engine.World
                 var newPosition = e.Position + movementPosition;
                 if (ValidPosition(newPosition))
                 {
-                    var movementKey = new ExpiringKey<Vector2>(e.Position, e.Speed);
-                    EntityManager.AddEntityKey(e, movementKey);
                     e.Position = newPosition;
-                    TriggerManager.Trigger(e);
+                    var triggerEvent = TriggerManager.Trigger(e);
+                    var movementKey = new ExpiringKey<TileEvent>(triggerEvent, e.Speed);
+                    EntityManager.AddEntityKey(e, movementKey);
                     Updated = true;
                 }
                 e.FacingDirection = e.MovementDirection;

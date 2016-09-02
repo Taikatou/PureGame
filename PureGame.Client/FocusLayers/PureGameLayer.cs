@@ -26,16 +26,16 @@ namespace PureGame.Client.FocusLayers
             Timer = 0;
         }
 
-        public void UpdateController(IController controller, GameTime time)
+        private void UpdateCharacter(IController controller, GameTime time)
         {
             if (controller.Buttons[(int)Controls.A].NewActive)
             {
                 CurrentWorld.ProccessInteraction(_entity);
             }
-            Direction cachedMoveDiection = GetMovementDirection(controller);
+            var cachedMoveDiection = GetMovementDirection(controller);
             if (cachedMoveDiection != Direction.None)
             {
-                bool entityMoving = CurrentWorld.EntityManager.EntityCurrentlyMoving(_entity);
+                var entityMoving = CurrentWorld.EntityManager.EntityCurrentlyMoving(_entity);
                 if (!entityMoving && _entity.FacingDirection != cachedMoveDiection)
                 {
                     _entity.FacingDirection = cachedMoveDiection;
@@ -52,6 +52,18 @@ namespace PureGame.Client.FocusLayers
                 }
             }
             _entity.Running = controller.Buttons[(int)Controls.B].Active;
+        }
+
+        public void UpdateController(IController controller, GameTime time)
+        {
+            if (!_entity.CurrentlyInteracting)
+            {
+                UpdateCharacter(controller, time);
+            }
+            else
+            {
+                
+            }
         }
 
         public void UpdateData(GameTime time)
