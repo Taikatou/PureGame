@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.Events;
@@ -34,6 +35,7 @@ namespace PureGame.Engine.World
             }
             LoadWorld(newWorldName);
             _entityMapper[entity] = _worlds[newWorldName];
+            Debug.WriteLine(entity.Id);
             _entityMapper[entity].AddEntity(entity);
         }
 

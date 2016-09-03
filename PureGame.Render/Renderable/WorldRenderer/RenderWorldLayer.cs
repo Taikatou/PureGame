@@ -8,6 +8,7 @@ using PureGame.Engine;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
 using System.Collections.Generic;
+using MonoGame.Extended.BitmapFonts;
 
 namespace PureGame.Render.Renderable.WorldRenderer
 {
@@ -22,15 +23,20 @@ namespace PureGame.Render.Renderable.WorldRenderer
         private readonly Camera2D _camera;
         private List<RenderEntity> _toDraw;
         private readonly ContentManager _content;
-        public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, EntityObject focusEntity, ContentManager content)
+        private readonly BitmapFont _bitmapFont;
+        private ViewportAdapter _viewPort;
+        public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, EntityObject focusEntity, ContentManager content, string fontName="montserrat-32")
         {
             FocusEntity = focusEntity;
+            _viewPort = viewPort;
             World = world;
             _camera = new Camera2D(viewPort) {Zoom = 0.25f};
             _content = content;
             _map = world.Map.Map;
             TileSize = new Vector2(_map.TileWidth, _map.TileHeight);
             _entitySprites = new Dictionary<string, RenderEntity>();
+            string fileName = $"Fonts/{fontName}";
+            _bitmapFont = _content.Load<BitmapFont>(fileName);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -44,6 +50,17 @@ namespace PureGame.Render.Renderable.WorldRenderer
                 r.Draw(spriteBatch);
             }
             spriteBatch.End();
+            // Draw interactions
+            if (World.CurrentlyInteracting(FocusEntity))
+            {
+                var text = "Interacting";
+                var stringSize = _bitmapFont.MeasureString(text);
+                var textPosition = new Vector2(_viewPort.ViewportWidth / 2.0f, _viewPort.ViewportHeight * 0.8f);
+                textPosition.X -= stringSize.X / 2;
+                spriteBatch.Begin();
+                spriteBatch.DrawString(_bitmapFont, text, textPosition, Color.Black);
+                spriteBatch.End();
+            }
         }
 
         public void Update(GameTime time)

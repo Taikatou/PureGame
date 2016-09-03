@@ -42,6 +42,8 @@
     <Compile Include="Engine\EntityData\EntityObject.cs" />
     <Compile Include="Engine\EntityData\EntityManager.cs" />
     <Compile Include="Engine\Controls\IController.cs" />
+    <Compile Include="Engine\Events\Interaction.cs" />
+    <Compile Include="Engine\Events\InteractionManager.cs" />
     <Compile Include="Engine\Events\TileEvent.cs" />
     <Compile Include="Engine\Events\TriggerManager.cs" />
     <Compile Include="Engine\Events\TriggerObject.cs" />
