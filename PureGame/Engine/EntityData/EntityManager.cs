@@ -55,12 +55,12 @@ namespace PureGame.Engine.EntityData
             }
         }
 
-        public void AddEntityKey(EntityObject e, TileEvent tileEvent)
+        public void AddEntityKey(EntityObject e, TileEvent onCompleteEvent)
         {
             var movementKey = new ExpiringKey<Vector2>(e.Position, e.Speed);
-            if (tileEvent != null)
+            if (onCompleteEvent != null)
             {
-                TileEvents[movementKey] = tileEvent;
+                TileEvents[movementKey] = onCompleteEvent;
             }
             ExpiringTiles.Add(movementKey);
             EntityToKey[e] = movementKey;

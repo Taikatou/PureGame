@@ -10,11 +10,11 @@ namespace PureGame.Render.Renderable
     public class PlainPureGameRenderer : IPureGameRenderer
     {
         public ViewportAdapter ViewPort;
-        public PureGameClient GameClient;
-        public RenderLayer Render;
+        public IPureGameClient GameClient;
+        public RenderLayer Render { get; set; }
         public EntityObject FocusEntity;
         private string _layerName;
-        public PlainPureGameRenderer(PureGameClient gameClient, ViewportAdapter viewPort, EntityObject focusEntity)
+        public PlainPureGameRenderer(IPureGameClient gameClient, ViewportAdapter viewPort, EntityObject focusEntity)
         {
             GameClient = gameClient;
             ViewPort = viewPort;

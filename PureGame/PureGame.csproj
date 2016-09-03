@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Engine\ContentManagerManager.cs" />
+    <Compile Include="Engine\Controls\ILayer.cs" />
     <Compile Include="Engine\Controls\SmartControl.cs" />
     <Compile Include="Engine\DirectionMapper.cs" />
     <Compile Include="Engine\EntityData\EntityObject.cs" />
@@ -50,7 +51,6 @@
     <Compile Include="Engine\World\ExpiringKey.cs" />
     <Compile Include="Engine\MapObject.cs" />
     <Compile Include="Engine\World\WorldArea.cs" />
-    <Compile Include="Engine\World\IWorldController.cs" />
     <Compile Include="IFileReader.cs" />
     <Compile Include="PureGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,10 +69,6 @@
     </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Neo.Lua, Version=5.3.0.0, Culture=neutral, PublicKeyToken=fdb0cd4fe8a6e3b2, processorArchitecture=MSIL">
-      <HintPath>..\packages\NeoLua.1.2.8\lib\portable-net45+netcore45+wpa81+MonoAndroid1+MonoTouch1\Neo.Lua.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>

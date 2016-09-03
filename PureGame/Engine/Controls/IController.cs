@@ -6,6 +6,6 @@ namespace PureGame.Engine.Controls
     public interface IController
     {
         void Update(GameTime time);
-        SmartControl[] Buttons { get; }
+        void UpdateLayer(ILayer layer, GameTime time);
     }
 }

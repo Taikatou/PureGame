@@ -7,5 +7,6 @@ namespace PureGame.Render.Renderable
     {
         void Draw(SpriteBatch spriteBatch);
         void Update(GameTime time);
+        Vector2 WorldPosition(Vector2 position);
     }
 }

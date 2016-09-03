@@ -29,5 +29,10 @@ namespace PureGame.Engine.EntityData
         public EntityObject()
         {
         }
+
+        public override string ToString()
+        {
+            return $"EntityObject Id:{Id}, FileName:{FileName}, Position:{Position}";
+        }
     }
 }

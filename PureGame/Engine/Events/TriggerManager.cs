@@ -8,26 +8,26 @@ namespace PureGame.Engine.Events
 {
     public class TriggerManager
     {
-        private readonly Dictionary<Vector2, TriggerObject> _spatialTriggers;
+        public Dictionary<Vector2, TriggerObject> SpatialTriggers;
         private readonly WorldManager _worldManager;
 
         public TriggerManager(IEnumerable<TriggerObject> triggers, WorldManager worldManager)
         {
-            _spatialTriggers = new Dictionary<Vector2, TriggerObject>();
+            SpatialTriggers = new Dictionary<Vector2, TriggerObject>();
             _worldManager = worldManager;
             foreach (var trigger in triggers)
             {
-                _spatialTriggers[trigger.Position] = trigger;
+                SpatialTriggers[trigger.Position] = trigger;
             }
         }
 
         public TileEvent Trigger(EntityObject entity, Vector2 position)
         {
             TileEvent toReturn = null;
-            if (_spatialTriggers.ContainsKey(position))
+            if (SpatialTriggers.ContainsKey(position))
             {
                 toReturn = new TileEvent();
-                var trigger = _spatialTriggers[position];
+                var trigger = SpatialTriggers[position];
                 toReturn.TriggerEvent += (sender, args) =>
                 {
                     Debug.WriteLine("Activate trigger:" + position);

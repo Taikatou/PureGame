@@ -12,5 +12,10 @@ namespace PureGame.Engine.Events
         public Vector2 EndPosition;
         public string Value = "level02.json";
         public TriggerType EventType = TriggerType.MoveEntityTo;
+
+        public override string ToString()
+        {
+            return $"TriggerObject Id:{Id}, Type:{Type}, Position:{Position}, EndPosition:{EndPosition}, Value: {Value}";
+        }
     }
 }

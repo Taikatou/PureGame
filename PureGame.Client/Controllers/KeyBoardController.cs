@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
+using PureGame.Engine;
 using PureGame.Engine.Controls;
 
 namespace PureGame.Client.Controllers
@@ -18,7 +19,47 @@ namespace PureGame.Client.Controllers
             }
         }
 
-        public SmartControl[] Buttons => _buttons;
+        public const int CachedMovementResetValue = -1;
+        public int CachedMovement = CachedMovementResetValue;
+
+        public Direction GetMovementDirection()
+        {
+            // Return cached direction
+            if (CachedMovement != CachedMovementResetValue && _buttons[CachedMovement].Active)
+            {
+                return (Direction)CachedMovement;
+            }
+            else
+            {
+                CachedMovement = CachedMovementResetValue;
+            }
+            // Else look for another button
+            for (var i = 0; i < (int)Direction.None; i++)
+            {
+                if (_buttons[i].Active)
+                {
+                    CachedMovement = i;
+                    return (Direction)i;
+                }
+            }
+            // Else return false
+            return Direction.None;
+        }
+
+        public void UpdateLayer(ILayer layer, GameTime time)
+        {
+            if (_buttons[(int) Controls.A].NewActive)
+            {
+                layer.ControllerA();
+            }
+            var d = GetMovementDirection();
+            if (d != Direction.None)
+            {
+                layer.ControllerDPad(d, time);
+            }
+            var bActive = _buttons[(int) Controls.B].Active;
+            layer.ControllerB(bActive);
+        }
 
         public KeyBoardController()
         {

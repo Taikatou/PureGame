@@ -36,8 +36,7 @@ namespace PureGame.Engine.Events
             var complete = interaction.Progress();
             if (complete)
             {
-                Interactions.Remove(interaction.InteractingWithEntity);
-                Interactions.Remove(interaction.InitialEntity);
+                RemoveInteraction(interaction);
             }
         }
 

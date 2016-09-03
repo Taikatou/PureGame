@@ -26,7 +26,7 @@ namespace PureGame.Engine.World
         public void ProccessInteraction(EntityObject entity)
         {
             var currentlyInteracting = CurrentlyInteracting(entity);
-            if (!(currentlyInteracting || EntityManager.EntityCurrentlyMoving(entity)))
+            if (!(currentlyInteracting || CurrentlyMoving(entity)))
             {
                 var facingPosition = DirectionMapper.GetMovementFromDirection(entity.FacingDirection);
                 var newPosition = entity.Position + facingPosition;
@@ -39,6 +39,7 @@ namespace PureGame.Engine.World
         }
 
         public bool CurrentlyInteracting(EntityObject e) => Interactions.Interacting(e);
+        public bool CurrentlyMoving(EntityObject e) => EntityManager.EntityCurrentlyMoving(e);
 
         public void ProccessInteraction(EntityObject entity, EntityObject interactWith)
         {

@@ -84,8 +84,8 @@ namespace PureGame.Render.Renderable.WorldRenderer
 
         public void GetAnimation()
         {
-            Point screenPosition = _parent.GetScreenPosition(_previousPosition);
-            Point entityPosition = _parent.GetEntityScreenPosition(_baseEntity);
+            var screenPosition = _parent.GetScreenPosition(_previousPosition);
+            var entityPosition = _parent.GetEntityScreenPosition(_baseEntity);
             int direction = (int)_baseEntity.FacingDirection;
             if (screenPosition == entityPosition)
             {

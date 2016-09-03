@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Animate\Animation.cs" />
     <Compile Include="Animate\AnimationFrame.cs" />
+    <Compile Include="Common\ClickController.cs" />
     <Compile Include="Common\Loader.cs" />
     <Compile Include="IPureGameRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.ViewportAdapters;
 using PureGame.Client.FocusLayers;
 using PureGame.Engine;
+using PureGame.Engine.Controls;
 using PureGame.Engine.EntityData;
 using PureGame.Render.Renderable.WorldRenderer;
 
@@ -34,6 +35,11 @@ namespace PureGame.Render.Renderable.RenderLayers
         public void Draw(SpriteBatch spriteBatch)
         {
             _render.Draw(spriteBatch);
+        }
+
+        public Vector2 WorldPosition(Vector2 position)
+        {
+            return _render.WorldPosition(position);
         }
     }
 }

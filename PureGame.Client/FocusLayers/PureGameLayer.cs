@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using PureGame.Engine;
 using PureGame.Engine.Controls;
 using PureGame.Engine.EntityData;
@@ -6,10 +8,8 @@ using PureGame.Engine.World;
 
 namespace PureGame.Client.FocusLayers
 {
-    public class PureGameLayer : ILayer, IWorldController
+    public class PureGameLayer : ILayer
     {
-        public const int CachedMovementResetValue = -1;
-        public int CachedMovement = CachedMovementResetValue;
         public int Timer;
         public int TimerResetValue = 50;
         private readonly EntityObject _entity;
@@ -26,14 +26,21 @@ namespace PureGame.Client.FocusLayers
             Timer = 0;
         }
 
-        private void UpdateCharacter(IController controller, GameTime time)
+        public void ControllerA()
         {
-            if (controller.Buttons[(int)Controls.A].NewActive)
+            if (!CurrentlyInteracting)
             {
                 CurrentWorld.ProccessInteraction(_entity);
             }
-            var cachedMoveDiection = GetMovementDirection(controller);
-            if (cachedMoveDiection != Direction.None)
+            else
+            {
+                CurrentWorld.ProgressInteraction(_entity);
+            }
+        }
+
+        public void ControllerDPad(Direction cachedMoveDiection, GameTime time)
+        {
+            if (!CurrentlyInteracting && !CurrentWorld.CurrentlyMoving(_entity))
             {
                 var entityMoving = CurrentWorld.EntityManager.EntityCurrentlyMoving(_entity);
                 if (!entityMoving && _entity.FacingDirection != cachedMoveDiection)
@@ -51,62 +58,41 @@ namespace PureGame.Client.FocusLayers
                     Timer -= time.ElapsedGameTime.Milliseconds;
                 }
             }
-            _entity.Running = controller.Buttons[(int)Controls.B].Active;
         }
 
-        public void UpdateController(IController controller, GameTime time)
+        public void ControllerB(bool active)
         {
-            var currentlyInteracting = CurrentWorld.CurrentlyInteracting(_entity);
-            if (!currentlyInteracting)
+            if (!CurrentlyInteracting)
             {
-                UpdateCharacter(controller, time);
-            }
-            else
-            {
-                UpdateInteraction(controller, time);
+                _entity.Running = active;
             }
         }
 
-        public void UpdateInteraction(IController controller, GameTime time)
-        {
-            if (controller.Buttons[(int) Controls.A].NewActive)
-            {
-                CurrentWorld.ProgressInteraction(_entity);
-            }
-        }
+        public bool CurrentlyInteracting => CurrentWorld.CurrentlyInteracting(_entity);
 
         public void UpdateData(GameTime time)
         {
             PureGame.Update(time);
         }
 
-        public Direction GetMovementDirection(IController controller)
+        public void Click(Vector2 position)
         {
-            // Return cached direction
-            if (CachedMovement != CachedMovementResetValue && controller.Buttons[CachedMovement].Active)
+            var spatialHash = CurrentWorld.EntityManager.SpatialHash;
+            var spatialTrigger = CurrentWorld.TriggerManager.SpatialTriggers;
+            if (spatialHash.ContainsKey(position))
             {
-                return (Direction)CachedMovement;
+                var entity = spatialHash[position];
+                Debug.WriteLine(entity.ToString());
+            }
+            else if (spatialTrigger.ContainsKey(position))
+            {
+                var trigger = spatialTrigger[position];
+                Debug.WriteLine(trigger.ToString());
             }
             else
             {
-                CachedMovement = CachedMovementResetValue;
+                Debug.WriteLine(position);
             }
-            // Else look for another button
-            for (var i = 0; i < (int)Direction.None; i++)
-            {
-                if (controller.Buttons[i].Active)
-                {
-                    CachedMovement = i;
-                    return (Direction)i;
-                }
-            }
-            // Else return false
-            return Direction.None;
-        }
-
-        public void Interact(IWorldController worldController)
-        {
-            
         }
     }
 }

@@ -36,8 +36,8 @@
   <ItemGroup>
     <Compile Include="Controllers\KeyBoardController.cs" />
     <Compile Include="Controllers\SmartKey.cs" />
-    <Compile Include="FocusLayers\ILayer.cs" />
     <Compile Include="FocusLayers\PureGameLayer.cs" />
+    <Compile Include="IPureGameClient.cs" />
     <Compile Include="PureGameClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

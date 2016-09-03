@@ -4,6 +4,7 @@ using MonoGame.Extended.ViewportAdapters;
 using PureGame.Client;
 using PureGame.Client.Controllers;
 using PureGame.Engine.EntityData;
+using PureGame.Render.Common;
 using PureGame.Render.Renderable;
 
 namespace PureGame.DesktopGl
@@ -20,6 +21,7 @@ namespace PureGame.DesktopGl
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            IsMouseVisible = true;
         }
         protected override void LoadContent()
         {
@@ -27,11 +29,12 @@ namespace PureGame.DesktopGl
             BoxingViewportAdapter viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, Width, Height);
             var game = new PureGame(Content, new FileReader("Data"));
             EntityObject player = new EntityObject(new Vector2(4, 4), "CharacterSheet");
-            _gameClient = new PureGameClient(game, player, new KeyBoardController());
+            _gameClient = new PureGameClient(game, player);
             var gameRenderer = new PlainPureGameRenderer(_gameClient, viewportAdapter, player);
             _gameRenderer = new PlainPureGameRendererDebug(gameRenderer);
             _gameRenderer.ChangeFocus(player);
             game.WorldManager.AddEntity(player, "level01.json");
+            _gameClient.AddController(new ClickController(gameRenderer));
         }
 
         protected override void UnloadContent()
