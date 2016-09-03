@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using PureGame.Engine.EntityData;
 using PureGame.SmallGame;
@@ -12,21 +11,22 @@ namespace PureGame.Engine.World
         public ContentManager Content;
         public EntityManager EntityManager;
         public TriggerManager TriggerManager;
-        public Dictionary<EntityObject, EntityObject> Interactions;
+        public InteractionManager Interactions;
         public MapObject Map;
         public bool Updated;
         public WorldArea()
         {
             Updated = true;
             Content = ContentManagerManager.RequestContentManager();
-            Interactions = new Dictionary<EntityObject, EntityObject>();
+            Interactions = new InteractionManager();
         }
 
         public void Update(GameTime time) => EntityManager.Update(time);
 
         public void ProccessInteraction(EntityObject entity)
         {
-            if (!(entity.CurrentlyInteracting || EntityManager.EntityCurrentlyMoving(entity)))
+            var currentlyInteracting = CurrentlyInteracting(entity);
+            if (!(currentlyInteracting || EntityManager.EntityCurrentlyMoving(entity)))
             {
                 var facingPosition = DirectionMapper.GetMovementFromDirection(entity.FacingDirection);
                 var newPosition = entity.Position + facingPosition;
@@ -38,9 +38,12 @@ namespace PureGame.Engine.World
             }
         }
 
+        public bool CurrentlyInteracting(EntityObject e) => Interactions.Interacting(e);
+
         public void ProccessInteraction(EntityObject entity, EntityObject interactWith)
         {
-            if (!interactWith.CurrentlyInteracting)
+            var entityInteracting = CurrentlyInteracting(interactWith);
+            if (!entityInteracting)
             {
                 //Move entity to face
                 var directionVector = entity.Position - interactWith.Position;
@@ -53,19 +56,10 @@ namespace PureGame.Engine.World
 
         public void AddInteraction(EntityObject entity, EntityObject interactWith)
         {
-            interactWith.CurrentlyInteracting = true;
-            entity.CurrentlyInteracting = true;
-            Interactions[entity] = interactWith;
-            Interactions[interactWith] = entity;
+            Interactions.AddInteraction(entity, interactWith);
         }
 
-        public void RemoveInteraction(EntityObject entity, EntityObject interactWith)
-        {
-            interactWith.CurrentlyInteracting = true;
-            entity.CurrentlyInteracting = true;
-            Interactions.Remove(entity);
-            Interactions.Remove(interactWith);
-        }
+        public void ProgressInteraction(EntityObject e) => Interactions.ProgressInteractions(e);
 
         public void ProccessMovement(EntityObject e)
         {
@@ -76,7 +70,7 @@ namespace PureGame.Engine.World
                 if (ValidPosition(newPosition))
                 {
                     e.Position = newPosition;
-                    var triggerEvent = TriggerManager.Trigger(e);
+                    var triggerEvent = TriggerManager.Trigger(e, newPosition);
                     var movementKey = new ExpiringKey<TileEvent>(triggerEvent, e.Speed);
                     EntityManager.AddEntityKey(e, movementKey);
                     Updated = true;

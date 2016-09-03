@@ -38,10 +38,7 @@ namespace PureGame.Engine.EntityData
             }
         }
 
-        public void RemoveEntity(EntityObject entity)
-        {
-            RemoveEntity(entity.Id);
-        }
+        public void RemoveEntity(EntityObject entity) => RemoveEntity(entity.Id);
 
         public void RemoveEntity(string entityId)
         {
@@ -93,9 +90,6 @@ namespace PureGame.Engine.EntityData
             return contains;
         }
 
-        public bool EntityCurrentlyMoving(EntityObject e)
-        {
-            return EntityToKey.ContainsKey(e);
-        }
+        public bool EntityCurrentlyMoving(EntityObject e) => EntityToKey.ContainsKey(e);
     }
 }

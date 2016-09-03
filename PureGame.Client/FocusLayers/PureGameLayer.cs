@@ -56,13 +56,22 @@ namespace PureGame.Client.FocusLayers
 
         public void UpdateController(IController controller, GameTime time)
         {
-            if (!_entity.CurrentlyInteracting)
+            var currentlyInteracting = CurrentWorld.CurrentlyInteracting(_entity);
+            if (!currentlyInteracting)
             {
                 UpdateCharacter(controller, time);
             }
             else
             {
-                
+                UpdateInteraction(controller, time);
+            }
+        }
+
+        public void UpdateInteraction(IController controller, GameTime time)
+        {
+            if (controller.Buttons[(int) Controls.A].NewActive)
+            {
+                CurrentWorld.ProgressInteraction(_entity);
             }
         }
 

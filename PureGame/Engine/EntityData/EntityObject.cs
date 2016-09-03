@@ -16,7 +16,6 @@ namespace PureGame.Engine.EntityData
         public Direction FacingDirection;
         public bool Running;
         public int Speed => Running ? _runningSpeed : _walkingSpeed;
-        public bool CurrentlyInteracting;
 
         public EntityObject(Vector2 position, string fileName, Direction facingDirection = Direction.Down)
         {

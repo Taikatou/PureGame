@@ -21,10 +21,9 @@ namespace PureGame.Engine.Events
             }
         }
 
-        public TileEvent Trigger(EntityObject entity)
+        public TileEvent Trigger(EntityObject entity, Vector2 position)
         {
-            var position = entity.Position;
-            TileEvent toReturn = new TileEvent(position);
+            var toReturn = new TileEvent(position);
             if (_spatialTriggers.ContainsKey(position))
             {
                 var trigger = _spatialTriggers[position];
@@ -38,5 +37,7 @@ namespace PureGame.Engine.Events
             }
             return toReturn;
         }
+
+        public TileEvent Trigger(EntityObject entity) => Trigger(entity, entity.Position);
     }
 }
