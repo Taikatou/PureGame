@@ -7,9 +7,10 @@ namespace PureGame.Engine.EntityData
 {
     public class EntityManager
     {
-        public List<ExpiringKey<TileEvent>> ExpiringTiles;
-        public Dictionary<ExpiringKey<TileEvent>, EntityObject> KeyToEntity;
-        public Dictionary<EntityObject, ExpiringKey<TileEvent>> EntityToKey;
+        public List<ExpiringKey<Vector2>> ExpiringTiles;
+        public Dictionary<ExpiringKey<Vector2>, TileEvent> TileEvents;
+        public Dictionary<ExpiringKey<Vector2>, EntityObject> KeyToEntity;
+        public Dictionary<EntityObject, ExpiringKey<Vector2>> EntityToKey;
         public Dictionary<Vector2, EntityObject> SpatialHash;
         public Dictionary<string, EntityObject> IdHash;
         public List<EntityObject> Entities;
@@ -18,9 +19,10 @@ namespace PureGame.Engine.EntityData
         {
             IdHash = new Dictionary<string, EntityObject>();
             Entities = new List<EntityObject>();
-            ExpiringTiles = new List<ExpiringKey<TileEvent>>();
-            EntityToKey = new Dictionary<EntityObject, ExpiringKey<TileEvent>>();
-            KeyToEntity = new Dictionary<ExpiringKey<TileEvent>, EntityObject>();
+            ExpiringTiles = new List<ExpiringKey<Vector2>>();
+            TileEvents = new Dictionary<ExpiringKey<Vector2>, TileEvent>();
+            EntityToKey = new Dictionary<EntityObject, ExpiringKey<Vector2>>();
+            KeyToEntity = new Dictionary<ExpiringKey<Vector2>, EntityObject>();
             SpatialHash = new Dictionary<Vector2, EntityObject>();
             foreach (var entity in entities)
             {
@@ -53,11 +55,16 @@ namespace PureGame.Engine.EntityData
             }
         }
 
-        public void AddEntityKey(EntityObject e, ExpiringKey<TileEvent> key)
+        public void AddEntityKey(EntityObject e, TileEvent tileEvent)
         {
-            ExpiringTiles.Add(key);
-            EntityToKey[e] = key;
-            KeyToEntity[key] = e;
+            var movementKey = new ExpiringKey<Vector2>(e.Position, e.Speed);
+            if (tileEvent != null)
+            {
+                TileEvents[movementKey] = tileEvent;
+            }
+            ExpiringTiles.Add(movementKey);
+            EntityToKey[e] = movementKey;
+            KeyToEntity[movementKey] = e;
             SpatialHash[e.Position] = e;
         }
 
@@ -75,20 +82,21 @@ namespace PureGame.Engine.EntityData
 
         public void RemoveTile(int i)
         {
-            var position = ExpiringTiles[i].Key.Position;
-            var entitiy = KeyToEntity[ExpiringTiles[i]];
+            var tile = ExpiringTiles[i];
+            var position = tile.Key;
+            var entitiy = KeyToEntity[tile];
             SpatialHash.Remove(position);
             EntityToKey.Remove(entitiy);
-            KeyToEntity.Remove(ExpiringTiles[i]);
-            ExpiringTiles[i].Key.Trigger();
+            KeyToEntity.Remove(tile);
+            if (TileEvents.ContainsKey(tile))
+            {
+                TileEvents[tile].Trigger();
+                TileEvents.Remove(tile);
+            }
             ExpiringTiles.RemoveAt(i);
         }
 
-        public bool ContainsEntity(EntityObject e)
-        {
-            var contains = (SpatialHash.ContainsKey(e.Position) || IdHash.ContainsKey(e.Id));
-            return contains;
-        }
+        public bool ContainsEntity(EntityObject e) => SpatialHash.ContainsKey(e.Position) || IdHash.ContainsKey(e.Id);
 
         public bool EntityCurrentlyMoving(EntityObject e) => EntityToKey.ContainsKey(e);
     }

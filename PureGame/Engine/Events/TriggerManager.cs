@@ -23,9 +23,10 @@ namespace PureGame.Engine.Events
 
         public TileEvent Trigger(EntityObject entity, Vector2 position)
         {
-            var toReturn = new TileEvent(position);
+            TileEvent toReturn = null;
             if (_spatialTriggers.ContainsKey(position))
             {
+                toReturn = new TileEvent();
                 var trigger = _spatialTriggers[position];
                 toReturn.TriggerEvent += (sender, args) =>
                 {
