@@ -7,7 +7,7 @@ namespace PureGame.Engine.Controls
         void ControllerDPad(Direction cachedMoveDiection, GameTime time);
         void ControllerB(bool active);
         void ControllerA();
-        void UpdateData(GameTime time);
+        void Update(GameTime time);
         string Name { get; }
         void Click(Vector2 position);
     }

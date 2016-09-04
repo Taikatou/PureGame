@@ -64,7 +64,7 @@ namespace PureGame.Client.FocusLayers
             }
         }
         public bool CurrentlyInteracting => CurrentWorld.CurrentlyInteracting(_entity);
-        public void UpdateData(GameTime time)
+        public void Update(GameTime time)
         {
             PureGame.Update(time);
         }

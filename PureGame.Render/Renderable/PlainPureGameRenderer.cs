@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.ViewportAdapters;
@@ -46,7 +45,6 @@ namespace PureGame.Render.Renderable
         public void LoadWorld()
         {
             Render = new RenderLayer(Controllables.Peek().Layer, ViewPort, FocusEntity);
-            Debug.WriteLine("Hi");
         }
 
         public void ChangeFocus(EntityObject e)

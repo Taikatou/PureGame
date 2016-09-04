@@ -10,15 +10,6 @@ namespace PureGame.Client.Controllers
     {
         private readonly SmartKey[] _buttons;
 
-        public void Update(GameTime time)
-        {
-            var state = Keyboard.GetState();
-            foreach (var button in _buttons)
-            {
-                button.Update(state);
-            }
-        }
-
         public const int CachedMovementResetValue = -1;
         public int CachedMovement = CachedMovementResetValue;
 
@@ -46,8 +37,19 @@ namespace PureGame.Client.Controllers
             return Direction.None;
         }
 
-        public void UpdateLayer(ILayer layer, GameTime time)
+        public void UpdateButtons()
         {
+            var state = Keyboard.GetState();
+            foreach (var button in _buttons)
+            {
+                button.Update(state);
+            }
+        }
+
+        public void Update(ILayer layer, GameTime time)
+        {
+            UpdateButtons();
+
             if (_buttons[(int) Controls.A].NewActive)
             {
                 layer.ControllerA();

@@ -2,7 +2,6 @@
 using PureGame.Engine.EntityData;
 using PureGame.Client.FocusLayers;
 using PureGame.Engine.Controls;
-using System;
 
 namespace PureGame.Client
 {
@@ -15,9 +14,8 @@ namespace PureGame.Client
 
         public void Update(GameTime time, IController controller)
         {
-            controller.Update(time);
-            controller.UpdateLayer(PureGameLayer, time);
-            PureGameLayer.UpdateData(time);
+            controller.Update(PureGameLayer, time);
+            PureGameLayer.Update(time);
         }
 
         public PureGameClient(PureGame pureGame, EntityObject player)
