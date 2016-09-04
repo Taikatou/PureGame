@@ -12,11 +12,9 @@ namespace PureGame.Render.Renderable.WorldRenderer
             get
             {
                 var focus = _positionFinder.GetEntityScreenPosition(_entity);
-                return focus.ToVector2() + Offset;
+                return focus.ToVector2() + _positionFinder.Offset;
             }
         }
-
-        public Vector2 Offset;
         private readonly EntityObject _entity;
         private readonly EntityPositionFinder _positionFinder;
 
@@ -24,7 +22,6 @@ namespace PureGame.Render.Renderable.WorldRenderer
         {
             _entity = entity;
             _positionFinder = positionFinder;
-            Offset = positionFinder.TileSize / 2;
         }
     }
 }

@@ -1,8 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using PureGame.Engine.Controls;
 using PureGame.Render.Renderable;
+using PureGame.Render.Renderable.WorldRenderer;
 
 namespace PureGame.Render.Common
 {
@@ -18,8 +20,8 @@ namespace PureGame.Render.Common
         private MouseState _previouslyDown;
 
         public bool PreviouslyReleased => _previouslyDown.LeftButton == ButtonState.Released;
-        public bool CameraPreviouslyMoving;
-        public Vector2 PreviousCameraPosition;
+        private bool _previousCameraMovement;
+        private Vector2 _previousOffset;
 
         public void Update(ILayer layer, GameTime time)
         {
@@ -31,25 +33,47 @@ namespace PureGame.Render.Common
             }
             else if (keyBoardState.IsKeyDown(Keys.C))
             {
-                if (!CameraPreviouslyMoving)
+                var positionFinder = _renderer.Render.PositionFinder;
+                if (!_previousCameraMovement)
                 {
-                    PreviousCameraPosition = GetMouseVector2(mouseState);
-                    CameraPreviouslyMoving = true;
+                    _previousCameraMovement = true;
+                    _previousOffset = positionFinder.Offset;
                 }
-                else if (mouseState.LeftButton == ButtonState.Pressed)
-                {
-                    var position = GetMouseVector2(mouseState);
-                    position -= PreviousCameraPosition;
-                    Debug.WriteLine(position);
-                    _renderer.MoveFocus(position);
-                    PreviousCameraPosition = position;
-                }
+                CameraUpdate(layer, mouseState, positionFinder);
             }
-            else if (CameraPreviouslyMoving)
+            else if (_previousCameraMovement)
             {
-                Debug.WriteLine("Release");
-                CameraPreviouslyMoving = false;
+                _previousCameraMovement = false;
+                var positionFinder = _renderer.Render.PositionFinder;
+                positionFinder.Offset = _previousOffset;
             }
+        }
+
+        public void CameraUpdate(ILayer layer, MouseState mouseState, EntityPositionFinder positionFinder)
+        {
+            positionFinder.Offset += GetMovement() * positionFinder.TileSize;
+        }
+
+        public Vector2 GetMovement()
+        {
+            var keyBoardState = Keyboard.GetState();
+            if (keyBoardState.IsKeyDown(Keys.Up))
+            {
+                return new Vector2(0, -1);
+            }
+            if (keyBoardState.IsKeyDown(Keys.Down))
+            {
+                return new Vector2(0, 1);
+            }
+            if (keyBoardState.IsKeyDown(Keys.Left))
+            {
+                return new Vector2(-1, 0);
+            }
+            if (keyBoardState.IsKeyDown(Keys.Right))
+            {
+                return new Vector2(1, 0);
+            }
+            return new Vector2(0, 0);
         }
 
         public void DebugUpdate(ILayer layer, MouseState mouseState)

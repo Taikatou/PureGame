@@ -24,7 +24,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         private readonly ContentManager _content;
         private readonly BitmapFont _bitmapFont;
         private readonly ViewportAdapter _viewPort;
-        private readonly EntityPositionFinder _positionFinder;
+        public readonly EntityPositionFinder PositionFinder;
         private readonly EntityObject _player;
         private readonly Stack<IFocusable> _focus;
         public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, EntityObject player, string fontName="montserrat-32")
@@ -36,12 +36,12 @@ namespace PureGame.Render.Renderable.WorldRenderer
             _camera = new Camera2D(viewPort) {Zoom = 0.25f};
             _map = world.Map.Map;
             var tileSize = new Vector2(_map.TileWidth, _map.TileHeight);
-            _positionFinder = new EntityPositionFinder(world, tileSize);
+            PositionFinder = new EntityPositionFinder(world, tileSize);
             _entitySprites = new Dictionary<string, RenderEntity>();
             string fileName = $"Fonts/{fontName}";
             _bitmapFont = _content.Load<BitmapFont>(fileName);
             _focus = new Stack<IFocusable>();
-            _focus.Push(new FocusEntity(_player, _positionFinder));
+            _focus.Push(new FocusEntity(_player, PositionFinder));
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -89,7 +89,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         {
             position = _camera.ScreenToWorld(position);
             //we cnvert back and forth to round vector
-            var point = (position / _positionFinder.TileSize).ToPoint();
+            var point = (position / PositionFinder.TileSize).ToPoint();
             return point.ToVector2();
         }
 
@@ -97,7 +97,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         {
             if (!_entitySprites.ContainsKey(e.Id))
             {
-                _entitySprites[e.Id] = new RenderEntity(e, _positionFinder, _content);
+                _entitySprites[e.Id] = new RenderEntity(e, PositionFinder, _content);
             }
             return _entitySprites[e.Id];
         }

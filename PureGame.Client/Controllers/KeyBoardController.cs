@@ -37,9 +37,13 @@ namespace PureGame.Client.Controllers
         public void UpdateButtons()
         {
             var state = Keyboard.GetState();
-            foreach (var button in _buttons)
+            // C is for camera
+            if (!state.IsKeyDown(Keys.C))
             {
-                button.Update(state);
+                foreach (var button in _buttons)
+                {
+                    button.Update(state);
+                }
             }
         }
 
