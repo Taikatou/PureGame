@@ -24,7 +24,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         private List<RenderEntity> _toDraw;
         private readonly ContentManager _content;
         private readonly BitmapFont _bitmapFont;
-        private ViewportAdapter _viewPort;
+        private readonly ViewportAdapter _viewPort;
         public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, EntityObject focusEntity, ContentManager content, string fontName="montserrat-32")
         {
             FocusEntity = focusEntity;
@@ -79,6 +79,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         public Vector2 WorldPosition(Vector2 position)
         {
             position = _camera.ScreenToWorld(position);
+            //we cnvert back and forth to round vector
             Point point = (position / TileSize).ToPoint();
             return point.ToVector2();
         }

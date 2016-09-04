@@ -35,7 +35,7 @@ namespace PureGame.Engine.World
             }
             LoadWorld(newWorldName);
             _entityMapper[entity] = _worlds[newWorldName];
-            Debug.WriteLine(entity.Id);
+            Debug.WriteLine("Add entity " + entity.Id);
             _entityMapper[entity].AddEntity(entity);
         }
 

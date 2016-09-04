@@ -71,8 +71,7 @@ namespace PureGame.Engine.World
                 if (ValidPosition(newPosition))
                 {
                     var triggerEvent = TriggerManager.Trigger(e, newPosition);
-                    EntityManager.AddEntityKey(e, triggerEvent);
-                    e.Position = newPosition;
+                    EntityManager.MoveEntity(e, triggerEvent, newPosition);
                     Updated = true;
                 }
                 e.FacingDirection = e.MovementDirection;

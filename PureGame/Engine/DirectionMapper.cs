@@ -41,7 +41,7 @@ namespace PureGame.Engine
             }
         }
 
-        internal static DirectionMapper _instance;
+        protected static DirectionMapper _instance;
         public static DirectionMapper Instance => _instance ?? (_instance = new DirectionMapper());
     }
 }

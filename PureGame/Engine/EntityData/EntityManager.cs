@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.Diagnostics;
 using PureGame.Engine.Events;
 using PureGame.Engine.World;
 
@@ -55,7 +56,7 @@ namespace PureGame.Engine.EntityData
             }
         }
 
-        public void AddEntityKey(EntityObject e, TileEvent onCompleteEvent)
+        public void MoveEntity(EntityObject e, TileEvent onCompleteEvent, Vector2 newPosition)
         {
             var movementKey = new ExpiringKey<Vector2>(e.Position, e.Speed);
             if (onCompleteEvent != null)
@@ -65,6 +66,8 @@ namespace PureGame.Engine.EntityData
             ExpiringTiles.Add(movementKey);
             EntityToKey[e] = movementKey;
             KeyToEntity[movementKey] = e;
+            Debug.WriteLine("Move Entity " + e.Id + " to " + newPosition);
+            e.Position = newPosition;
             SpatialHash[e.Position] = e;
         }
 
@@ -85,6 +88,7 @@ namespace PureGame.Engine.EntityData
             var tile = ExpiringTiles[i];
             var position = tile.Key;
             var entitiy = KeyToEntity[tile];
+            Debug.WriteLine(position);
             SpatialHash.Remove(position);
             EntityToKey.Remove(entitiy);
             KeyToEntity.Remove(tile);

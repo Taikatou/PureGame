@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using PureGame.Engine;
 using PureGame.Engine.Controls;
@@ -91,7 +90,7 @@ namespace PureGame.Client.FocusLayers
             }
             else
             {
-                Debug.WriteLine(position);
+                Debug.WriteLine("Position clicked: " + position);
             }
         }
     }

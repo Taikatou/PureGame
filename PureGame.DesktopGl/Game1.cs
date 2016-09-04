@@ -2,9 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.ViewportAdapters;
 using PureGame.Client;
-using PureGame.Client.Controllers;
 using PureGame.Engine.EntityData;
-using PureGame.Render.Common;
 using PureGame.Render.Renderable;
 
 namespace PureGame.DesktopGl
@@ -34,7 +32,6 @@ namespace PureGame.DesktopGl
             _gameRenderer = new PlainPureGameRendererDebug(gameRenderer);
             _gameRenderer.ChangeFocus(player);
             game.WorldManager.AddEntity(player, "level01.json");
-            _gameClient.AddController(new ClickController(gameRenderer));
         }
 
         protected override void UnloadContent()
