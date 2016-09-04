@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using PureGame.Engine.EntityData;
@@ -37,6 +38,8 @@ namespace PureGame.Engine.World
             _entityMapper[entity] = _worlds[newWorldName];
             Debug.WriteLine("Add entity " + entity.Id);
             _entityMapper[entity].AddEntity(entity);
+
+            OnWorldLoad?.Invoke(this, null);
         }
 
         public void LoadWorld(string worldName)
@@ -53,9 +56,15 @@ namespace PureGame.Engine.World
             }
         }
 
+        public event EventHandler<EventArgs> OnWorldLoad;
+
         public WorldArea GetEntitysWorld(EntityObject entity)
         {
-            return _entityMapper[entity];
+            if (_entityMapper.ContainsKey(entity))
+            {
+                return _entityMapper[entity];
+            }
+            return null;
         }
 
         public void Update(GameTime time)

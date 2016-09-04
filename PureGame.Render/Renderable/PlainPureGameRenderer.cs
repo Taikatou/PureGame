@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.ViewportAdapters;
@@ -14,17 +15,16 @@ namespace PureGame.Render.Renderable
     public class PlainPureGameRenderer : IPureGameRenderer
     {
         public ViewportAdapter ViewPort;
-        public PureGameClient GameClient;
+        public Stack<IControllable> Controllables;
         public RenderLayer Render { get; set; }
         public EntityObject FocusEntity;
-        private string _layerName;
         private readonly List<IController> _controllers;
-        public PlainPureGameRenderer(PureGameClient gameClient, ViewportAdapter viewPort, EntityObject focusEntity)
+        public PlainPureGameRenderer(IControllable gameClient, ViewportAdapter viewPort, EntityObject focusEntity)
         {
-            GameClient = gameClient;
+            Controllables = new Stack<IControllable>();
+            Controllables.Push(gameClient);
             ViewPort = viewPort;
             FocusEntity = focusEntity;
-            _layerName = "";
             _controllers = new List<IController> {new KeyBoardController(), new ClickController(this)};
         }
 
@@ -35,18 +35,18 @@ namespace PureGame.Render.Renderable
 
         public void Update(GameTime time)
         {
+            var focus = Controllables.Peek();
             foreach (var controller in _controllers)
             {
-                GameClient.Update(time, controller);
-            }
-            var layer = GameClient.PureGameLayer;
-            if (_layerName != layer.Name)
-            {
-                Render?.UnLoad();
-                Render = new RenderLayer(layer, ViewPort, FocusEntity);
-                _layerName = layer.Name;
+                focus.Update(time, controller);
             }
             Render.Update(time);
+        }
+
+        public void LoadWorld()
+        {
+            Render = new RenderLayer(Controllables.Peek().Layer, ViewPort, FocusEntity);
+            Debug.WriteLine("Hi");
         }
 
         public void ChangeFocus(EntityObject e)

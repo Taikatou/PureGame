@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using PureGame.Engine;
 using PureGame.Engine.World;
@@ -12,11 +13,6 @@ namespace PureGame
         {
             WorldManager = new WorldManager(fileReader);
             ContentManagerManager.Instance = new ContentManagerManager(content);
-        }
-
-        public void LoadWorld(string worldName)
-        {
-            WorldManager.LoadWorld(worldName);
         }
 
         public void Update(GameTime time)

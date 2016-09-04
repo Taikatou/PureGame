@@ -13,9 +13,7 @@ namespace PureGame.Client.FocusLayers
         public int TimerResetValue = 50;
         private readonly EntityObject _entity;
         public PureGame PureGame;
-
         public string Name => CurrentWorld.Name;
-
         public WorldArea CurrentWorld => PureGame.WorldManager.GetEntitysWorld(_entity);
 
         public PureGameLayer(EntityObject entity, PureGame pureGame)
@@ -58,7 +56,6 @@ namespace PureGame.Client.FocusLayers
                 }
             }
         }
-
         public void ControllerB(bool active)
         {
             if (!CurrentlyInteracting)
@@ -66,14 +63,11 @@ namespace PureGame.Client.FocusLayers
                 _entity.Running = active;
             }
         }
-
         public bool CurrentlyInteracting => CurrentWorld.CurrentlyInteracting(_entity);
-
         public void UpdateData(GameTime time)
         {
             PureGame.Update(time);
         }
-
         public void Click(Vector2 position)
         {
             var spatialHash = CurrentWorld.EntityManager.SpatialHash;
