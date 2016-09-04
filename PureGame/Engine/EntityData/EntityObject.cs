@@ -1,9 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using PureGame.Common;
 using PureGame.SmallGame;
 
 namespace PureGame.Engine.EntityData
 {
-    public class EntityObject : IGameObject
+    public class EntityObject : IGameObject, IFocusable
     {
         public string Id { get; set; }
         public string Type { get; set; }
@@ -11,7 +12,7 @@ namespace PureGame.Engine.EntityData
         private readonly int _runningSpeed = 250;
         public string FileName;
         //This is not supposed to be changed directly only through entityManager
-        public Vector2 Position;
+        public Vector2 Position { get; set; }
         public Direction MovementDirection;
         public Direction FacingDirection;
         public bool Running;

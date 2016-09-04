@@ -5,7 +5,8 @@ namespace PureGame.Client
 {
     public interface IControllable
     {
-        void Update(GameTime time, IController controller);
+        void UpdateController(GameTime time, IController controller);
+        void Update(GameTime time);
         string Name { get; }
         ILayer Layer { get; }
     }

@@ -13,7 +13,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
     {
         private readonly EntityObject _baseEntity;
         private readonly Texture2D _entityTexture;
-        private readonly RenderWorldLayer _parent;
+        private readonly EntityPositionFinder _positionFinder;
         //Right Left Up Down
         private readonly Animation[] _walking;
         private readonly Animation[] _standing;
@@ -22,9 +22,9 @@ namespace PureGame.Render.Renderable.WorldRenderer
 
         private Animation _currentAnimation;
         private Vector2 _previousPosition;
-        public RenderEntity(EntityObject baseEntity, RenderWorldLayer parent, ContentManager content)
+        public RenderEntity(EntityObject baseEntity, EntityPositionFinder positionFinder, ContentManager content)
         {
-            _parent = parent;
+            _positionFinder = positionFinder;
             _baseEntity = baseEntity;
             _entityTexture = AssetLoader.LoadTexture(content, baseEntity.FileName);
             _walking = new Animation[4];
@@ -67,8 +67,8 @@ namespace PureGame.Render.Renderable.WorldRenderer
             GetAnimation();
         }
 
-        private Point OnScreen => _parent.GetEntityScreenPosition(_baseEntity);
-        public Rectangle Rect => new Rectangle(OnScreen, _parent.TileSize.ToPoint());
+        private Point OnScreen => _positionFinder.GetEntityScreenPosition(_baseEntity);
+        public Rectangle Rect => new Rectangle(OnScreen, _positionFinder.TileSize.ToPoint());
 
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -84,8 +84,8 @@ namespace PureGame.Render.Renderable.WorldRenderer
 
         public void GetAnimation()
         {
-            var screenPosition = _parent.GetScreenPosition(_previousPosition);
-            var entityPosition = _parent.GetEntityScreenPosition(_baseEntity);
+            var screenPosition = _positionFinder.GetScreenPosition(_previousPosition);
+            var entityPosition = _positionFinder.GetEntityScreenPosition(_baseEntity);
             int direction = (int)_baseEntity.FacingDirection;
             if (screenPosition == entityPosition)
             {

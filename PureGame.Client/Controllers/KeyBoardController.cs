@@ -18,12 +18,9 @@ namespace PureGame.Client.Controllers
             // Return cached direction
             if (CachedMovement != CachedMovementResetValue && _buttons[CachedMovement].Active)
             {
-                return (Direction)CachedMovement;
+                return (Direction) CachedMovement;
             }
-            else
-            {
-                CachedMovement = CachedMovementResetValue;
-            }
+            CachedMovement = CachedMovementResetValue;
             // Else look for another button
             for (var i = 0; i < (int)Direction.None; i++)
             {

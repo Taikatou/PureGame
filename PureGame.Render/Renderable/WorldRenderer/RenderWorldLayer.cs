@@ -9,6 +9,8 @@ using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
 using System.Collections.Generic;
 using MonoGame.Extended.BitmapFonts;
+using PureGame.Common;
+using System;
 
 namespace PureGame.Render.Renderable.WorldRenderer
 {
@@ -17,32 +19,34 @@ namespace PureGame.Render.Renderable.WorldRenderer
         public WorldArea World;
         private readonly Dictionary<string, RenderEntity> _entitySprites;
         private readonly TiledMap _map;
-        public Vector2 TileSize;
-        public Vector2 Offset => TileSize / 2;
-        public EntityObject FocusEntity;
         private readonly Camera2D _camera;
         private List<RenderEntity> _toDraw;
         private readonly ContentManager _content;
         private readonly BitmapFont _bitmapFont;
         private readonly ViewportAdapter _viewPort;
-        public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, EntityObject focusEntity, ContentManager content, string fontName="montserrat-32")
+        private readonly EntityPositionFinder _positionFinder;
+        private readonly EntityObject _player;
+        private readonly Stack<IFocusable> _focus;
+        public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, EntityObject player, string fontName="montserrat-32")
         {
-            FocusEntity = focusEntity;
+            _player = player;
+            _content = ContentManagerManager.RequestContentManager();
             _viewPort = viewPort;
             World = world;
             _camera = new Camera2D(viewPort) {Zoom = 0.25f};
-            _content = content;
             _map = world.Map.Map;
-            TileSize = new Vector2(_map.TileWidth, _map.TileHeight);
+            var tileSize = new Vector2(_map.TileWidth, _map.TileHeight);
+            _positionFinder = new EntityPositionFinder(world, tileSize);
             _entitySprites = new Dictionary<string, RenderEntity>();
             string fileName = $"Fonts/{fontName}";
             _bitmapFont = _content.Load<BitmapFont>(fileName);
+            _focus = new Stack<IFocusable>();
+            _focus.Push(new FocusEntity(_player, _positionFinder));
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            var focus = GetEntityScreenPosition(FocusEntity);
-            _camera.LookAt(focus.ToVector2() + Offset);
+            _camera.LookAt(_focus.Peek().Position);
             spriteBatch.Begin(transformMatrix: _camera.GetViewMatrix());
             spriteBatch.Draw(_map);
             foreach(var r in _toDraw)
@@ -51,7 +55,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
             }
             spriteBatch.End();
             // Draw interactions
-            if (World.CurrentlyInteracting(FocusEntity))
+            if (World.CurrentlyInteracting(_player))
             {
                 var text = "Interacting";
                 var stringSize = _bitmapFont.MeasureString(text);
@@ -61,6 +65,11 @@ namespace PureGame.Render.Renderable.WorldRenderer
                 spriteBatch.DrawString(_bitmapFont, text, textPosition, Color.Black);
                 spriteBatch.End();
             }
+        }
+
+        internal void MoveFocus(Vector2 focusVector)
+        {
+            _focus.Push(new FocusVector(_focus.Peek().Position + focusVector));
         }
 
         public void Update(GameTime time)
@@ -80,7 +89,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         {
             position = _camera.ScreenToWorld(position);
             //we cnvert back and forth to round vector
-            Point point = (position / TileSize).ToPoint();
+            var point = (position / _positionFinder.TileSize).ToPoint();
             return point.ToVector2();
         }
 
@@ -88,28 +97,9 @@ namespace PureGame.Render.Renderable.WorldRenderer
         {
             if (!_entitySprites.ContainsKey(e.Id))
             {
-                _entitySprites[e.Id] = new RenderEntity(e, this, _content);
+                _entitySprites[e.Id] = new RenderEntity(e, _positionFinder, _content);
             }
             return _entitySprites[e.Id];
-        }
-
-        public Point GetEntityScreenPosition(EntityObject entity)
-        {
-            var position = entity.Position;
-            var worldData = World.EntityManager;
-            if (worldData.EntityCurrentlyMoving(entity))
-            {
-                var progress = worldData.EntityToKey[entity].Progress;
-                var facingPosition = DirectionMapper.GetMovementFromDirection(entity.FacingDirection);
-                position -= facingPosition * progress;
-            }
-            return GetScreenPosition(position);
-        }
-
-        public Point GetScreenPosition(Vector2 pos)
-        {
-            var position = pos * TileSize;
-            return position.ToPoint();
         }
 
         public void RefreshToDraw()
@@ -123,6 +113,16 @@ namespace PureGame.Render.Renderable.WorldRenderer
                     _toDraw.Add(r);
                 }
             }
+        }
+
+        public void ChangeFocus(IFocusable focus) => _focus.Push(focus);
+
+        public void ReleaseFocus()
+        {
+            if (_focus.Count > 1)
+            {
+                _focus.Pop();
+            }   
         }
     }
 }

@@ -12,10 +12,10 @@ namespace PureGame.Render.Renderable
     {
         private readonly FramesPerSecondCounter _fpsCounter;
         private readonly BitmapFont _bitmapFont;
-        public IPureGameRenderer GameRenderer;
+        public PlainPureGameRenderer GameRenderer;
         public readonly ContentManager Content;
 
-        public PlainPureGameRendererDebug(IPureGameRenderer gameRenderer, string fontName="montserrat-32")
+        public PlainPureGameRendererDebug(PlainPureGameRenderer gameRenderer, string fontName="montserrat-32")
         {
             GameRenderer = gameRenderer;
             _fpsCounter = new FramesPerSecondCounter();
@@ -30,10 +30,10 @@ namespace PureGame.Render.Renderable
             spriteBatch.DrawString(_bitmapFont, $"FPS: {_fpsCounter.AverageFramesPerSecond:0}", Vector2.One, Color.AliceBlue);
             spriteBatch.End();
         }
-        public void Update(GameTime timer)
+        public void Update(GameTime time)
         {
-            GameRenderer.Update(timer);
-            _fpsCounter.Update(timer);
+            GameRenderer.Update(time);
+            _fpsCounter.Update(time);
         }
 
         public void ChangeFocus(EntityObject e)
