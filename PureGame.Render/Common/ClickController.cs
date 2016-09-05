@@ -18,10 +18,10 @@ namespace PureGame.Render.Common
         }
 
         private MouseState _previouslyDown;
+        private Vector2 _dragPosition;
+        private bool _previouslyMovingcamera;
 
         public bool PreviouslyReleased => _previouslyDown.LeftButton == ButtonState.Released;
-        private bool _previousCameraMovement;
-        private Vector2 _previousOffset;
 
         public void Update(ILayer layer, GameTime time)
         {
@@ -33,47 +33,37 @@ namespace PureGame.Render.Common
             }
             else if (keyBoardState.IsKeyDown(Keys.C))
             {
-                var positionFinder = _renderer.Render.PositionFinder;
-                if (!_previousCameraMovement)
+                CameraUpdate(layer, mouseState);
+            }
+            else if (_previouslyMovingcamera)
+            {
+                _renderer.EndMove();
+                _previouslyMovingcamera = false;
+            }
+            _previouslyDown = mouseState;
+        }
+
+        public void CameraUpdate(ILayer layer, MouseState mouseState)
+        {
+            if (mouseState.LeftButton == ButtonState.Pressed)
+            {
+                if (PreviouslyReleased)
                 {
-                    _previousCameraMovement = true;
-                    _previousOffset = positionFinder.Offset;
+                    if (!_previouslyMovingcamera)
+                    {
+                        _renderer.BeginMove();
+                    }
+                    _previouslyMovingcamera = true;
+                    _dragPosition = GetMouseVector2(mouseState);
                 }
-                CameraUpdate(layer, mouseState, positionFinder);
+                else
+                {
+                    var newDragPosition = GetMouseVector2(mouseState);
+                    var moveBy = newDragPosition - _dragPosition;
+                    _renderer.MoveFocusBy(moveBy);
+                    _dragPosition = newDragPosition;
+                }
             }
-            else if (_previousCameraMovement)
-            {
-                _previousCameraMovement = false;
-                var positionFinder = _renderer.Render.PositionFinder;
-                positionFinder.Offset = _previousOffset;
-            }
-        }
-
-        public void CameraUpdate(ILayer layer, MouseState mouseState, EntityPositionFinder positionFinder)
-        {
-            positionFinder.Offset += GetMovement() * positionFinder.TileSize;
-        }
-
-        public Vector2 GetMovement()
-        {
-            var keyBoardState = Keyboard.GetState();
-            if (keyBoardState.IsKeyDown(Keys.Up))
-            {
-                return new Vector2(0, -1);
-            }
-            if (keyBoardState.IsKeyDown(Keys.Down))
-            {
-                return new Vector2(0, 1);
-            }
-            if (keyBoardState.IsKeyDown(Keys.Left))
-            {
-                return new Vector2(-1, 0);
-            }
-            if (keyBoardState.IsKeyDown(Keys.Right))
-            {
-                return new Vector2(1, 0);
-            }
-            return new Vector2(0, 0);
         }
 
         public void DebugUpdate(ILayer layer, MouseState mouseState)
@@ -83,7 +73,6 @@ namespace PureGame.Render.Common
                 var position = WorldPosition(mouseState);
                 Click(layer, position);
             }
-            _previouslyDown = mouseState;
         }
 
         public Vector2 GetMouseVector2(MouseState mouseState)
