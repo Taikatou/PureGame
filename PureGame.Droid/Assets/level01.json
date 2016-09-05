@@ -1,0 +1,50 @@
+﻿{
+  "Name": "level",
+  "Metadata": { },
+  "Objects": [
+    {
+      "Type": "MapObject",
+      "Data": {
+        "MapName": "level01",
+        "CollisionLayerName": "Collision Layer"
+      }
+    },
+    {
+      "Type": "EntityObject",
+      "Data": {
+        "FileName": "CharacterSheet",
+        "Position": "1, 2"
+      }
+    },
+    {
+      "Type": "EntityObject",
+      "Data": {
+        "FileName": "CharacterSheet",
+        "Position": "1, 1",
+        "Id": "test"
+      }
+    },
+    {
+      "Type": "EntityObject",
+      "Data": {
+        "FileName": "CharacterSheet",
+        "Position": "3, 2"
+      }
+    },
+    {
+      "Type": "EntityObject",
+      "Data": {
+        "FileName": "CharacterSheet",
+        "Position": "4, 5",
+        "Id": "test"
+      }
+    },
+    {
+      "Type": "TriggerObject",
+      "Data": {
+        "Position": "0, 0",
+        "EndPosition" :  "7, 1"
+      }  
+    }
+  ]
+}

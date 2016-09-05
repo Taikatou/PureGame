@@ -54,8 +54,40 @@ namespace PureGame.Render.Renderable
             Render = new RenderWorldLayer(CurrentWorld, ViewPort, _player);
         }
 
-        public void ChangeFocus(IFocusable focus) => Render.ChangeFocus(focus);
+        public void ChangeFocus(IFocusable focus) => Render.Focus.Push(focus);
 
-        public void MoveFocus(Vector2 focusVector) => Render.MoveFocus(focusVector);
+        private bool _moving;
+        public void BeginMove()
+        {
+            if (!_moving)
+            {
+                _moving = true;
+                var focus = Render.Focus;
+                focus.Push(new FocusVector(focus.Peek().Position));
+            }
+        }
+
+        public void MoveFocusBy(Vector2 moveBy)
+        {
+            if (_moving)
+            {
+                var focus = Render.Focus.Peek();
+                var focusVector = focus as FocusVector;
+                if (focusVector != null)
+                {
+                    moveBy /= Render.Camera.Zoom;
+                    focusVector.Position -= moveBy;
+                }
+            }
+        }
+
+        public void EndMove()
+        {
+            if (_moving)
+            {
+                Render.Focus.Pop();
+                _moving = false;
+            }   
+        }
     }
 }
