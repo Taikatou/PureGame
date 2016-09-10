@@ -41,6 +41,7 @@
     <Compile Include="Engine\Controls\ILayer.cs" />
     <Compile Include="Engine\Controls\SmartControl.cs" />
     <Compile Include="Engine\DirectionMapper.cs" />
+    <Compile Include="Engine\EntityData\EntityFactory.cs" />
     <Compile Include="Engine\EntityData\EntityObject.cs" />
     <Compile Include="Engine\EntityData\EntityManager.cs" />
     <Compile Include="Engine\Controls\IController.cs" />
@@ -64,9 +65,8 @@
     <Compile Include="Engine\World\WorldManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Extended.0.5.149\lib\MonoGame.Extended.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MonoGame.Extended">
+      <HintPath>..\..\MonoGame.Extended\Source\MonoGame.Extended\bin\Debug\MonoGame.Extended.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>

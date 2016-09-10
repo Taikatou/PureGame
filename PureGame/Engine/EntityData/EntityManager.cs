@@ -83,10 +83,9 @@ namespace PureGame.Engine.EntityData
         {
             var tile = ExpiringTiles[i];
             var position = tile.Key;
-            var entitiy = KeyToEntity[tile];
-            Debug.WriteLine(position);
+            var entity = KeyToEntity[tile];
             SpatialHash.Remove(position);
-            EntityToKey.Remove(entitiy);
+            EntityToKey.Remove(entity);
             KeyToEntity.Remove(tile);
             if (TileEvents.ContainsKey(tile))
             {

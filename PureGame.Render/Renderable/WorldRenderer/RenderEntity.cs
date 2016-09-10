@@ -66,9 +66,10 @@ namespace PureGame.Render.Renderable.WorldRenderer
             _previousPosition = baseEntity.Position;
             GetAnimation();
         }
-
-        private Point OnScreen => _positionFinder.GetEntityScreenPosition(_baseEntity);
-        public Rectangle Rect => new Rectangle(OnScreen, _positionFinder.TileSize.ToPoint());
+        public Rectangle Rect => new Rectangle(_positionFinder.GetEntityScreenPosition(_baseEntity).ToPoint(),
+                                               _positionFinder.TileSize.ToPoint());
+        public Rectangle FinalRect => new Rectangle(_positionFinder.GetScreenPosition(_baseEntity.Position).ToPoint(),
+                                                    _positionFinder.TileSize.ToPoint());
 
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -86,7 +87,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         {
             var screenPosition = _positionFinder.GetScreenPosition(_previousPosition);
             var entityPosition = _positionFinder.GetEntityScreenPosition(_baseEntity);
-            int direction = (int)_baseEntity.FacingDirection;
+            var direction = (int)_baseEntity.FacingDirection;
             if (screenPosition == entityPosition)
             {
                 //standing

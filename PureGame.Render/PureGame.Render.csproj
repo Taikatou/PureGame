@@ -48,12 +48,12 @@
     <Compile Include="Animate\Animation.cs" />
     <Compile Include="Animate\AnimationFrame.cs" />
     <Compile Include="Common\ClickController.cs" />
+    <Compile Include="Common\ContainsList.cs" />
     <Compile Include="Common\Loader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderable\GuiRenderer\GuiRenderLayer.cs" />
     <Compile Include="Renderable\IRenderable.cs" />
     <Compile Include="Renderable\PlainPureGameRenderer.cs" />
-    <Compile Include="Renderable\PlainPureGameRendererDebug.cs" />
     <Compile Include="Renderable\WorldRenderer\EntityPositionFinder.cs" />
     <Compile Include="Renderable\WorldRenderer\FocusEntity.cs" />
     <Compile Include="Renderable\WorldRenderer\FocusVector.cs" />
@@ -61,9 +61,8 @@
     <Compile Include="Renderable\WorldRenderer\RenderWorldLayer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Extended.0.5.149\lib\MonoGame.Extended.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MonoGame.Extended">
+      <HintPath>..\..\MonoGame.Extended\Source\MonoGame.Extended\bin\Debug\MonoGame.Extended.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
@@ -74,6 +73,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

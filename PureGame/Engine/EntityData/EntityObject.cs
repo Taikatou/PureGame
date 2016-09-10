@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using PureGame.SmallGame;
 
 namespace PureGame.Engine.EntityData
@@ -16,19 +17,9 @@ namespace PureGame.Engine.EntityData
         public Direction FacingDirection;
         public bool Running;
         public int Speed => Running ? _runningSpeed : _walkingSpeed;
+        public event EventHandler<EventArgs> OnMoveEvent;
 
-        public EntityObject(Vector2 position, string fileName, Direction facingDirection = Direction.Down)
-        {
-            Position = position;
-            FileName = fileName;
-            FacingDirection = facingDirection;
-            Id = IdFactory.NewId;
-        }
-
-        // Needed for data loader
-        public EntityObject()
-        {
-        }
+        public void MomentumChange() => OnMoveEvent?.Invoke(this, null);
 
         public override string ToString()
         {

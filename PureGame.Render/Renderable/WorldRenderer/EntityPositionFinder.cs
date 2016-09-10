@@ -16,7 +16,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
             Offset = tileSize / 2;
         }
 
-        public Point GetEntityScreenPosition(EntityObject entity)
+        public Vector2 GetEntityScreenPosition(EntityObject entity)
         {
             var position = entity.Position;
             var worldData = World.EntityManager;
@@ -31,10 +31,10 @@ namespace PureGame.Render.Renderable.WorldRenderer
 
         public Vector2 Offset;
 
-        public Point GetScreenPosition(Vector2 pos)
+        public Vector2 GetScreenPosition(Vector2 pos)
         {
             var position = pos * TileSize;
-            return position.ToPoint();
+            return position;
         }
     }
 }

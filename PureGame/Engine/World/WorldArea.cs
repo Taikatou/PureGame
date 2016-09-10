@@ -14,15 +14,16 @@ namespace PureGame.Engine.World
         public TriggerManager TriggerManager;
         public InteractionManager Interactions;
         public MapObject Map;
-        public bool Updated;
+        public List<EntityObject> Entities;
         public WorldArea()
         {
-            Updated = true;
             Content = ContentManagerManager.RequestContentManager();
             Interactions = new InteractionManager();
         }
 
         public void Update(GameTime time) => EntityManager.Update(time);
+        public bool CurrentlyInteracting(EntityObject e) => Interactions.Interacting(e);
+        public bool CurrentlyMoving(EntityObject e) => EntityManager.EntityCurrentlyMoving(e);
 
         public void ProccessInteraction(EntityObject entity)
         {
@@ -38,9 +39,6 @@ namespace PureGame.Engine.World
                 }
             }
         }
-
-        public bool CurrentlyInteracting(EntityObject e) => Interactions.Interacting(e);
-        public bool CurrentlyMoving(EntityObject e) => EntityManager.EntityCurrentlyMoving(e);
 
         public void ProccessInteraction(EntityObject entity, EntityObject interactWith)
         {
@@ -73,7 +71,7 @@ namespace PureGame.Engine.World
                 {
                     var triggerEvent = TriggerManager.Trigger(e, newPosition);
                     EntityManager.MoveEntity(e, triggerEvent, newPosition);
-                    Updated = true;
+                    e.MomentumChange();
                 }
                 e.FacingDirection = e.MovementDirection;
             }
@@ -96,11 +94,9 @@ namespace PureGame.Engine.World
 
         public void UnLoad()
         {
-            Content?.Unload();
-            Map?.UnLoad();
+            Content.Unload();
+            Map.Content.Unload();
         }
-
-        public List<EntityObject> Entities;
 
         public void OnInit(WorldManager worldManager)
         {

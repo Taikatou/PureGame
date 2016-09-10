@@ -14,7 +14,7 @@ namespace PureGame.Engine
         public string CollisionLayerName;
         public TiledMap Map;
         public TiledTileLayer TileCollisionLayer;
-        private readonly ContentManager _content;
+        public readonly ContentManager Content;
 
         public bool CheckCollision(int x, int y)
         {
@@ -29,20 +29,15 @@ namespace PureGame.Engine
 
         public MapObject()
         {
-            _content = ContentManagerManager.RequestContentManager();
+            Content = ContentManagerManager.RequestContentManager();
         }
 
         public void OnInit()
         {
             Debug.WriteLine("Load map: " + MapName);
             string fileName = $"TileMaps/{MapName}";
-            Map = _content.Load<TiledMap>(fileName);
+            Map = Content.Load<TiledMap>(fileName);
             TileCollisionLayer =  Map.GetLayer<TiledTileLayer>(CollisionLayerName);
-        }
-
-        public void UnLoad()
-        {
-            _content.Unload();
         }
     }
 }
