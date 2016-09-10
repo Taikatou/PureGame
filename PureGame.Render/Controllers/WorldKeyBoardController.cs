@@ -8,7 +8,7 @@ namespace PureGame.Render.Controllers
     public class WorldKeyBoardController : IController
     {
         private readonly SmartKey[] _buttons;
-        private PureGameClient _client;
+        private readonly PureGameClient _client;
         public const int CachedMovementResetValue = -1;
         public int CachedMovement = CachedMovementResetValue;
 

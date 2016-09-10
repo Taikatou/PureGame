@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using PureGame.Render.Renderable;
 using PureGame.Render.Renderable.WorldRenderer;
 
 namespace PureGame.Render.Controllers
