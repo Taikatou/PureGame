@@ -1,27 +1,24 @@
-﻿using System;
-using System.Diagnostics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using PureGame.Engine.Controls;
 using PureGame.Render.Renderable;
-using PureGame.Render.Renderable.WorldRenderer;
 
 namespace PureGame.Render.Common
 {
     public class ClickController : IController
     {
         private readonly PlainPureGameRenderer _renderer;
+        private MouseState _previousState;
+        private Vector2 _dragPosition;
+        private int PreviousScrollValue => _previousState.ScrollWheelValue;
+        private bool _previouslyMovingcamera;
 
         public ClickController(PlainPureGameRenderer renderer)
         {
             _renderer = renderer;
         }
 
-        private MouseState _previouslyDown;
-        private Vector2 _dragPosition;
-        private bool _previouslyMovingcamera;
-
-        public bool PreviouslyReleased => _previouslyDown.LeftButton == ButtonState.Released;
+        public bool PreviouslyReleased => _previousState.LeftButton == ButtonState.Released;
 
         public void Update(ILayer layer, GameTime time)
         {
@@ -33,17 +30,34 @@ namespace PureGame.Render.Common
             }
             else if (keyBoardState.IsKeyDown(Keys.C))
             {
-                CameraUpdate(layer, mouseState);
+                CameraUpdate(mouseState);
             }
             else if (_previouslyMovingcamera)
             {
                 _renderer.EndMove();
                 _previouslyMovingcamera = false;
             }
-            _previouslyDown = mouseState;
+            if (mouseState.ScrollWheelValue != PreviousScrollValue)
+            {
+                var zoomBy = mouseState.ScrollWheelValue - PreviousScrollValue;
+                ZoomCamera(zoomBy);
+            }
+            _previousState = mouseState;
         }
 
-        public void CameraUpdate(ILayer layer, MouseState mouseState)
+        private void ZoomCamera(int zoomBy)
+        {
+            var camera = _renderer.Render.Camera;
+            var zoom = camera.Zoom;
+            zoom += (float)zoomBy/1000;
+            if (zoom >= camera.MinimumZoom && zoom <= camera.MaximumZoom)
+            {
+                camera.Zoom = zoom;
+                _renderer.RenderWorld.RefreshToDraw();
+            }
+        }
+
+        public void CameraUpdate(MouseState mouseState)
         {
             if (mouseState.LeftButton == ButtonState.Pressed)
             {

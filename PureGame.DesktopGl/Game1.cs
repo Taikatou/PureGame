@@ -21,17 +21,20 @@ namespace PureGame.DesktopGl
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
+
+        public PureGame PureGame;
+
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             BoxingViewportAdapter viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, Width, Height);
-            var game = new PureGame(Content, new FileReader("Data"));
-            EntityObject player = new EntityObject(new Vector2(4, 4), "CharacterSheet");
-            _gameClient = new PureGameClient(game, player);
+            PureGame = new PureGame(Content, new FileReader("Data"));
+            var player = new EntityObject(new Vector2(4, 4), "CharacterSheet");
+            _gameClient = new PureGameClient(PureGame, player);
             var gameRenderer = new PlainPureGameRenderer(_gameClient, viewportAdapter, player);
             _gameRenderer = new PlainPureGameRendererDebug(gameRenderer);
-            game.WorldManager.OnWorldLoad += (sender, args) => gameRenderer.LoadWorld();
-            game.WorldManager.AddEntity(player, "level01.json");
+            PureGame.WorldManager.OnWorldLoad += (sender, args) => gameRenderer.LoadWorld();
+            PureGame.WorldManager.AddEntity(player, "level01.json");
         }
 
         protected override void UnloadContent()
@@ -40,6 +43,7 @@ namespace PureGame.DesktopGl
         }
         protected override void Update(GameTime gameTime)
         {
+            PureGame.Update(gameTime);
             _gameRenderer.Update(gameTime);
             base.Update(gameTime);
         }

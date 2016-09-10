@@ -50,6 +50,7 @@
     <Compile Include="Common\ClickController.cs" />
     <Compile Include="Common\Loader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderable\GuiRenderer\GuiRenderLayer.cs" />
     <Compile Include="Renderable\IRenderable.cs" />
     <Compile Include="Renderable\PlainPureGameRenderer.cs" />
     <Compile Include="Renderable\PlainPureGameRendererDebug.cs" />

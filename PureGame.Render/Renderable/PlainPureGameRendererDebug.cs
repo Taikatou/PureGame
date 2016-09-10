@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.BitmapFonts;
 using PureGame.Engine;
-using PureGame.Engine.EntityData;
 
 namespace PureGame.Render.Renderable
 {
@@ -34,11 +33,6 @@ namespace PureGame.Render.Renderable
         {
             GameRenderer.Update(time);
             _fpsCounter.Update(time);
-        }
-
-        public void ChangeFocus(EntityObject e)
-        {
-            GameRenderer.ChangeFocus(e);
         }
     }
 }

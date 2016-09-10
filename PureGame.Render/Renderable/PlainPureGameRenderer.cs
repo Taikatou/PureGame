@@ -9,6 +9,7 @@ using PureGame.Engine.Controls;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
 using PureGame.Render.Common;
+using PureGame.Render.Renderable.GuiRenderer;
 using PureGame.Render.Renderable.WorldRenderer;
 
 namespace PureGame.Render.Renderable
@@ -16,45 +17,69 @@ namespace PureGame.Render.Renderable
     public class PlainPureGameRenderer
     {
         public ViewportAdapter ViewPort;
-        public Stack<IControllable> Controllables;
+        private readonly List<IControllable> _controllables;
         private readonly PureGameClient _gameLayer;
-        public RenderWorldLayer Render { get; set; }
+        public RenderWorldLayer Render;
+        public List<IRenderable> ToRender;
+        public RenderWorldLayer RenderWorld => ToRender[0] as RenderWorldLayer;
         private readonly EntityObject _player;
         private readonly List<IController> _controllers;
         public PlainPureGameRenderer(PureGameClient gameClient, ViewportAdapter viewPort, EntityObject player)
         {
             _player = player;
             _gameLayer = gameClient;
-            Controllables = new Stack<IControllable>();
-            Controllables.Push(gameClient);
+            _controllables = new List<IControllable> {gameClient};
             ViewPort = viewPort;
+            ToRender = new List<IRenderable> {null, new GuiRenderLayer()};
             _controllers = new List<IController> {new KeyBoardController(), new ClickController(this)};
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Render.Draw(spriteBatch);
+            foreach (var render in ToRender)
+            {
+                render.Draw(spriteBatch);
+            }
+        }
+
+        public void AddControlable(IControllable controller)
+        {
+            _controllables.Add(controller);
         }
 
         public void Update(GameTime time)
         {
-            var focus = Controllables.Peek();
-            focus.Update(time);
-            foreach (var controller in _controllers)
+            for(var i = _controllables.Count - 1; i >= 0; i--)
             {
-                focus.UpdateController(time, controller);
+                foreach (var controller in _controllers)
+                {
+                    var toBreak = _controllables[i].Update(time, controller);
+                    if (toBreak) break;
+                }
             }
-            Render.Update(time);
+            foreach (var renderable in ToRender)
+            {
+                renderable.Update(time);
+            }
         }
 
         public WorldArea CurrentWorld => _gameLayer.PureGameLayer.CurrentWorld;
 
         public void LoadWorld()
         {
-            Render = new RenderWorldLayer(CurrentWorld, ViewPort, _player);
+            if (Render != null)
+            {
+                var zoom = Render.Camera.Zoom;
+                Render = new RenderWorldLayer(CurrentWorld, ViewPort, _player, zoom);
+            }
+            else
+            {
+                Render = new RenderWorldLayer(CurrentWorld, ViewPort, _player);
+            }
+            ToRender[0] = Render;
         }
 
-        public void ChangeFocus(IFocusable focus) => Render.Focus.Push(focus);
+        public void ChangeFocus(IFocusable focus) => Render.FocusStack.Push(focus);
 
         private bool _moving;
         public void BeginMove()
@@ -62,8 +87,9 @@ namespace PureGame.Render.Renderable
             if (!_moving)
             {
                 _moving = true;
-                var focus = Render.Focus;
-                focus.Push(new FocusVector(focus.Peek().Position));
+                var focusStack = Render.FocusStack;
+                var position = Render.Focus.Position;
+                focusStack.Push(new FocusVector(position));
             }
         }
 
@@ -71,7 +97,7 @@ namespace PureGame.Render.Renderable
         {
             if (_moving)
             {
-                var focus = Render.Focus.Peek();
+                var focus = Render.Focus;
                 var focusVector = focus as FocusVector;
                 if (focusVector != null)
                 {
@@ -85,7 +111,7 @@ namespace PureGame.Render.Renderable
         {
             if (_moving)
             {
-                Render.Focus.Pop();
+                Render.FocusStack.Pop();
                 _moving = false;
             }   
         }

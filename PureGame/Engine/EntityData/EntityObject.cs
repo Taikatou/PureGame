@@ -1,10 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-using PureGame.Common;
 using PureGame.SmallGame;
 
 namespace PureGame.Engine.EntityData
 {
-    public class EntityObject : IGameObject, IFocusable
+    public class EntityObject : IGameObject
     {
         public string Id { get; set; }
         public string Type { get; set; }

@@ -20,7 +20,6 @@ namespace PureGame.Client.FocusLayers
         {
             PureGame = pureGame;
             _entity = entity;
-            Timer = 0;
         }
 
         public void ControllerA()
@@ -64,10 +63,6 @@ namespace PureGame.Client.FocusLayers
             }
         }
         public bool CurrentlyInteracting => CurrentWorld.CurrentlyInteracting(_entity);
-        public void Update(GameTime time)
-        {
-            PureGame.Update(time);
-        }
         public void Click(Vector2 position)
         {
             var spatialHash = CurrentWorld.EntityManager.SpatialHash;

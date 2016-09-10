@@ -7,9 +7,9 @@ namespace PureGame.Render.Animate
     public class Animation
     {
         private readonly List<AnimationFrame> _frames = new List<AnimationFrame>();
-        TimeSpan _timeIntoAnimation;
+        private TimeSpan _timeIntoAnimation;
 
-        TimeSpan Duration
+        public TimeSpan Duration
         {
             get
             {
@@ -60,10 +60,7 @@ namespace PureGame.Render.Animate
                         currentFrame = frame;
                         break;
                     }
-                    else
-                    {
-                        accumulatedTime += frame.Duration;
-                    }
+                    accumulatedTime += frame.Duration;
                 }
 
                 // If no frame was found, then try the last frame, 

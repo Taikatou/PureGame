@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using PureGame.Engine.EntityData;
 using PureGame.SmallGame;
@@ -80,6 +81,7 @@ namespace PureGame.Engine.World
         public void AddEntity(EntityObject e)
         {
             EntityManager.AddEntity(e);
+            Entities.Add(e);
         }
 
         private bool ValidPosition(Vector2 position)
@@ -98,12 +100,15 @@ namespace PureGame.Engine.World
             Map?.UnLoad();
         }
 
+        public List<EntityObject> Entities;
+
         public void OnInit(WorldManager worldManager)
         {
             Map = Objects.GetObjects<MapObject>()[0];
             Map.OnInit();
+            Entities = Objects.GetObjects<EntityObject>();
             TriggerManager = new TriggerManager(Objects.GetObjects<TriggerObject>(), worldManager);
-            EntityManager = new EntityManager(Objects.GetObjects<EntityObject>());
+            EntityManager = new EntityManager(Entities);
         }
     }
 }

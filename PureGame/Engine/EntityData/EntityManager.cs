@@ -14,12 +14,10 @@ namespace PureGame.Engine.EntityData
         public Dictionary<EntityObject, ExpiringKey<Vector2>> EntityToKey;
         public Dictionary<Vector2, EntityObject> SpatialHash;
         public Dictionary<string, EntityObject> IdHash;
-        public List<EntityObject> Entities;
 
         public EntityManager(IEnumerable<EntityObject> entities)
         {
             IdHash = new Dictionary<string, EntityObject>();
-            Entities = new List<EntityObject>();
             ExpiringTiles = new List<ExpiringKey<Vector2>>();
             TileEvents = new Dictionary<ExpiringKey<Vector2>, TileEvent>();
             EntityToKey = new Dictionary<EntityObject, ExpiringKey<Vector2>>();
@@ -35,7 +33,6 @@ namespace PureGame.Engine.EntityData
         {
             if (!ContainsEntity(e))
             {
-                Entities.Add(e);
                 SpatialHash[e.Position] = e;
                 IdHash[e.Id] = e;
             }
@@ -52,7 +49,6 @@ namespace PureGame.Engine.EntityData
                 IdHash.Remove(entityId);
                 EntityToKey.Remove(entity);
                 SpatialHash.Remove(entity.Position);
-                Entities.Remove(entity);
             }
         }
 

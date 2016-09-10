@@ -49,7 +49,7 @@ namespace PureGame.Engine.World
                 _worlds[worldName] = _dataLoader.Load<WorldArea>(worldName, _fileReader);
                 _worldList.Add(_worlds[worldName]);
                 _worlds[worldName].OnInit(this);
-                foreach (var entity in _worlds[worldName].EntityManager.Entities)
+                foreach (var entity in _worlds[worldName].Entities)
                 {
                     _entityMapper[entity] = _worlds[worldName];
                 }

@@ -10,7 +10,6 @@ using PureGame.Engine.World;
 using System.Collections.Generic;
 using MonoGame.Extended.BitmapFonts;
 using PureGame.Common;
-using System;
 
 namespace PureGame.Render.Renderable.WorldRenderer
 {
@@ -26,27 +25,28 @@ namespace PureGame.Render.Renderable.WorldRenderer
         private readonly ViewportAdapter _viewPort;
         public readonly EntityPositionFinder PositionFinder;
         private readonly EntityObject _player;
-        public Stack<IFocusable> Focus;
-        public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, EntityObject player, string fontName="montserrat-32")
+        public Stack<IFocusable> FocusStack;
+        public IFocusable Focus => FocusStack.Peek();
+        public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, EntityObject player, float zoom=0.25f, string fontName="montserrat-32")
         {
             _player = player;
             _content = ContentManagerManager.RequestContentManager();
             _viewPort = viewPort;
             World = world;
-            Camera = new Camera2D(viewPort) {Zoom = 0.25f};
+            Camera = new Camera2D(viewPort) {Zoom=zoom};
             _map = world.Map.Map;
             var tileSize = new Vector2(_map.TileWidth, _map.TileHeight);
             PositionFinder = new EntityPositionFinder(world, tileSize);
             _entitySprites = new Dictionary<string, RenderEntity>();
-            string fileName = $"Fonts/{fontName}";
+            var fileName = $"Fonts/{fontName}";
             _bitmapFont = _content.Load<BitmapFont>(fileName);
-            Focus = new Stack<IFocusable>();
-            Focus.Push(new FocusEntity(_player, PositionFinder));
+            FocusStack = new Stack<IFocusable>();
+            FocusStack.Push(new FocusEntity(_player, PositionFinder));
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Camera.LookAt(Focus.Peek().Position);
+            Camera.LookAt(Focus.Position);
             spriteBatch.Begin(transformMatrix: Camera.GetViewMatrix());
             spriteBatch.Draw(_map);
             foreach(var r in _toDraw)
@@ -65,13 +65,6 @@ namespace PureGame.Render.Renderable.WorldRenderer
                 spriteBatch.DrawString(_bitmapFont, text, textPosition, Color.Black);
                 spriteBatch.End();
             }
-        }
-
-
-
-        internal void MoveFocus(Vector2 focusVector)
-        {
-            Focus.Push(new FocusVector(Focus.Peek().Position + focusVector));
         }
 
         public void Update(GameTime time)
@@ -107,10 +100,14 @@ namespace PureGame.Render.Renderable.WorldRenderer
         public void RefreshToDraw()
         {
             _toDraw = new List<RenderEntity>();
-            foreach(var e in World.EntityManager.Entities)
+            var tmpCamera = new Camera2D(_viewPort) { Zoom=Camera.Zoom };
+            tmpCamera.LookAt(Focus.FinalPosition);
+            foreach (var e in World.Entities)
             {
                 var r = GetRenderEntity(e);
-                if(Camera.Contains(r.Rect) != ContainmentType.Disjoint)
+                var camerasContains = Camera.Contains(r.Rect) != ContainmentType.Disjoint ||
+                                      tmpCamera.Contains(r.Rect) != ContainmentType.Disjoint;
+                if (camerasContains)
                 {
                     _toDraw.Add(r);
                 }

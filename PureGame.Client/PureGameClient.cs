@@ -13,14 +13,10 @@ namespace PureGame.Client
         public string Name => PureGameLayer.Name;
         public ILayer Layer => PureGameLayer;
 
-        public void UpdateController(GameTime time, IController controller)
+        public bool Update(GameTime time, IController controller)
         {
             controller.Update(PureGameLayer, time);
-        }
-
-        public void Update(GameTime time)
-        {
-            PureGameLayer.Update(time);
+            return false;
         }
 
         public PureGameClient(PureGame pureGame, EntityObject player)
