@@ -9,7 +9,6 @@ using PureGame.Engine.Controls;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
 using PureGame.Render.Common;
-using PureGame.Render.Renderable.GuiRenderer;
 using PureGame.Render.Renderable.WorldRenderer;
 
 namespace PureGame.Render.Renderable
@@ -30,7 +29,7 @@ namespace PureGame.Render.Renderable
             _gameLayer = gameClient;
             _controllables = new List<IControllable> {gameClient};
             ViewPort = viewPort;
-            ToRender = new List<IRenderable> {null, new GuiRenderLayer()};
+            ToRender = new List<IRenderable> {null};
             _controllers = new List<IController> {new KeyBoardController(), new ClickController(this)};
         }
 

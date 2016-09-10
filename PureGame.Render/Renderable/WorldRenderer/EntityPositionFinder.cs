@@ -9,6 +9,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
     {
         public Vector2 TileSize;
         public WorldArea World;
+        public Vector2 Offset;
         public EntityPositionFinder(WorldArea world, Vector2 tileSize)
         {
             World = world;
@@ -28,8 +29,6 @@ namespace PureGame.Render.Renderable.WorldRenderer
             }
             return GetScreenPosition(position);
         }
-
-        public Vector2 Offset;
 
         public Vector2 GetScreenPosition(Vector2 pos)
         {

@@ -8,7 +8,6 @@ using PureGame.Engine;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
 using System.Collections.Generic;
-using System.Diagnostics;
 using PureGame.Common;
 using PureGame.Render.Common;
 
@@ -20,17 +19,15 @@ namespace PureGame.Render.Renderable.WorldRenderer
         private readonly Dictionary<string, RenderEntity> _entitySprites;
         private readonly TiledMap _map;
         public Camera2D Camera;
-        private readonly ContainsList<RenderEntity> _toDraw;
+        private readonly ContainsList<IRenderable> _toDraw;
         private readonly ContentManager _content;
         private readonly ViewportAdapter _viewPort;
         public readonly EntityPositionFinder PositionFinder;
-        private readonly EntityObject _player;
         public Stack<IFocusable> FocusStack;
         public IFocusable Focus => FocusStack.Peek();
         public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, EntityObject player, float zoom=0.25f)
         {
-            _toDraw = new ContainsList<RenderEntity>();
-            _player = player;
+            _toDraw = new ContainsList<IRenderable>();
             _content = ContentManagerManager.RequestContentManager();
             _viewPort = viewPort;
             World = world;
@@ -40,7 +37,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
             PositionFinder = new EntityPositionFinder(world, tileSize);
             _entitySprites = new Dictionary<string, RenderEntity>();
             FocusStack = new Stack<IFocusable>();
-            FocusStack.Push(new FocusEntity(_player, PositionFinder));
+            FocusStack.Push(new FocusEntity(player, PositionFinder));
             foreach (var entity in world.Entities)
             {
                 if (entity != player)
@@ -54,7 +51,6 @@ namespace PureGame.Render.Renderable.WorldRenderer
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Camera.LookAt(Focus.Position);
             var transformMatrix = Camera.GetViewMatrix();
             spriteBatch.Begin(transformMatrix: transformMatrix);
             _map.Draw(transformMatrix);
@@ -63,11 +59,6 @@ namespace PureGame.Render.Renderable.WorldRenderer
                 r.Draw(spriteBatch);
             }
             spriteBatch.End();
-            // Draw interactions
-            if (World.CurrentlyInteracting(_player))
-            {
-
-            }
         }
 
         public void Update(GameTime time)
@@ -76,6 +67,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
             {
                 toDraw.Update(time);
             }
+            Camera.LookAt(Focus.Position);
         }
 
         public Vector2 WorldPosition(Vector2 position)

@@ -9,7 +9,7 @@ using PureGame.Engine;
 
 namespace PureGame.Render.Renderable.WorldRenderer
 {
-    public class RenderEntity
+    public class RenderEntity : IRenderable
     {
         private readonly EntityObject _baseEntity;
         private readonly Texture2D _entityTexture;
