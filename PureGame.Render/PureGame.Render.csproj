@@ -35,10 +35,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\PureGame.Client\PureGame.Client.csproj">
-      <Project>{623d62ec-6e1c-4617-914c-b9f44eccf310}</Project>
-      <Name>PureGame.Client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PureGame\PureGame.csproj">
       <Project>{483d0287-2401-4822-893b-eba1b792e055}</Project>
       <Name>PureGame</Name>
@@ -47,11 +43,16 @@
   <ItemGroup>
     <Compile Include="Animate\Animation.cs" />
     <Compile Include="Animate\AnimationFrame.cs" />
-    <Compile Include="Common\ClickController.cs" />
+    <Compile Include="Controllers\WorldClickController.cs" />
     <Compile Include="Common\ContainsList.cs" />
     <Compile Include="Common\Loader.cs" />
+    <Compile Include="Controllers\IController.cs" />
+    <Compile Include="Controllers\WorldKeyBoardController.cs" />
+    <Compile Include="Controllers\SmartKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PureGameClient.cs" />
     <Compile Include="Renderable\IRenderable.cs" />
+    <Compile Include="Renderable\RenderLayer.cs" />
     <Compile Include="Renderable\PlainPureGameRenderer.cs" />
     <Compile Include="Renderable\WorldRenderer\EntityPositionFinder.cs" />
     <Compile Include="Renderable\WorldRenderer\FocusEntity.cs" />

@@ -42,6 +42,16 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Screens\MenuScreens\AudioOptionsScreen.cs" />
+    <Compile Include="Screens\GameScreen.cs" />
+    <Compile Include="Screens\MenuScreens\KeyboardOptionsScreen.cs" />
+    <Compile Include="Screens\MenuScreens\LoadGameScreen.cs" />
+    <Compile Include="Screens\MenuScreens\MainMenuScreen.cs" />
+    <Compile Include="Screens\MenuScreens\MenuItem.cs" />
+    <Compile Include="Screens\MenuScreens\MenuScreen.cs" />
+    <Compile Include="Screens\MenuScreens\MouseOptionsScreen.cs" />
+    <Compile Include="Screens\MenuScreens\OptionsScreen.cs" />
+    <Compile Include="Screens\MenuScreens\VideoOptionsScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -84,10 +94,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PureGame.Client\PureGame.Client.csproj">
-      <Project>{623d62ec-6e1c-4617-914c-b9f44eccf310}</Project>
-      <Name>PureGame.Client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PureGame.Render\PureGame.Render.csproj">
       <Project>{495bf5a7-dea5-4b30-9b9b-4bb358cc60e3}</Project>
       <Name>PureGame.Render</Name>

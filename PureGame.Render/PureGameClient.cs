@@ -1,13 +1,12 @@
 ﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using PureGame.Engine;
-using PureGame.Engine.Controls;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
 
-namespace PureGame.Client.FocusLayers
+namespace PureGame.Render
 {
-    public class PureGameLayer : ILayer
+    public class PureGameClient
     {
         public int Timer;
         public int TimerResetValue = 50;
@@ -16,7 +15,7 @@ namespace PureGame.Client.FocusLayers
         public string Name => CurrentWorld.Name;
         public WorldArea CurrentWorld => PureGame.WorldManager.GetEntitysWorld(_entity);
 
-        public PureGameLayer(EntityObject entity, PureGame pureGame)
+        public PureGameClient(EntityObject entity, PureGame pureGame)
         {
             PureGame = pureGame;
             _entity = entity;

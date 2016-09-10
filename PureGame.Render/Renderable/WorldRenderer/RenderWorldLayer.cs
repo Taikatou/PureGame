@@ -13,7 +13,7 @@ using PureGame.Render.Common;
 
 namespace PureGame.Render.Renderable.WorldRenderer
 {
-    public class RenderWorldLayer : IRenderable
+    public class RenderWorldLayer : RenderLayer
     {
         public WorldArea World;
         private readonly Dictionary<string, RenderEntity> _entitySprites;
@@ -49,7 +49,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
             RefreshToDraw();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             var transformMatrix = Camera.GetViewMatrix();
             spriteBatch.Begin(transformMatrix: transformMatrix);
@@ -61,8 +61,9 @@ namespace PureGame.Render.Renderable.WorldRenderer
             spriteBatch.End();
         }
 
-        public void Update(GameTime time)
+        public override void Update(GameTime time)
         {
+            base.Update(time);
             foreach (var toDraw in _toDraw.Elements)
             {
                 toDraw.Update(time);
@@ -73,9 +74,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         public Vector2 WorldPosition(Vector2 position)
         {
             position = Camera.ScreenToWorld(position);
-            //we cnvert back and forth to round vector
-            var point = position/PositionFinder.TileSize;
-            return point;
+            return position/PositionFinder.TileSize;
         }
 
         public RenderEntity GetRenderEntity(EntityObject e)
@@ -102,9 +101,9 @@ namespace PureGame.Render.Renderable.WorldRenderer
 
         public bool CameraContains(Rectangle r, Camera2D tmpCamera)
         {
-            var camerasContains = Camera.Contains(r) != ContainmentType.Disjoint ||
+            var cameraContains = Camera.Contains(r) != ContainmentType.Disjoint ||
                                   tmpCamera.Contains(r) != ContainmentType.Disjoint;
-            return camerasContains;
+            return cameraContains;
         }
 
         public void RefreshToDraw()
@@ -112,6 +111,41 @@ namespace PureGame.Render.Renderable.WorldRenderer
             foreach (var e in World.Entities)
             {
                 RefreshEntity(e);
+            }
+        }
+
+        private bool _moving;
+        public void BeginMove()
+        {
+            if (!_moving)
+            {
+                _moving = true;
+                var focusStack = FocusStack;
+                var position = Focus.Position;
+                focusStack.Push(new FocusVector(position));
+            }
+        }
+
+        public void MoveFocusBy(Vector2 moveBy)
+        {
+            if (_moving)
+            {
+                var focus = Focus;
+                var focusVector = focus as FocusVector;
+                if (focusVector != null)
+                {
+                    moveBy /= Camera.Zoom;
+                    focusVector.Position -= moveBy;
+                }
+            }
+        }
+
+        public void EndMove()
+        {
+            if (_moving)
+            {
+                FocusStack.Pop();
+                _moving = false;
             }
         }
     }

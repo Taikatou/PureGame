@@ -1,54 +1,47 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
+using MonoGame.Extended.Screens;
 using MonoGame.Extended.ViewportAdapters;
-using PureGame.Client;
-using PureGame.Engine.EntityData;
-using PureGame.Render.Renderable;
+using PureGame.DesktopGl.Screens;
+using PureGame.DesktopGl.Screens.MenuScreens;
 
 namespace PureGame.DesktopGl
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-        private PlainPureGameRenderer _gameRenderer;
-        private PureGameClient _gameClient;
-        public int Width = 800, Height = 480;
-        public PureGame PureGame;
+        // ReSharper disable once NotAccessedField.Local
+        private readonly GraphicsDeviceManager _graphicsDeviceManager;
+        public ScreenComponent ScreenComponent;
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            _graphicsDeviceManager = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
+            Components.Add(ScreenComponent = new ScreenComponent(this));
+
+            ScreenComponent.Register(new MainMenuScreen(Services, this));
+            ScreenComponent.Register(new LoadGameScreen(Services));
+            ScreenComponent.Register(new OptionsScreen(Services));
+            ScreenComponent.Register(new AudioOptionsScreen(Services));
+            ScreenComponent.Register(new VideoOptionsScreen(Services));
+            ScreenComponent.Register(new KeyboardOptionsScreen(Services));
+            ScreenComponent.Register(new MouseOptionsScreen(Services));
         }
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            var viewportAdapter = new DefaultViewportAdapter(GraphicsDevice);
-            PureGame = new PureGame(Content, new FileReader("Data"));
-            var player = EntityFactory.MakeEntityObject(new Vector2(4, 4), "CharacterSheet");
-            _gameClient = new PureGameClient(PureGame, player);
-            _gameRenderer = new PlainPureGameRenderer(_gameClient, viewportAdapter, player);
-            PureGame.WorldManager.OnWorldLoad += (sender, args) => _gameRenderer.LoadWorld();
-            PureGame.WorldManager.AddEntity(player, "level01.json");
+            ScreenComponent.Register(new GameScreen(Services));
         }
-        protected override void UnloadContent()
-        {
-            Content.Unload();
-        }
-        protected override void Update(GameTime gameTime)
-        {
-            PureGame.Update(gameTime);
-            _gameRenderer.Update(gameTime);
-            base.Update(gameTime);
-        }
-        protected override void Draw(GameTime time)
+
+        protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            _gameRenderer.Draw(_spriteBatch);
+
+            base.Draw(gameTime);
         }
     }
 }

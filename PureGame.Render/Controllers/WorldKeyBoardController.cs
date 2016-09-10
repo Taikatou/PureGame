@@ -1,15 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using System;
 using PureGame.Engine;
-using PureGame.Engine.Controls;
 
-namespace PureGame.Client.Controllers
+namespace PureGame.Render.Controllers
 {
-    public class KeyBoardController : IController
+    public class WorldKeyBoardController : IController
     {
         private readonly SmartKey[] _buttons;
-
+        private PureGameClient _client;
         public const int CachedMovementResetValue = -1;
         public int CachedMovement = CachedMovementResetValue;
 
@@ -47,25 +46,26 @@ namespace PureGame.Client.Controllers
             }
         }
 
-        public void Update(ILayer layer, GameTime time)
+        public void Update(GameTime time)
         {
             UpdateButtons();
 
             if (_buttons[(int) Controls.A].NewActive)
             {
-                layer.ControllerA();
+                _client.ControllerA();
             }
             var d = GetMovementDirection();
             if (d != Direction.None)
             {
-                layer.ControllerDPad(d, time);
+                _client.ControllerDPad(d, time);
             }
             var bActive = _buttons[(int) Controls.B].Active;
-            layer.ControllerB(bActive);
+            _client.ControllerB(bActive);
         }
 
-        public KeyBoardController()
+        public WorldKeyBoardController(PureGameClient client)
         {
+            _client = client;
             var controlsCount = Enum.GetNames(typeof(Controls)).Length;
             _buttons = new SmartKey[controlsCount];
             _buttons[(int)Controls.Left] = new SmartKey(Keys.Left);
