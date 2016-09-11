@@ -24,7 +24,7 @@ namespace PureGame.Engine
 
         public bool CheckCollision(Vector2 position)
         {
-            return CheckCollision((int)(position.X), (int)(position.Y));
+            return CheckCollision((int)position.X, (int)position.Y);
         }
 
         public MapObject()

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PureGame.Render.Animate
 {
@@ -13,11 +14,7 @@ namespace PureGame.Render.Animate
         {
             get
             {
-                double totalSeconds = 0;
-                foreach (var frame in _frames)
-                {
-                    totalSeconds += frame.Duration.TotalSeconds;
-                }
+                var totalSeconds = _frames.Sum(frame => frame.Duration.TotalSeconds);
 
                 return TimeSpan.FromSeconds(totalSeconds);
             }
@@ -25,7 +22,7 @@ namespace PureGame.Render.Animate
 
         public void AddFrame(Rectangle rectangle, TimeSpan duration)
         {
-            AnimationFrame newFrame = new AnimationFrame()
+            var newFrame = new AnimationFrame()
             {
                 SourceRectangle = rectangle,
                 Duration = duration
@@ -36,11 +33,11 @@ namespace PureGame.Render.Animate
 
         public void Update(GameTime gameTime)
         {
-            double secondsIntoAnimation =
+            var secondsIntoAnimation =
                 _timeIntoAnimation.TotalSeconds + gameTime.ElapsedGameTime.TotalSeconds;
 
 
-            double remainder = secondsIntoAnimation % Duration.TotalSeconds;
+            var remainder = secondsIntoAnimation % Duration.TotalSeconds;
 
             _timeIntoAnimation = TimeSpan.FromSeconds(remainder);
         }

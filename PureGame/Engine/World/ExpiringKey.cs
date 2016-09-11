@@ -18,7 +18,14 @@ namespace PureGame.Engine.World
 
         public void Update(GameTime time)
         {
-            TimeLeft -= time.ElapsedGameTime.Milliseconds;
+            if (TimeLeft > 0)
+            {
+                TimeLeft -= time.ElapsedGameTime.Milliseconds;
+                if (TimeLeft < 0)
+                {
+                    TimeLeft = 0;
+                }
+            }
         }
     }
 }
