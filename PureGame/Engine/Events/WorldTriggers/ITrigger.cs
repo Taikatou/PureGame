@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.EntityData;
 
 namespace PureGame.Engine.Events.WorldTriggers

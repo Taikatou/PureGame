@@ -20,7 +20,6 @@ namespace PureGame.Engine.World
         public bool CurrentlyMoving(Entity e) => EntityManager.EntityCurrentlyMoving(e);
         public void AddInteraction(Entity entity, Entity interactWith) => Interactions.AddInteraction(entity, interactWith);
         public void ProgressInteraction(Entity e) => Interactions.ProgressInteractions(e);
-        private IWorldLoader _worldLoader;
 
         public WorldArea()
         {
@@ -33,7 +32,6 @@ namespace PureGame.Engine.World
 
         public virtual void OnInit(IWorldLoader worldLoader)
         {
-            _worldLoader = worldLoader;
             TriggerManager.WorldLoader = worldLoader;
         }
 
@@ -84,6 +82,12 @@ namespace PureGame.Engine.World
         {
             EntityManager.AddEntity(e);
             Entities.Add(e);
+        }
+
+        public void RemoveEntity(Entity e)
+        {
+            EntityManager.RemoveEntity(e);
+            Entities.Remove(e);
         }
 
         private bool ValidPosition(Vector2 position)

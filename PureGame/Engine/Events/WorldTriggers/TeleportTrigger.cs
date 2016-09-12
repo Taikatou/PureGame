@@ -6,8 +6,8 @@ namespace PureGame.Engine.Events.WorldTriggers
 {
     public class TeleportTrigger<T> : Trigger where T : WorldArea, new()
     {
-        public Vector2 EndPosition { get; }
-        private IWorldLoader _worldLoader;
+        public Vector2 EndPosition;
+        private readonly IWorldLoader _worldLoader;
 
         public TeleportTrigger(Vector2 position, Vector2 endPosition, IWorldLoader worldLoader)
         {
@@ -26,8 +26,7 @@ namespace PureGame.Engine.Events.WorldTriggers
             var trigger = new TriggerEvent();
             trigger.Event += (sender, args) =>
             {
-                entity.Position = EndPosition;
-                _worldLoader.AddEntity<T>(entity);
+                _worldLoader.AddEntity<T>(entity, EndPosition);
             };
             return trigger;
         }

@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="Animate\Animation.cs" />
     <Compile Include="Animate\AnimationFrame.cs" />
+    <Compile Include="Controllers\CameraController.cs" />
+    <Compile Include="Controllers\TouchScreenController.cs" />
     <Compile Include="Controllers\WorldClickController.cs" />
     <Compile Include="Common\ContainsList.cs" />
     <Compile Include="Common\Loader.cs" />

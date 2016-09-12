@@ -55,6 +55,7 @@ namespace PureGame.Render.Renderable
             }
             Render.Controllers.Add(new WorldKeyBoardController(_gameClient));
             Render.Controllers.Add(new WorldClickController(Render, _gameClient));
+            Render.Controllers.Add(new TouchScreenController(Render, _gameClient));
             ToRender[0] = Render;
         }
     }

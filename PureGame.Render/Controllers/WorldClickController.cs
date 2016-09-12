@@ -4,24 +4,20 @@ using PureGame.Render.Renderable.WorldRenderer;
 
 namespace PureGame.Render.Controllers
 {
-    public class WorldClickController : IController
+    public class WorldClickController : CameraController
     {
-        private readonly RenderWorldLayer _renderer;
         private MouseState _previousState;
-        private Vector2 _dragPosition;
         private int PreviousScrollValue => _previousState.ScrollWheelValue;
-        private bool _previouslyMovingcamera;
-        private readonly PureGameClient _client;
 
-        public WorldClickController(RenderWorldLayer renderer, PureGameClient client)
+        public WorldClickController(RenderWorldLayer renderer, PureGameClient client) : base(renderer, client)
         {
-            _renderer = renderer;
-            _client = client;
+            _previousState = Mouse.GetState();
         }
 
         public bool PreviouslyReleased => _previousState.LeftButton == ButtonState.Released;
+        public Vector2 GetClickVector2(MouseState mouseState) => new Vector2(mouseState.X, mouseState.Y);
 
-        public void Update(GameTime time)
+        public override void Update(GameTime time)
         {
             var mouseState = Mouse.GetState();
             var keyBoardState = Keyboard.GetState();
@@ -33,29 +29,17 @@ namespace PureGame.Render.Controllers
             {
                 CameraUpdate(mouseState);
             }
-            else if (_previouslyMovingcamera)
+            else if (PreviouslyMovingCamera)
             {
-                _renderer.EndMove();
-                _previouslyMovingcamera = false;
+                Renderer.EndMove();
+                PreviouslyMovingCamera = false;
             }
             if (mouseState.ScrollWheelValue != PreviousScrollValue)
             {
                 var zoomBy = mouseState.ScrollWheelValue - PreviousScrollValue;
-                ZoomCamera(zoomBy);
+                ZoomCamera((float)zoomBy / 1000);
             }
             _previousState = mouseState;
-        }
-
-        private void ZoomCamera(int zoomBy)
-        {
-            var camera = _renderer.Camera;
-            var zoom = camera.Zoom;
-            zoom += (float)zoomBy/1000;
-            if (zoom >= camera.MinimumZoom && zoom <= camera.MaximumZoom)
-            {
-                camera.Zoom = zoom;
-                _renderer.RefreshToDraw();
-            }
         }
 
         public void CameraUpdate(MouseState mouseState)
@@ -64,19 +48,17 @@ namespace PureGame.Render.Controllers
             {
                 if (PreviouslyReleased)
                 {
-                    if (!_previouslyMovingcamera)
+                    if (!PreviouslyMovingCamera)
                     {
-                        _renderer.BeginMove();
+                        Renderer.BeginMove();
                     }
-                    _previouslyMovingcamera = true;
-                    _dragPosition = GetMouseVector2(mouseState);
+                    PreviouslyMovingCamera = true;
+                    DragPosition = GetClickVector2(mouseState);
                 }
                 else
                 {
-                    var newDragPosition = GetMouseVector2(mouseState);
-                    var moveBy = newDragPosition - _dragPosition;
-                    _renderer.MoveFocusBy(moveBy);
-                    _dragPosition = newDragPosition;
+                    var newDragPosition = GetClickVector2(mouseState);
+                    MoveCameraBy(newDragPosition);
                 }
             }
         }
@@ -85,27 +67,20 @@ namespace PureGame.Render.Controllers
         {
             if (mouseState.LeftButton == ButtonState.Pressed && PreviouslyReleased)
             {
-                var position = WorldPosition(mouseState).ToPoint();
-                Click(position.ToVector2());
+                var position = WorldPosition(mouseState);
+                Click(position);
             }
-        }
-
-        public Vector2 GetMouseVector2(MouseState mouseState)
-        {
-            var x = mouseState.X;
-            var y = mouseState.Y;
-            return new Vector2(x, y);
         }
 
         public Vector2 WorldPosition(MouseState mouseState)
         {
-            var position = GetMouseVector2(mouseState);
-            return _renderer.WorldPosition(position);
+            var position = GetClickVector2(mouseState);
+            return Renderer.WorldPosition(position);
         }
 
         public void Click(Vector2 position)
         {
-            _client.Click(position);
+            Client.Click(position);
         }
     }
 }

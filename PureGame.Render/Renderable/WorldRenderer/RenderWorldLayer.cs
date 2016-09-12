@@ -74,7 +74,8 @@ namespace PureGame.Render.Renderable.WorldRenderer
         public Vector2 WorldPosition(Vector2 position)
         {
             position = Camera.ScreenToWorld(position);
-            return position/PositionFinder.TileSize;
+            var point = (position/PositionFinder.TileSize).ToPoint();
+            return point.ToVector2();
         }
 
         public RenderEntity GetRenderEntity(Entity e)

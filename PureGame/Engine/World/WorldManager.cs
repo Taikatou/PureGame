@@ -21,11 +21,17 @@ namespace PureGame.Engine.World
 
         public void AddEntity<T>(Entity entity) where T : WorldArea, new()
         {
+            AddEntity<T>(entity, entity.Position);
+        }
+
+        public void AddEntity<T>(Entity entity, Vector2 endPoint) where T : WorldArea, new()
+        {
             //if entity currently exists we remove it
             if (_entityMapper.ContainsKey(entity))
             {
-                _entityMapper[entity].EntityManager.RemoveEntity(entity);
+                _entityMapper[entity].RemoveEntity(entity);
             }
+            entity.Position = endPoint;
             var worldType = typeof(T).ToString();
             LoadWorld<T>(worldType);
             _entityMapper[entity] = _worldDict[worldType];
