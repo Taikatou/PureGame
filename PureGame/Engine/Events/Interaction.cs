@@ -4,10 +4,10 @@ namespace PureGame.Engine.Events
 {
     public class Interaction
     {
-        public EntityObject InitialEntity;
-        public EntityObject InteractingWithEntity;
+        public Entity InitialEntity;
+        public Entity InteractingWithEntity;
 
-        public Interaction(EntityObject initalEntity, EntityObject interactWith)
+        public Interaction(Entity initalEntity, Entity interactWith)
         {
             InitialEntity = initalEntity;
             InteractingWithEntity = interactWith;

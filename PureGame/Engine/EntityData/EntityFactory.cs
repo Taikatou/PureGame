@@ -1,13 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
-using PureGame.SmallGame;
 
 namespace PureGame.Engine.EntityData
 {
     public class EntityFactory
     {
-        public static EntityObject MakeEntityObject(Vector2 position, string fileName, Direction facingDirection = Direction.Down)
+        public static Entity MakeEntityObject(Vector2 position, string fileName, Direction facingDirection = Direction.Down)
         {
-            var e = new EntityObject
+            var e = new Entity
             {
                 Position = position,
                 FileName = fileName,

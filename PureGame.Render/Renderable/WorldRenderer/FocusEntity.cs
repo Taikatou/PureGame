@@ -6,7 +6,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
 {
     class FocusEntity : IFocusable
     {
-        private readonly EntityObject _entity;
+        private readonly Entity _entity;
         private readonly EntityPositionFinder _positionFinder;
         public Vector2 Position
         {
@@ -26,7 +26,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
             }
         }
 
-        public FocusEntity(EntityObject entity, EntityPositionFinder positionFinder)
+        public FocusEntity(Entity entity, EntityPositionFinder positionFinder)
         {
             _entity = entity;
             _positionFinder = positionFinder;
