@@ -2,30 +2,42 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using PureGame.Engine.EntityData;
-using PureGame.SmallGame;
 using PureGame.Engine.Events;
+using PureGame.Engine.Events.WorldTriggers;
 
 namespace PureGame.Engine.World
 {
-    public class WorldArea : GameLevel
+    public class WorldArea 
     {
         public ContentManager Content;
         public EntityManager EntityManager;
         public TriggerManager TriggerManager;
         public InteractionManager Interactions;
-        public MapObject Map;
-        public List<EntityObject> Entities;
+        public WorldMap Map;
+        public List<Entity> Entities;
+        public void Update(GameTime time) => EntityManager.Update(time);
+        public bool CurrentlyInteracting(Entity e) => Interactions.Interacting(e);
+        public bool CurrentlyMoving(Entity e) => EntityManager.EntityCurrentlyMoving(e);
+        public void AddInteraction(Entity entity, Entity interactWith) => Interactions.AddInteraction(entity, interactWith);
+        public void ProgressInteraction(Entity e) => Interactions.ProgressInteractions(e);
+        private IWorldLoader _worldLoader;
+
         public WorldArea()
         {
             Content = ContentManagerManager.RequestContentManager();
+            Entities = new List<Entity>();
+            EntityManager = new EntityManager();
             Interactions = new InteractionManager();
+            TriggerManager = new TriggerManager();
         }
 
-        public void Update(GameTime time) => EntityManager.Update(time);
-        public bool CurrentlyInteracting(EntityObject e) => Interactions.Interacting(e);
-        public bool CurrentlyMoving(EntityObject e) => EntityManager.EntityCurrentlyMoving(e);
+        public virtual void OnInit(IWorldLoader worldLoader)
+        {
+            _worldLoader = worldLoader;
+            TriggerManager.WorldLoader = worldLoader;
+        }
 
-        public void ProccessInteraction(EntityObject entity)
+        public void ProccessInteraction(Entity entity)
         {
             var currentlyInteracting = CurrentlyInteracting(entity);
             if (!(currentlyInteracting || CurrentlyMoving(entity)))
@@ -40,28 +52,19 @@ namespace PureGame.Engine.World
             }
         }
 
-        public void ProccessInteraction(EntityObject entity, EntityObject interactWith)
+        public void ProccessInteraction(Entity entity, Entity interactWith)
         {
             var entityInteracting = CurrentlyInteracting(interactWith);
             if (!entityInteracting)
             {
-                //Move entity to face
                 var directionVector = entity.Position - interactWith.Position;
                 var direction = DirectionMapper.GetDirectionFromMovment(directionVector);
                 interactWith.FacingDirection = direction;
-                //start interaction
                 AddInteraction(entity, interactWith);
             }
         }
 
-        public void AddInteraction(EntityObject entity, EntityObject interactWith)
-        {
-            Interactions.AddInteraction(entity, interactWith);
-        }
-
-        public void ProgressInteraction(EntityObject e) => Interactions.ProgressInteractions(e);
-
-        public void ProccessMovement(EntityObject e)
+        public void ProccessMovement(Entity e)
         {
             if (!EntityManager.EntityCurrentlyMoving(e))
             {
@@ -69,14 +72,15 @@ namespace PureGame.Engine.World
                 var newPosition = e.Position + movementPosition;
                 if (ValidPosition(newPosition))
                 {
-                    var triggerEvent = TriggerManager.Trigger(e, newPosition);
+                    var triggerEvent = TriggerManager.GetTriggerEvent(e, newPosition);
                     EntityManager.MoveEntity(e, triggerEvent, newPosition);
                     e.MomentumChange();
                 }
                 e.FacingDirection = e.MovementDirection;
             }
         }
-        public void AddEntity(EntityObject e)
+
+        public void AddEntity(Entity e)
         {
             EntityManager.AddEntity(e);
             Entities.Add(e);
@@ -90,21 +94,6 @@ namespace PureGame.Engine.World
             var entityCollision = !EntityManager.SpatialHash.ContainsKey(position);
             var mapCollision = !Map.CheckCollision(position);
             return withinLimits && entityCollision && mapCollision;
-        }
-
-        public void UnLoad()
-        {
-            Content.Unload();
-            Map.Content.Unload();
-        }
-
-        public void OnInit(WorldManager worldManager)
-        {
-            Map = Objects.GetObjects<MapObject>()[0];
-            Map.OnInit();
-            Entities = Objects.GetObjects<EntityObject>();
-            TriggerManager = new TriggerManager(Objects.GetObjects<TriggerObject>(), worldManager);
-            EntityManager = new EntityManager(Entities);
         }
     }
 }
