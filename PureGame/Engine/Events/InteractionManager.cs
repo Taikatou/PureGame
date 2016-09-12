@@ -5,21 +5,21 @@ namespace PureGame.Engine.Events
 {
     public class InteractionManager
     {
-        public Dictionary<EntityObject, Interaction> Interactions;
+        public Dictionary<Entity, Interaction> Interactions;
 
         public InteractionManager()
         {
-            Interactions = new Dictionary<EntityObject, Interaction>();
+            Interactions = new Dictionary<Entity, Interaction>();
         }
 
-        public void AddInteraction(EntityObject entity, EntityObject interactWith)
+        public void AddInteraction(Entity entity, Entity interactWith)
         {
             var interaction = new Interaction(entity, interactWith);
             Interactions[interaction.InitialEntity] = interaction;
             Interactions[interaction.InteractingWithEntity] = interaction;
         }
 
-        public void RemoveInteraction(EntityObject entity, EntityObject interactWith)
+        public void RemoveInteraction(Entity entity, Entity interactWith)
         {
             Interactions.Remove(entity);
             Interactions.Remove(interactWith);
@@ -30,7 +30,7 @@ namespace PureGame.Engine.Events
             RemoveInteraction(interaction.InitialEntity, interaction.InteractingWithEntity);
         }
 
-        public void ProgressInteractions(EntityObject e)
+        public void ProgressInteractions(Entity e)
         {
             var interaction = Interactions[e];
             var complete = interaction.Progress();
@@ -40,6 +40,6 @@ namespace PureGame.Engine.Events
             }
         }
 
-        public bool Interacting(EntityObject entityObject) => Interactions.ContainsKey(entityObject);
+        public bool Interacting(Entity entityObject) => Interactions.ContainsKey(entityObject);
     }
 }

@@ -3,68 +3,56 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using PureGame.Engine.EntityData;
-using PureGame.Engine.Events;
-using PureGame.SmallGame;
 
 namespace PureGame.Engine.World
 {
-    public class WorldManager
+    public class WorldManager : IWorldLoader
     {
-        private readonly Dictionary<string, WorldArea> _worlds;
+        public event EventHandler OnWorldLoad;
+        private readonly Dictionary<string, WorldArea> _worldDict;
         private readonly List<WorldArea> _worldList;
-        private readonly IFileReader _fileReader;
-        private readonly DataLoader _dataLoader;
-        private readonly Dictionary<EntityObject, WorldArea> _entityMapper;
-        public WorldManager(IFileReader fileReader)
+        private readonly Dictionary<Entity, WorldArea> _entityMapper;
+        public WorldManager()
         {
-            _fileReader = fileReader;
             _worldList = new List<WorldArea>();
-            _worlds = new Dictionary<string, WorldArea>();
-            _entityMapper = new Dictionary<EntityObject, WorldArea>();
-            _dataLoader = new DataLoader();
-            _dataLoader.RegisterParser(StandardGameObjectParser.For<EntityObject>(),
-                                       StandardGameObjectParser.For<TriggerObject>(),
-                                       StandardGameObjectParser.For<MapObject>());
+            _worldDict = new Dictionary<string, WorldArea>();
+            _entityMapper = new Dictionary<Entity, WorldArea>();
         }
 
-        public void AddEntity(EntityObject entity, string newWorldName)
+        public void AddEntity<T>(Entity entity) where T : WorldArea, new()
         {
             //if entity currently exists we remove it
             if (_entityMapper.ContainsKey(entity))
             {
                 _entityMapper[entity].EntityManager.RemoveEntity(entity);
             }
-            LoadWorld(newWorldName);
-            _entityMapper[entity] = _worlds[newWorldName];
+            var worldType = typeof(T).ToString();
+            LoadWorld<T>(worldType);
+            _entityMapper[entity] = _worldDict[worldType];
             Debug.WriteLine("Add entity " + entity.Id);
             _entityMapper[entity].AddEntity(entity);
 
             OnWorldLoad?.Invoke(this, null);
         }
 
-        public void LoadWorld(string worldName)
+        public void LoadWorld<T>(string worldType) where T : WorldArea, new()
         {
-            if (!_worlds.ContainsKey(worldName))
+            if (!_worldDict.ContainsKey(worldType))
             {
-                _worlds[worldName] = _dataLoader.Load<WorldArea>(worldName, _fileReader);
-                _worldList.Add(_worlds[worldName]);
-                _worlds[worldName].OnInit(this);
-                foreach (var entity in _worlds[worldName].Entities)
+                var world = new T();
+                world.OnInit(this);
+                _worldDict[worldType] = world;
+                _worldList.Add(world);
+                foreach (var entity in world.Entities)
                 {
-                    _entityMapper[entity] = _worlds[worldName];
+                    _entityMapper[entity] = _worldDict[worldType];
                 }
             }
         }
 
-        public event EventHandler<EventArgs> OnWorldLoad;
-
-        public WorldArea GetEntitysWorld(EntityObject entity)
+        public WorldArea GetEntitysWorld(Entity entity)
         {
-            if (_entityMapper.ContainsKey(entity))
-            {
-                return _entityMapper[entity];
-            }
-            return null;
+            return _entityMapper.ContainsKey(entity) ? _entityMapper[entity] : null;
         }
 
         public void Update(GameTime time)

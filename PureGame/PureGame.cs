@@ -8,9 +8,9 @@ namespace PureGame
     public class PureGame
     {
         public WorldManager WorldManager;
-        public PureGame(ContentManager content, IFileReader fileReader)
+        public PureGame(ContentManager content)
         {
-            WorldManager = new WorldManager(fileReader);
+            WorldManager = new WorldManager();
             ContentManagerManager.Instance = new ContentManagerManager(content);
         }
 

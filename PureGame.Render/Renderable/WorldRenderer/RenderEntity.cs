@@ -11,7 +11,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
 {
     public class RenderEntity : IRenderable
     {
-        private readonly EntityObject _baseEntity;
+        private readonly Entity _baseEntity;
         private readonly Texture2D _entityTexture;
         private readonly EntityPositionFinder _positionFinder;
         //Right Left Up Down
@@ -22,7 +22,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
 
         private Animation _currentAnimation;
         private Vector2 _previousPosition;
-        public RenderEntity(EntityObject baseEntity, EntityPositionFinder positionFinder, ContentManager content)
+        public RenderEntity(Entity baseEntity, EntityPositionFinder positionFinder, ContentManager content)
         {
             _positionFinder = positionFinder;
             _baseEntity = baseEntity;

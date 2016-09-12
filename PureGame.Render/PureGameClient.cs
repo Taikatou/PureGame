@@ -10,12 +10,11 @@ namespace PureGame.Render
     {
         public int Timer;
         public int TimerResetValue = 50;
-        private readonly EntityObject _entity;
+        private readonly Entity _entity;
         public PureGame PureGame;
-        public string Name => CurrentWorld.Name;
         public WorldArea CurrentWorld => PureGame.WorldManager.GetEntitysWorld(_entity);
 
-        public PureGameClient(EntityObject entity, PureGame pureGame)
+        public PureGameClient(Entity entity, PureGame pureGame)
         {
             PureGame = pureGame;
             _entity = entity;

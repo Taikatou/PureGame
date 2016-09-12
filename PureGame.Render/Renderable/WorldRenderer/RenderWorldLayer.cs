@@ -25,7 +25,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         public readonly EntityPositionFinder PositionFinder;
         public Stack<IFocusable> FocusStack;
         public IFocusable Focus => FocusStack.Peek();
-        public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, EntityObject player, float zoom=0.25f)
+        public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, Entity player, float zoom=0.25f)
         {
             _toDraw = new ContainsList<IRenderable>();
             _content = ContentManagerManager.RequestContentManager();
@@ -77,7 +77,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
             return position/PositionFinder.TileSize;
         }
 
-        public RenderEntity GetRenderEntity(EntityObject e)
+        public RenderEntity GetRenderEntity(Entity e)
         {
             if (!_entitySprites.ContainsKey(e.Id))
             {
@@ -86,7 +86,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
             return _entitySprites[e.Id];
         }
 
-        public void RefreshEntity(EntityObject e)
+        public void RefreshEntity(Entity e)
         {
             var tmpCamera = new Camera2D(_viewPort) { Zoom = Camera.Zoom };
             tmpCamera.LookAt(Focus.FinalPosition);

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Diagnostics;
-using PureGame.Engine.Events;
+using PureGame.Engine.Events.WorldTriggers;
 using PureGame.Engine.World;
 
 namespace PureGame.Engine.EntityData
@@ -9,27 +9,23 @@ namespace PureGame.Engine.EntityData
     public class EntityManager
     {
         public List<ExpiringKey<Vector2>> ExpiringTiles;
-        public Dictionary<ExpiringKey<Vector2>, TileEvent> TileEvents;
-        public Dictionary<ExpiringKey<Vector2>, EntityObject> KeyToEntity;
-        public Dictionary<EntityObject, ExpiringKey<Vector2>> EntityToKey;
-        public Dictionary<Vector2, EntityObject> SpatialHash;
-        public Dictionary<string, EntityObject> IdHash;
+        public Dictionary<ExpiringKey<Vector2>, TriggerEvent> TileEvents;
+        public Dictionary<ExpiringKey<Vector2>, Entity> KeyToEntity;
+        public Dictionary<Entity, ExpiringKey<Vector2>> EntityToKey;
+        public Dictionary<Vector2, Entity> SpatialHash;
+        public Dictionary<string, Entity> IdHash;
 
-        public EntityManager(IEnumerable<EntityObject> entities)
+        public EntityManager()
         {
-            IdHash = new Dictionary<string, EntityObject>();
+            IdHash = new Dictionary<string, Entity>();
             ExpiringTiles = new List<ExpiringKey<Vector2>>();
-            TileEvents = new Dictionary<ExpiringKey<Vector2>, TileEvent>();
-            EntityToKey = new Dictionary<EntityObject, ExpiringKey<Vector2>>();
-            KeyToEntity = new Dictionary<ExpiringKey<Vector2>, EntityObject>();
-            SpatialHash = new Dictionary<Vector2, EntityObject>();
-            foreach (var entity in entities)
-            {
-                AddEntity(entity);
-            }
+            TileEvents = new Dictionary<ExpiringKey<Vector2>, TriggerEvent>();
+            EntityToKey = new Dictionary<Entity, ExpiringKey<Vector2>>();
+            KeyToEntity = new Dictionary<ExpiringKey<Vector2>, Entity>();
+            SpatialHash = new Dictionary<Vector2, Entity>();
         }
 
-        public void AddEntity(EntityObject e)
+        public void AddEntity(Entity e)
         {
             if (!ContainsEntity(e))
             {
@@ -38,21 +34,20 @@ namespace PureGame.Engine.EntityData
             }
         }
 
-        public void RemoveEntity(EntityObject entity) => RemoveEntity(entity.Id);
+        public void RemoveEntity(Entity entity) => RemoveEntity(entity.Id);
 
         public void RemoveEntity(string entityId)
         {
             if (IdHash.ContainsKey(entityId))
             {
                 var entity = IdHash[entityId];
-                // start removing
                 IdHash.Remove(entityId);
                 EntityToKey.Remove(entity);
                 SpatialHash.Remove(entity.Position);
             }
         }
 
-        public void MoveEntity(EntityObject e, TileEvent onCompleteEvent, Vector2 newPosition)
+        public void MoveEntity(Entity e, TriggerEvent onCompleteEvent, Vector2 newPosition)
         {
             var movementKey = new ExpiringKey<Vector2>(e.Position, e.Speed);
             if (onCompleteEvent != null)
@@ -89,14 +84,14 @@ namespace PureGame.Engine.EntityData
             KeyToEntity.Remove(tile);
             if (TileEvents.ContainsKey(tile))
             {
-                TileEvents[tile].Trigger();
+                TileEvents[tile].OnTrigger();
                 TileEvents.Remove(tile);
             }
             ExpiringTiles.RemoveAt(i);
         }
 
-        public bool ContainsEntity(EntityObject e) => SpatialHash.ContainsKey(e.Position) || IdHash.ContainsKey(e.Id);
+        public bool ContainsEntity(Entity e) => SpatialHash.ContainsKey(e.Position) || IdHash.ContainsKey(e.Id);
 
-        public bool EntityCurrentlyMoving(EntityObject e) => EntityToKey.ContainsKey(e);
+        public bool EntityCurrentlyMoving(Entity e) => EntityToKey.ContainsKey(e);
     }
 }

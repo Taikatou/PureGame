@@ -15,8 +15,8 @@ namespace PureGame.Render.Renderable
         private readonly PureGameClient _gameClient;
         public RenderWorldLayer Render;
         public List<RenderLayer> ToRender;
-        private readonly EntityObject _player;
-        public PlainPureGameRenderer(PureGameClient gameClient, ViewportAdapter viewPort, EntityObject player)
+        private readonly Entity _player;
+        public PlainPureGameRenderer(PureGameClient gameClient, ViewportAdapter viewPort, Entity player)
         {
             _player = player;
             _gameClient = gameClient;
