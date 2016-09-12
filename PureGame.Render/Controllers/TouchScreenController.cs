@@ -19,7 +19,6 @@ namespace PureGame.Render.Controllers
                 var gesture = TouchPanel.ReadGesture();
                 switch(gesture.GestureType)
                 {
-                    // current positions
                     case GestureType.Pinch:
                         PinchZoom(gesture);
                         break;

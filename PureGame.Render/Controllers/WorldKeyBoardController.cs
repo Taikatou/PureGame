@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using PureGame.Engine;
@@ -7,33 +7,35 @@ namespace PureGame.Render.Controllers
 {
     public class WorldKeyBoardController : IController
     {
-        private readonly SmartKey[] _buttons;
+        private readonly List<SmartKey> _buttons;
+        private readonly List<SmartKey> _dpadButtons;
         private readonly PureGameClient _client;
-        public const int CachedMovementResetValue = -1;
-        public int CachedMovement = CachedMovementResetValue;
+        public SmartKey CachedButton;
+        public SmartKey BButton;
+        public SmartKey EButton;
 
         public Direction GetMovementDirection()
         {
             // Return cached direction
-            if (CachedMovement != CachedMovementResetValue && _buttons[CachedMovement].Active)
+            if (CachedButton != null && CachedButton.Active)
             {
-                return (Direction) CachedMovement;
+                return (Direction)CachedButton.Control;
             }
-            CachedMovement = CachedMovementResetValue;
+            CachedButton = null;
             // Else look for another button
-            for (var i = 0; i < (int)Direction.None; i++)
+            foreach(var button in _dpadButtons)
             {
-                if (_buttons[i].Active)
+                if (button.Active)
                 {
-                    CachedMovement = i;
-                    return (Direction)i;
+                    CachedButton = button;
+                    return (Direction)button.Control;
                 }
             }
             // Else return false
             return Direction.None;
         }
 
-        public void UpdateButtons()
+        public void Update(GameTime time)
         {
             var state = Keyboard.GetState();
             // C is for camera
@@ -44,13 +46,8 @@ namespace PureGame.Render.Controllers
                     button.Update(state);
                 }
             }
-        }
 
-        public void Update(GameTime time)
-        {
-            UpdateButtons();
-
-            if (_buttons[(int) Controls.A].NewActive)
+            if (EButton.NewActive)
             {
                 _client.ControllerA();
             }
@@ -59,21 +56,35 @@ namespace PureGame.Render.Controllers
             {
                 _client.ControllerDPad(d, time);
             }
-            var bActive = _buttons[(int) Controls.B].Active;
+            var bActive = BButton.Active;
             _client.ControllerB(bActive);
         }
 
         public WorldKeyBoardController(PureGameClient client)
         {
             _client = client;
-            var controlsCount = Enum.GetNames(typeof(Controls)).Length;
-            _buttons = new SmartKey[controlsCount];
-            _buttons[(int)Controls.Left] = new SmartKey(Keys.Left);
-            _buttons[(int)Controls.Up] = new SmartKey(Keys.Up);
-            _buttons[(int)Controls.Down] = new SmartKey(Keys.Down);
-            _buttons[(int)Controls.Right] = new SmartKey(Keys.Right);
-            _buttons[(int)Controls.A] = new SmartKey(Keys.A);
-            _buttons[(int)Controls.B] = new SmartKey(Keys.B);
+            BButton = new SmartKey(Keys.B, Controls.B);
+            EButton = new SmartKey(Keys.E, Controls.A);
+            _dpadButtons = new List<SmartKey>
+            {
+                new SmartKey(Keys.Left, Controls.Left),
+                new SmartKey(Keys.Up, Controls.Up),
+                new SmartKey(Keys.Down, Controls.Down),
+                new SmartKey(Keys.Right, Controls.Right),
+                new SmartKey(Keys.A, Controls.Left),
+                new SmartKey(Keys.W, Controls.Up),
+                new SmartKey(Keys.S, Controls.Down),
+                new SmartKey(Keys.D, Controls.Right),
+            };
+            _buttons = new List<SmartKey>
+            {
+                EButton,
+                BButton
+            };
+            foreach (var b in _dpadButtons)
+            {
+                _buttons.Add(b);
+            }
         }
     }
 }
