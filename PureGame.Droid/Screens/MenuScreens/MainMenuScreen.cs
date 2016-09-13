@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using PureGame.DesktopGl.Screens;
 
 namespace PureGame.Droid.Screens.MenuScreens
 {

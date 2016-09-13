@@ -33,7 +33,7 @@ namespace PureGame.Render.Controllers
         public void MoveCameraBy(Vector2 newDragPosition)
         {
             var moveBy = newDragPosition - DragPosition;
-            Renderer.MoveFocusBy(moveBy);
+            Renderer.FocusStack.MoveFocusBy(moveBy);
             DragPosition = newDragPosition;
         }
     }

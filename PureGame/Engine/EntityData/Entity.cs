@@ -14,6 +14,7 @@ namespace PureGame.Engine.EntityData
         public Direction MovementDirection;
         public Direction FacingDirection;
         public bool Running;
+        public bool Talking;
         public int Speed => Running ? _runningSpeed : _walkingSpeed;
         public event EventHandler OnMoveEvent;
 

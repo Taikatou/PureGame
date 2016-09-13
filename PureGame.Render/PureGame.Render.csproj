@@ -53,6 +53,7 @@
     <Compile Include="Controllers\SmartKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PureGameClient.cs" />
+    <Compile Include="Renderable\FocusStack.cs" />
     <Compile Include="Renderable\IRenderable.cs" />
     <Compile Include="Renderable\RenderLayer.cs" />
     <Compile Include="Renderable\PlainPureGameRenderer.cs" />

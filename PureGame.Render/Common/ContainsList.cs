@@ -5,7 +5,7 @@ namespace PureGame.Render.Common
     public class ContainsList <T>
     {
         private readonly HashSet<T> _contains;
-        public List<T> Elements { get; }
+        public List<T> Elements;
 
         public ContainsList()
         {
@@ -21,6 +21,18 @@ namespace PureGame.Render.Common
             {
                 Elements.Add(element);
                 _contains.Add(element);
+            }
+        }
+
+        public void AddOrRemove(T element, bool which)
+        {
+            if (which)
+            {
+                Add(element);
+            }
+            else
+            {
+                Remove(element);
             }
         }
 

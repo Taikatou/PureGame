@@ -4,7 +4,7 @@ using PureGame.Engine.EntityData;
 
 namespace PureGame.Render.Renderable.WorldRenderer
 {
-    class FocusEntity : IFocusable
+    public class FocusEntity : IFocusable
     {
         private readonly Entity _entity;
         private readonly EntityPositionFinder _positionFinder;

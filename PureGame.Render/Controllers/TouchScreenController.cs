@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
+using PureGame.Engine;
 using PureGame.Render.Renderable.WorldRenderer;
 
 namespace PureGame.Render.Controllers
@@ -41,7 +42,7 @@ namespace PureGame.Render.Controllers
                     if (touch.State == TouchLocationState.Released)
                     {
                         PreviouslyMovingCamera = false;
-                        Renderer.EndMove();
+                        Renderer.FocusStack.EndMove();
                     }
                 }
             }
@@ -51,7 +52,7 @@ namespace PureGame.Render.Controllers
         {
             if (!PreviouslyMovingCamera)
             {
-                Renderer.BeginMove();
+                Renderer.FocusStack.BeginMove();
                 PreviouslyMovingCamera = true;
                 DragPosition = gesture.Position;
             }
@@ -64,8 +65,11 @@ namespace PureGame.Render.Controllers
         public void MoveEntity(GestureSample gesture)
         {
             var position = Renderer.WorldPosition(gesture.Position);
-            Debug.WriteLine("Move entity to: " + position);
-            Client.Player.Position = position;
+            var player = Client.Player;
+            var directionVector = position - player.Position;
+            var direction = DirectionMapper.GetDirectionFromMovment(directionVector);
+            Debug.WriteLine(direction);
+            Client.MoveDirection(direction);
         }
 
         public void PinchZoom(GestureSample gesture)

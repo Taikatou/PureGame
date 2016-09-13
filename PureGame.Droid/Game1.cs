@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGame.Extended.Screens;
-using PureGame.DesktopGl.Screens;
+using PureGame.Droid.Screens;
 
 namespace PureGame.Droid
 {

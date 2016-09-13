@@ -42,12 +42,12 @@
     <Compile Include="Engine\EntityData\EntityFactory.cs" />
     <Compile Include="Engine\EntityData\Entity.cs" />
     <Compile Include="Engine\EntityData\EntityManager.cs" />
-    <Compile Include="Engine\Events\Interaction.cs" />
-    <Compile Include="Engine\Events\InteractionManager.cs" />
+    <Compile Include="Engine\EntityMessage.cs" />
     <Compile Include="Engine\Events\WorldTriggers\TeleportTrigger.cs" />
     <Compile Include="Engine\Events\WorldTriggers\TriggerEvent.cs" />
     <Compile Include="Engine\Events\WorldTriggers\TriggerManager.cs" />
     <Compile Include="Engine\Events\WorldTriggers\ITrigger.cs" />
+    <Compile Include="Engine\TalkManager.cs" />
     <Compile Include="Engine\World\ExpiringKey.cs" />
     <Compile Include="Engine\WorldMap.cs" />
     <Compile Include="Engine\World\WorldArea.cs" />

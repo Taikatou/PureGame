@@ -31,7 +31,7 @@ namespace PureGame.Render.Controllers
             }
             else if (PreviouslyMovingCamera)
             {
-                Renderer.EndMove();
+                Renderer.FocusStack.EndMove();
                 PreviouslyMovingCamera = false;
             }
             if (mouseState.ScrollWheelValue != PreviousScrollValue)
@@ -50,7 +50,7 @@ namespace PureGame.Render.Controllers
                 {
                     if (!PreviouslyMovingCamera)
                     {
-                        Renderer.BeginMove();
+                        Renderer.FocusStack.BeginMove();
                     }
                     PreviouslyMovingCamera = true;
                     DragPosition = GetClickVector2(mouseState);

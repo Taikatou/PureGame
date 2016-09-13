@@ -11,7 +11,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
 {
     public class RenderEntity : IRenderable
     {
-        private readonly Entity _baseEntity;
+        public readonly Entity BaseEntity;
         private readonly Texture2D _entityTexture;
         private readonly EntityPositionFinder _positionFinder;
         //Right Left Up Down
@@ -25,7 +25,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         public RenderEntity(Entity baseEntity, EntityPositionFinder positionFinder, ContentManager content)
         {
             _positionFinder = positionFinder;
-            _baseEntity = baseEntity;
+            BaseEntity = baseEntity;
             _entityTexture = AssetLoader.LoadTexture(content, baseEntity.FileName);
             _walking = new Animation[4];
             _walking[(int)Direction.Down] = new Animation();
@@ -66,9 +66,9 @@ namespace PureGame.Render.Renderable.WorldRenderer
             _previousPosition = baseEntity.Position;
             GetAnimation();
         }
-        public Rectangle Rect => new Rectangle(_positionFinder.GetEntityScreenPosition(_baseEntity).ToPoint(),
+        public Rectangle Rect => new Rectangle(_positionFinder.GetEntityScreenPosition(BaseEntity).ToPoint(),
                                                _positionFinder.TileSize.ToPoint());
-        public Rectangle FinalRect => new Rectangle(_positionFinder.GetScreenPosition(_baseEntity.Position).ToPoint(),
+        public Rectangle FinalRect => new Rectangle(_positionFinder.GetScreenPosition(BaseEntity.Position).ToPoint(),
                                                     _positionFinder.TileSize.ToPoint());
 
         public void Draw(SpriteBatch spriteBatch)
@@ -86,8 +86,8 @@ namespace PureGame.Render.Renderable.WorldRenderer
         public void GetAnimation()
         {
             var screenPosition = _positionFinder.GetScreenPosition(_previousPosition);
-            var entityPosition = _positionFinder.GetEntityScreenPosition(_baseEntity);
-            var direction = (int)_baseEntity.FacingDirection;
+            var entityPosition = _positionFinder.GetEntityScreenPosition(BaseEntity);
+            var direction = (int)BaseEntity.FacingDirection;
             if (screenPosition == entityPosition)
             {
                 //standing
@@ -112,7 +112,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
                     _currentAnimation = _walking[direction];
                 }
             }
-            _previousPosition = _baseEntity.Position;
+            _previousPosition = BaseEntity.Position;
         }
     }
 }

@@ -46,7 +46,6 @@ namespace PureGame.Render.Controllers
                     button.Update(state);
                 }
             }
-
             if (EButton.NewActive)
             {
                 _client.ControllerA();
@@ -54,7 +53,7 @@ namespace PureGame.Render.Controllers
             var d = GetMovementDirection();
             if (d != Direction.None)
             {
-                _client.ControllerDPad(d, time);
+                _client.ControllerDPad(d);
             }
             var bActive = BButton.Active;
             _client.ControllerB(bActive);

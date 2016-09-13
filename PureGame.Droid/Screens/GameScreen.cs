@@ -9,12 +9,13 @@ using PureGame.Render;
 using PureGame.Render.Renderable;
 using PureGame.WorldAreas;
 
-namespace PureGame.DesktopGl.Screens
+namespace PureGame.Droid.Screens
 {
     public class GameScreen : Screen
     {
         protected ContentManager Content { get; }
         private readonly PlainPureGameRenderer _gameRenderer;
+        private readonly PureGameClient _gameClient;
         private readonly SpriteBatch _spriteBatch;
         public PureGame PureGame;
         public GameScreen(IServiceProvider serviceProvider)
@@ -25,8 +26,8 @@ namespace PureGame.DesktopGl.Screens
             _spriteBatch = new SpriteBatch(graphicsDeviceService.GraphicsDevice);
             PureGame = new PureGame(Content);
             var player = EntityFactory.MakeEntityObject(new Vector2(4, 4), "CharacterSheet");
-            var gameClient = new PureGameClient(player, PureGame);
-            _gameRenderer = new PlainPureGameRenderer(gameClient, viewportAdapter, player);
+            _gameClient = new PureGameClient(player, PureGame);
+            _gameRenderer = new PlainPureGameRenderer(_gameClient, viewportAdapter, player);
             PureGame.WorldManager.OnWorldLoad += (sender, args) => _gameRenderer.LoadWorld();
             PureGame.WorldManager.AddEntity<BasicWorld>(player);
         }
@@ -34,6 +35,7 @@ namespace PureGame.DesktopGl.Screens
         public override void Update(GameTime gameTime)
         {
             PureGame.Update(gameTime);
+            _gameClient.Update(gameTime);
             _gameRenderer.Update(gameTime);
         }
 

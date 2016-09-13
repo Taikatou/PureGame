@@ -24,11 +24,14 @@ namespace PureGame.Engine
             ReverseMappedDirections[m] = d;
         }
 
-        public static Vector2 GetMovementFromDirection(Direction facing) => Instance.MappedDirections[facing];
+        public static Vector2 GetMovementFromDirection(Direction facing)
+        {
+            return Instance.MappedDirections[facing];
+        }
 
         public static Direction GetDirectionFromMovment(Vector2 movement)
         {
-            Direction movementDirection = Direction.None;
+            var movementDirection = Direction.None;
             if(Instance.ReverseMappedDirections.ContainsKey(movement))
             {
                 movementDirection = Instance.ReverseMappedDirections[movement];

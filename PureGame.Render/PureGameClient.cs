@@ -14,6 +14,14 @@ namespace PureGame.Render
         public PureGame PureGame;
         public WorldArea CurrentWorld => PureGame.WorldManager.GetEntitysWorld(Player);
 
+        public void Update(GameTime time)
+        {
+            if (Timer >= 0)
+            {
+                Timer -= time.ElapsedGameTime.Milliseconds;
+            }
+        }
+
         public PureGameClient(Entity entity, PureGame pureGame)
         {
             PureGame = pureGame;
@@ -22,45 +30,40 @@ namespace PureGame.Render
 
         public void ControllerA()
         {
-            if (!CurrentlyInteracting)
-            {
-                CurrentWorld.ProccessInteraction(Player);
-            }
-            else
-            {
-                CurrentWorld.ProgressInteraction(Player);
-            }
+            CurrentWorld.ProccessInteraction(Player);
         }
 
-        public void ControllerDPad(Direction cachedMoveDiection, GameTime time)
+        public void FaceDirection(Direction direction)
         {
-            if (!CurrentlyInteracting && !CurrentWorld.CurrentlyMoving(Player))
+            Player.FacingDirection = direction;
+        }
+
+        public void MoveDirection(Direction direction)
+        {
+            Player.MovementDirection = direction;
+            CurrentWorld.ProccessMovement(Player);
+        }
+
+        public void ControllerDPad(Direction direction)
+        {
+            if (direction != Direction.None && !CurrentWorld.CurrentlyMoving(Player))
             {
                 var entityMoving = CurrentWorld.EntityManager.EntityCurrentlyMoving(Player);
-                if (!entityMoving && Player.FacingDirection != cachedMoveDiection)
+                if (!entityMoving && Player.FacingDirection != direction)
                 {
-                    Player.FacingDirection = cachedMoveDiection;
+                    FaceDirection(direction);
                     Timer = TimerResetValue;
                 }
                 else if (Timer <= 0)
                 {
-                    Player.MovementDirection = cachedMoveDiection;
-                    CurrentWorld.ProccessMovement(Player);
-                }
-                else
-                {
-                    Timer -= time.ElapsedGameTime.Milliseconds;
+                    MoveDirection(direction);
                 }
             }
         }
         public void ControllerB(bool active)
         {
-            if (!CurrentlyInteracting)
-            {
-                Player.Running = active;
-            }
+            Player.Running = active;
         }
-        public bool CurrentlyInteracting => CurrentWorld.CurrentlyInteracting(Player);
         public void Click(Vector2 position)
         {
             var spatialHash = CurrentWorld.EntityManager.SpatialHash;
