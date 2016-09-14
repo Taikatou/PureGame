@@ -37,6 +37,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Common\IFocusable.cs" />
+    <Compile Include="Common\IPathFinder.cs" />
+    <Compile Include="Common\Node.cs" />
+    <Compile Include="Common\AStarPathFinder.cs" />
+    <Compile Include="Common\PathFinderFactory.cs" />
+    <Compile Include="Common\SearchParameters.cs" />
     <Compile Include="Engine\ContentManagerManager.cs" />
     <Compile Include="Engine\DirectionMapper.cs" />
     <Compile Include="Engine\EntityData\EntityFactory.cs" />

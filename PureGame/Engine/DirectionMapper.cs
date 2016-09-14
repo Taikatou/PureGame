@@ -16,6 +16,7 @@ namespace PureGame.Engine
             AddDirection(Direction.Down, new Vector2(0, 1));
             AddDirection(Direction.Left, new Vector2(-1, 0));
             AddDirection(Direction.Right, new Vector2(1, 0));
+            AddDirection(Direction.None, new Vector2(0, 0));
         }
 
         public void AddDirection(Direction d, Vector2 m)

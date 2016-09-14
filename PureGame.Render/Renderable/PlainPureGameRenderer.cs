@@ -16,8 +16,10 @@ namespace PureGame.Render.Renderable
         public RenderWorldLayer Render;
         public List<RenderLayer> ToRender;
         private readonly Entity _player;
-        public PlainPureGameRenderer(PureGameClient gameClient, ViewportAdapter viewPort, Entity player)
+        private readonly float _baseZoom;
+        public PlainPureGameRenderer(PureGameClient gameClient, ViewportAdapter viewPort, Entity player, float zoom)
         {
+            _baseZoom = zoom;
             _player = player;
             _gameClient = gameClient;
             ViewPort = viewPort;
@@ -51,7 +53,7 @@ namespace PureGame.Render.Renderable
             }
             else
             {
-                Render = new RenderWorldLayer(CurrentWorld, ViewPort, _player);
+                Render = new RenderWorldLayer(CurrentWorld, ViewPort, _player, _baseZoom);
             }
             Render.Controllers.Add(new WorldKeyBoardController(_gameClient));
             Render.Controllers.Add(new WorldClickController(Render, _gameClient));

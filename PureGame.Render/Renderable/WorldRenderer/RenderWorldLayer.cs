@@ -24,7 +24,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         private readonly ViewportAdapter _viewPort;
         public readonly EntityPositionFinder PositionFinder;
         public FocusStack FocusStack;
-        public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, Entity player, float zoom=0.25f)
+        public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, Entity player, float zoom)
         {
             _toDraw = new ContainsList<RenderEntity>();
             _content = ContentManagerManager.RequestContentManager();
@@ -103,16 +103,8 @@ namespace PureGame.Render.Renderable.WorldRenderer
             var tmpCamera = new Camera2D(_viewPort) { Zoom = Camera.Zoom };
             tmpCamera.LookAt(FocusStack.Focus.FinalPosition);
             var renderEntity = GetRenderEntity(e);
-            var camerasContains = CameraContains(renderEntity.Rect, tmpCamera) ||
-                                  CameraContains(renderEntity.FinalRect, tmpCamera);
+            var camerasContains = CameraFunctions.CamerasContains(renderEntity.Rect, Camera, tmpCamera);
             _toDraw.AddOrRemove(renderEntity, camerasContains);
-        }
-
-        public bool CameraContains(Rectangle r, Camera2D tmpCamera)
-        {
-            var cameraContains = Camera.Contains(r) != ContainmentType.Disjoint ||
-                                 tmpCamera.Contains(r) != ContainmentType.Disjoint;
-            return cameraContains;
         }
 
         public void Sort()

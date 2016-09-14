@@ -1,8 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
+using PureGame.Engine;
 
 namespace PureGame.Render.Controllers
 {
-    public enum Controls { Left, Right, Up, Down, A, B}
+    public enum Controls
+    {
+        Left = Direction.Left,
+        Right = Direction.Right,
+        Up = Direction.Up,
+        Down = Direction.Down,
+        A,
+        B
+    }
+
     public interface IController
     {
         void Update(GameTime time);

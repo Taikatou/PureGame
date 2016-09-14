@@ -1,13 +1,17 @@
-﻿using System.Diagnostics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
+using PureGame.Common;
 using PureGame.Engine;
 using PureGame.Render.Renderable.WorldRenderer;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PureGame.Render.Controllers
 {
     public class TouchScreenController : CameraController
     {
+        public List<Point> CurrentPath;
+        public Vector2 NextPosition => CurrentPath[0].ToVector2();
         public TouchScreenController(RenderWorldLayer renderer, PureGameClient client) : base(renderer, client)
         {
             TouchPanel.EnabledGestures = GestureType.Pinch | GestureType.FreeDrag | GestureType.DoubleTap | GestureType.Tap;
@@ -46,6 +50,19 @@ namespace PureGame.Render.Controllers
                     }
                 }
             }
+            var player = Client.Player;
+            var currentlyMoving = Client.CurrentWorld.EntityManager.EntityCurrentlyMoving(player);
+            if (CurrentPath != null && CurrentPath.Count > 0 && !currentlyMoving)
+            {
+                var directionVector = NextPosition - player.Position;
+                Debug.WriteLine("Direction vector " + directionVector);
+                var direction = DirectionMapper.GetDirectionFromMovment(directionVector);
+                if(direction != Direction.None)
+                {
+                    Client.MoveDirection(direction);
+                    CurrentPath.RemoveAt(0);
+                }
+            }
         }
 
         public void MoveCamera(GestureSample gesture)
@@ -64,12 +81,14 @@ namespace PureGame.Render.Controllers
 
         public void MoveEntity(GestureSample gesture)
         {
-            var position = Renderer.WorldPosition(gesture.Position);
+            var endPosition = Renderer.WorldPosition(gesture.Position);
             var player = Client.Player;
-            var directionVector = position - player.Position;
-            var direction = DirectionMapper.GetDirectionFromMovment(directionVector);
-            Debug.WriteLine(direction);
-            Client.MoveDirection(direction);
+            var searchParams = new SearchParameters(player.Position, endPosition, Client.CurrentWorld);
+            CurrentPath = PathFinderFactory.FindPath(searchParams);
+            foreach(var c in CurrentPath)
+            {
+                Debug.WriteLine(c);
+            }
         }
 
         public void PinchZoom(GestureSample gesture)
