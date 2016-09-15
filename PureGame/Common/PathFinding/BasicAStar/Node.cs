@@ -7,29 +7,16 @@ namespace PureGame.Common.PathFinding.BasicAStar
     {
         private Node _parentNode;
 
-        /// <summary>
-        /// The node's location in the grid
-        /// </summary>
         public Point Location { get; }
 
-        /// <summary>
-        /// Cost from start to here
-        /// </summary>
         public int G { get; private set; }
 
-        /// <summary>
-        /// Estimated cost from here to end
-        /// </summary>
         public int H { get; }
 
-        /// <summary>
-        /// Estimated total cost (F = G + H)
-        /// </summary>
+        public NodeState State { get; set; }
+
         public int F => G + H;
 
-        /// <summary>
-        /// Gets or sets the parent node. The start node's parent is always null.
-        /// </summary>
         public Node ParentNode
         {
             get { return _parentNode; }
@@ -37,36 +24,28 @@ namespace PureGame.Common.PathFinding.BasicAStar
             {
                 // When setting the parent, also calculate the traversal cost from the start node to here (the 'G' value)
                 _parentNode = value;
-                G = _parentNode.G + GetTraversalCost(Location, _parentNode.Location);
+                G = _parentNode.G + AddManHattanDistance(_parentNode.Location);
             }
         }
 
-        /// <summary>
-        /// Creates a new instance of Node.
-        /// </summary>
-        /// <param name="x">The node's location along the X axis</param>
-        /// <param name="y">The node's location along the Y axis</param>
-        /// <param name="endLocation">The location of the destination node</param>
-        public Node(Point p, Point endLocation)
+        public Node(Point point, Point endLocation)
         {
-            Location = p;
-            H = GetTraversalCost(Location, endLocation);
+            Location = point;
+            State = NodeState.Untested;
+            H = AddManHattanDistance(endLocation);
             G = 0;
         }
 
         public override string ToString()
         {
-            return $"{Location.X}, {Location.Y}";
+            return $"{Location.X}, {Location.Y}: {State}";
         }
 
-        /// <summary>
-        /// Gets the distance between two points
-        /// </summary>
-        internal static int GetTraversalCost(Point location, Point otherLocation)
+        internal int AddManHattanDistance(Point otherLocation)
         {
-            var deltaX = otherLocation.X - location.X;
-            var deltaY = otherLocation.Y - location.Y;
-            return deltaX * deltaX + deltaY * deltaY;
+            var deltaX = otherLocation.X - Location.X;
+            var deltaY = otherLocation.Y - Location.Y;
+            return deltaX + deltaY;
         }
     }
 

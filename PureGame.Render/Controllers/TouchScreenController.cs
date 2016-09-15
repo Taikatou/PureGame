@@ -109,7 +109,7 @@ namespace PureGame.Render.Controllers
         {
             var player = Client.Player;
             var searchParams = new SearchParameters(player.Position, endPosition, Client.CurrentWorld);
-            var pathFinder = PathFinderFactory.MakePathFinder(searchParams);
+            var pathFinder = PathFinderFactory.MakePathFinder(searchParams, Severity.Player);
             CurrentPath = pathFinder.FindPath();
             foreach (var v in CurrentPath)
             {

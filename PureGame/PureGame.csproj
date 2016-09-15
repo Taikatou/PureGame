@@ -42,7 +42,6 @@
     <Compile Include="Common\PathFinding\BasicAStar\Node.cs" />
     <Compile Include="Common\PathFinding\Dijkstra\DijkstraPathFinder.cs" />
     <Compile Include="Common\PathFinding\Dijkstra\Node.cs" />
-    <Compile Include="Common\PathFinding\NodePathFinder.cs" />
     <Compile Include="Common\PathFinding\PathFinderFactory.cs" />
     <Compile Include="Common\SearchParameters.cs" />
     <Compile Include="Engine\ContentManagerManager.cs" />
