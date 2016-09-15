@@ -15,9 +15,9 @@ namespace PureGame.Engine
             return !(tile == null || tile.Id == 0);
         }
 
-        public bool CheckCollision(Vector2 position)
+        public bool CheckCollision(Point position)
         {
-            return CheckCollision((int)position.X, (int)position.Y);
+            return CheckCollision(position.X, position.Y);
         }
 
         public WorldMap(string mapName, ContentManager content)

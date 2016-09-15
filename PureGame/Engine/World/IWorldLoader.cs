@@ -5,6 +5,6 @@ namespace PureGame.Engine.World
 {
     public interface IWorldLoader
     {
-        void AddEntity<T>(Entity entity, Vector2 endPosition) where T : WorldArea, new();
+        void AddEntity<T>(Entity entity, Point endPosition) where T : WorldArea, new();
     }
 }

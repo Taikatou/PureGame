@@ -6,31 +6,31 @@ namespace PureGame.Engine
     public enum Direction { Left, Right, Up, Down, None };
     public class DirectionMapper
     {
-        protected Dictionary<Direction, Vector2> MappedDirections;
-        protected Dictionary<Vector2, Direction> ReverseMappedDirections;
+        protected Dictionary<Direction, Point> MappedDirections;
+        protected Dictionary<Point, Direction> ReverseMappedDirections;
         public DirectionMapper()
         {
-            MappedDirections = new Dictionary<Direction, Vector2>();
-            ReverseMappedDirections = new Dictionary<Vector2, Direction>();
-            AddDirection(Direction.Up, new Vector2(0, -1));
-            AddDirection(Direction.Down, new Vector2(0, 1));
-            AddDirection(Direction.Left, new Vector2(-1, 0));
-            AddDirection(Direction.Right, new Vector2(1, 0));
-            AddDirection(Direction.None, new Vector2(0, 0));
+            MappedDirections = new Dictionary<Direction, Point>();
+            ReverseMappedDirections = new Dictionary<Point, Direction>();
+            AddDirection(Direction.Up, new Point(0, -1));
+            AddDirection(Direction.Down, new Point(0, 1));
+            AddDirection(Direction.Left, new Point(-1, 0));
+            AddDirection(Direction.Right, new Point(1, 0));
+            AddDirection(Direction.None, new Point(0, 0));
         }
 
-        public void AddDirection(Direction d, Vector2 m)
+        public void AddDirection(Direction d, Point m)
         {
             MappedDirections[d] = m;
             ReverseMappedDirections[m] = d;
         }
 
-        public static Vector2 GetMovementFromDirection(Direction facing)
+        public static Point GetMovementFromDirection(Direction facing)
         {
             return Instance.MappedDirections[facing];
         }
 
-        public static Direction GetDirectionFromMovment(Vector2 movement)
+        public static Direction GetDirectionFromMovment(Point movement)
         {
             var movementDirection = Direction.None;
             if(Instance.ReverseMappedDirections.ContainsKey(movement))

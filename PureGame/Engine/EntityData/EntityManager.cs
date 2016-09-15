@@ -8,21 +8,21 @@ namespace PureGame.Engine.EntityData
 {
     public class EntityManager
     {
-        public List<ExpiringKey<Vector2>> ExpiringTiles;
-        public Dictionary<ExpiringKey<Vector2>, TriggerEvent> TileEvents;
-        public Dictionary<ExpiringKey<Vector2>, Entity> KeyToEntity;
-        public Dictionary<Entity, ExpiringKey<Vector2>> EntityToKey;
-        public Dictionary<Vector2, Entity> SpatialHash;
+        public List<ExpiringKey<Point>> ExpiringTiles;
+        public Dictionary<ExpiringKey<Point>, TriggerEvent> TileEvents;
+        public Dictionary<ExpiringKey<Point>, Entity> KeyToEntity;
+        public Dictionary<Entity, ExpiringKey<Point>> EntityToKey;
+        public Dictionary<Point, Entity> SpatialHash;
         public Dictionary<string, Entity> IdHash;
 
         public EntityManager()
         {
             IdHash = new Dictionary<string, Entity>();
-            ExpiringTiles = new List<ExpiringKey<Vector2>>();
-            TileEvents = new Dictionary<ExpiringKey<Vector2>, TriggerEvent>();
-            EntityToKey = new Dictionary<Entity, ExpiringKey<Vector2>>();
-            KeyToEntity = new Dictionary<ExpiringKey<Vector2>, Entity>();
-            SpatialHash = new Dictionary<Vector2, Entity>();
+            ExpiringTiles = new List<ExpiringKey<Point>>();
+            TileEvents = new Dictionary<ExpiringKey<Point>, TriggerEvent>();
+            EntityToKey = new Dictionary<Entity, ExpiringKey<Point>>();
+            KeyToEntity = new Dictionary<ExpiringKey<Point>, Entity>();
+            SpatialHash = new Dictionary<Point, Entity>();
         }
 
         public void AddEntity(Entity e)
@@ -47,9 +47,9 @@ namespace PureGame.Engine.EntityData
             }
         }
 
-        public void MoveEntity(Entity e, TriggerEvent onCompleteEvent, Vector2 newPosition)
+        public void MoveEntity(Entity e, TriggerEvent onCompleteEvent, Point newPosition)
         {
-            var movementKey = new ExpiringKey<Vector2>(e.Position, e.Speed);
+            var movementKey = new ExpiringKey<Point>(e.Position, e.Speed);
             if (onCompleteEvent != null)
             {
                 TileEvents[movementKey] = onCompleteEvent;

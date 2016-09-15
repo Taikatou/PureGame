@@ -24,7 +24,7 @@ namespace PureGame.Engine.World
             AddEntity<T>(entity, entity.Position);
         }
 
-        public void AddEntity<T>(Entity entity, Vector2 endPoint) where T : WorldArea, new()
+        public void AddEntity<T>(Entity entity, Point endPoint) where T : WorldArea, new()
         {
             //if entity currently exists we remove it
             if (_entityMapper.ContainsKey(entity))

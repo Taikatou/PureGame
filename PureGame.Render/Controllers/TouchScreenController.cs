@@ -5,33 +5,36 @@ using PureGame.Engine;
 using PureGame.Render.Renderable.WorldRenderer;
 using System.Collections.Generic;
 using System.Diagnostics;
+using PureGame.Common.PathFinding;
 
 namespace PureGame.Render.Controllers
 {
     public class TouchScreenController : CameraController
     {
         public List<Point> CurrentPath;
-        public Vector2 NextPosition => CurrentPath[0].ToVector2();
+        public bool Running;
+        public bool InteractAfter;
+        public Point NextPosition => CurrentPath[0];
         public TouchScreenController(RenderWorldLayer renderer, PureGameClient client) : base(renderer, client)
         {
             TouchPanel.EnabledGestures = GestureType.Pinch | GestureType.FreeDrag | GestureType.DoubleTap | GestureType.Tap;
         }
 
-        public override void Update(GameTime time)
+        public void TouchUpdate()
         {
             while (TouchPanel.IsGestureAvailable)
             {
                 var gesture = TouchPanel.ReadGesture();
-                switch(gesture.GestureType)
+                switch (gesture.GestureType)
                 {
                     case GestureType.Pinch:
                         PinchZoom(gesture);
                         break;
                     case GestureType.Tap:
-                        MoveEntity(gesture);
+                        Tap(gesture);
                         break;
                     case GestureType.DoubleTap:
-                        Client.Player.Running = true;
+                        Running = true;
                         break;
                     case GestureType.FreeDrag:
                         MoveCamera(gesture);
@@ -50,6 +53,11 @@ namespace PureGame.Render.Controllers
                     }
                 }
             }
+        }
+
+        public override void Update(GameTime time)
+        {
+            TouchUpdate();
             var player = Client.Player;
             var currentlyMoving = Client.CurrentWorld.EntityManager.EntityCurrentlyMoving(player);
             if (CurrentPath != null && CurrentPath.Count > 0 && !currentlyMoving)
@@ -59,8 +67,21 @@ namespace PureGame.Render.Controllers
                 var direction = DirectionMapper.GetDirectionFromMovment(directionVector);
                 if(direction != Direction.None)
                 {
+                    Client.Player.Running = Running;
+                    Debug.WriteLine("Running: " + Client.Player.Running);
                     Client.MoveDirection(direction);
                     CurrentPath.RemoveAt(0);
+                    if (CurrentPath.Count == 0)
+                    {
+                        if (Running)
+                        {
+                            Running = false;
+                        }
+                        if(InteractAfter)
+                        {
+                            Client.ControllerA();
+                        }
+                    }
                 }
             }
         }
@@ -79,16 +100,19 @@ namespace PureGame.Render.Controllers
             }
         }
 
-        public void MoveEntity(GestureSample gesture)
+        public void Tap(GestureSample gesture)
         {
-            var endPosition = Renderer.WorldPosition(gesture.Position);
+            var touchPosition = Renderer.WorldPosition(gesture.Position);
+            MoveEntity(touchPosition);
+        }
+
+        public void MoveEntity(Point endPosition)
+        {
             var player = Client.Player;
             var searchParams = new SearchParameters(player.Position, endPosition, Client.CurrentWorld);
-            CurrentPath = PathFinderFactory.FindPath(searchParams);
-            foreach(var c in CurrentPath)
-            {
-                Debug.WriteLine(c);
-            }
+            var pathFinder = PathFinderFactory.MakePathFinder(searchParams);
+            CurrentPath = pathFinder.FindPath();
+            InteractAfter = Client.CurrentWorld.HasEntity(endPosition);
         }
 
         public void PinchZoom(GestureSample gesture)

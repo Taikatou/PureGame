@@ -1,16 +1,16 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
+using Microsoft.Xna.Framework;
 
-namespace PureGame.Common
+namespace PureGame.Common.PathFinding.BasicAStar
 {
     public class Node
     {
-        private Node parentNode;
+        private Node _parentNode;
 
         /// <summary>
         /// The node's location in the grid
         /// </summary>
-        public Point Location { get; private set; }
+        public Point Location { get; }
 
         /// <summary>
         /// True when the node may be traversed, otherwise false
@@ -25,7 +25,7 @@ namespace PureGame.Common
         /// <summary>
         /// Estimated cost from here to end
         /// </summary>
-        public float H { get; private set; }
+        public float H { get; }
 
         /// <summary>
         /// Flags whether the node is open, closed or untested by the PathFinder
@@ -35,22 +35,19 @@ namespace PureGame.Common
         /// <summary>
         /// Estimated total cost (F = G + H)
         /// </summary>
-        public float F
-        {
-            get { return this.G + this.H; }
-        }
+        public float F => G + H;
 
         /// <summary>
         /// Gets or sets the parent node. The start node's parent is always null.
         /// </summary>
         public Node ParentNode
         {
-            get { return this.parentNode; }
+            get { return _parentNode; }
             set
             {
                 // When setting the parent, also calculate the traversal cost from the start node to here (the 'G' value)
-                this.parentNode = value;
-                this.G = this.parentNode.G + GetTraversalCost(this.Location, this.parentNode.Location);
+                _parentNode = value;
+                G = _parentNode.G + GetTraversalCost(Location, _parentNode.Location);
             }
         }
 
@@ -63,16 +60,16 @@ namespace PureGame.Common
         /// <param name="endLocation">The location of the destination node</param>
         public Node(int x, int y, bool isWalkable, Point endLocation)
         {
-            this.Location = new Point(x, y);
-            this.State = NodeState.Untested;
-            this.IsWalkable = isWalkable;
-            this.H = GetTraversalCost(this.Location, endLocation);
-            this.G = 0;
+            Location = new Point(x, y);
+            State = NodeState.Untested;
+            IsWalkable = isWalkable;
+            H = GetTraversalCost(Location, endLocation);
+            G = 0;
         }
 
         public override string ToString()
         {
-            return string.Format("{0}, {1}: {2}", this.Location.X, this.Location.Y, this.State);
+            return $"{Location.X}, {Location.Y}: {State}";
         }
 
         /// <summary>

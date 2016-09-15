@@ -38,9 +38,19 @@
   <ItemGroup>
     <Compile Include="Common\IFocusable.cs" />
     <Compile Include="Common\IPathFinder.cs" />
-    <Compile Include="Common\Node.cs" />
-    <Compile Include="Common\AStarPathFinder.cs" />
-    <Compile Include="Common\PathFinderFactory.cs" />
+    <Compile Include="Common\PathFinding\BasicAStar\AStarPathFinder.cs" />
+    <Compile Include="Common\PathFinding\BasicAStar\Node.cs" />
+    <Compile Include="Common\PathFinding\EpPathFinding\EpPathFinder.cs" />
+    <Compile Include="Common\PathFinding\EpPathFinding\GridRect.cs" />
+    <Compile Include="Common\PathFinding\EpPathFinding\Grid\BaseGrid.cs" />
+    <Compile Include="Common\PathFinding\EpPathFinding\Grid\DynamicGrid.cs" />
+    <Compile Include="Common\PathFinding\EpPathFinding\Grid\DynamicGridWPool.cs" />
+    <Compile Include="Common\PathFinding\EpPathFinding\Grid\PartialGridWPool.cs" />
+    <Compile Include="Common\PathFinding\EpPathFinding\Grid\StaticGrid.cs" />
+    <Compile Include="Common\PathFinding\EpPathFinding\Heuristic.cs" />
+    <Compile Include="Common\PathFinding\EpPathFinding\JumpPointFinder.cs" />
+    <Compile Include="Common\PathFinding\EpPathFinding\NodePool.cs" />
+    <Compile Include="Common\PathFinding\PathFinderFactory.cs" />
     <Compile Include="Common\SearchParameters.cs" />
     <Compile Include="Engine\ContentManagerManager.cs" />
     <Compile Include="Engine\DirectionMapper.cs" />

@@ -10,14 +10,14 @@ namespace PureGame.WorldAreas
     {
         public DifferetWorld()
         {
-            AddEntity(EntityFactory.MakeEntityObject(new Vector2(1, 1), "CharacterSheet"));
+            AddEntity(EntityFactory.MakeEntityObject(new Point(1, 1), "CharacterSheet"));
             Map = new WorldMap("level01", Content);
         }
 
         public override void OnInit(IWorldLoader worldLoader)
         {
             base.OnInit(worldLoader);
-            TriggerManager.AddTrigger(new TeleportTrigger<BasicWorld>(new Vector2(0, 0), new Vector2(5, 5), TriggerManager.WorldLoader));
+            TriggerManager.AddTrigger(new TeleportTrigger<BasicWorld>(new Point(0, 0), new Point(5, 5), TriggerManager.WorldLoader));
         }
     }
 }

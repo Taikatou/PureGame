@@ -17,23 +17,28 @@ namespace PureGame.Render.Renderable.WorldRenderer
             Offset = tileSize / 2;
         }
 
-        public Vector2 GetEntityScreenPosition(Entity entity)
+        public Point GetEntityScreenPosition(Entity entity)
         {
-            var position = entity.Position;
+            var position = entity.Position.ToVector2();
             var worldData = World.EntityManager;
             if (worldData.EntityCurrentlyMoving(entity))
             {
                 var progress = worldData.EntityToKey[entity].Progress;
-                var facingPosition = DirectionMapper.GetMovementFromDirection(entity.FacingDirection);
-                position -= facingPosition * progress;
+                var facingPosition = DirectionMapper.GetMovementFromDirection(entity.FacingDirection).ToVector2();
+                position -= (facingPosition * progress);
             }
             return GetScreenPosition(position);
         }
 
-        public Vector2 GetScreenPosition(Vector2 pos)
+        public Point GetScreenPosition(Point pos)
         {
-            var position = pos * TileSize;
-            return position;
+            return GetScreenPosition(pos.ToVector2());
+        }
+
+        public Point GetScreenPosition(Vector2 pos)
+        {
+            var position = pos*TileSize;
+            return position.ToPoint();
         }
     }
 }

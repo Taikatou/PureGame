@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.Events.WorldTriggers;
-using System.Diagnostics;
 
 namespace PureGame.Engine.World
 {
@@ -18,7 +17,7 @@ namespace PureGame.Engine.World
         public TalkManager TalkManager;
         public List<Entity> Entities;
         public bool CurrentlyMoving(Entity e) => EntityManager.EntityCurrentlyMoving(e);
-        public void Update(GameTime time)
+        public virtual void Update(GameTime time)
         {
             EntityManager.Update(time);
             TalkManager.Update(time);
@@ -88,19 +87,24 @@ namespace PureGame.Engine.World
             Entities.Remove(e);
         }
 
-        public bool ValidPosition(Vector2 position)
+        public bool HasEntity(Point p)
+        {
+            return EntityManager.SpatialHash.ContainsKey(p);
+        }
+
+        public bool ValidPosition(Point position)
         {
             var withinLimits = position.X >= 0 && position.Y >= 0 &&
                                position.X < MapWidth &&
                                position.Y < MapHeight;
-            var entityCollision = !EntityManager.SpatialHash.ContainsKey(position);
+            var entityCollision = !HasEntity(position);
             var mapCollision = !Map.CheckCollision(position);
             return withinLimits && entityCollision && mapCollision;
         }
 
         public bool ValidPosition(int x, int y)
         {
-            return ValidPosition(new Vector2(x, y));
+            return ValidPosition(new Point(x, y));
         }
     }
 }

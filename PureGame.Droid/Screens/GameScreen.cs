@@ -25,7 +25,7 @@ namespace PureGame.Droid.Screens
             var viewportAdapter = new DefaultViewportAdapter(graphicsDeviceService.GraphicsDevice);
             _spriteBatch = new SpriteBatch(graphicsDeviceService.GraphicsDevice);
             PureGame = new PureGame(Content);
-            var player = EntityFactory.MakeEntityObject(new Vector2(4, 4), "CharacterSheet");
+            var player = EntityFactory.MakeEntityObject(new Point(4, 4), "CharacterSheet");
             _gameClient = new PureGameClient(player, PureGame);
             _gameRenderer = new PlainPureGameRenderer(_gameClient, viewportAdapter, player, 0.25f);
             PureGame.WorldManager.OnWorldLoad += (sender, args) => _gameRenderer.LoadWorld();

@@ -19,7 +19,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         private readonly Dictionary<string, RenderEntity> _entitySprites;
         private readonly TiledMap _map;
         public Camera2D Camera;
-        private ContainsList<RenderEntity> _toDraw;
+        private readonly ContainsList<RenderEntity> _toDraw;
         private readonly ContentManager _content;
         private readonly ViewportAdapter _viewPort;
         public readonly EntityPositionFinder PositionFinder;
@@ -82,11 +82,12 @@ namespace PureGame.Render.Renderable.WorldRenderer
             Camera.LookAt(FocusStack.Focus.Position);
         }
 
-        public Vector2 WorldPosition(Vector2 position)
+        public Point WorldPosition(Vector2 position)
         {
             position = Camera.ScreenToWorld(position);
-            var point = (position/PositionFinder.TileSize).ToPoint();
-            return point.ToVector2();
+            var tileSize = PositionFinder.TileSize;
+            var point = (position/tileSize).ToPoint();
+            return point;
         }
 
         public RenderEntity GetRenderEntity(Entity e)

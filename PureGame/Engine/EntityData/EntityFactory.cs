@@ -4,7 +4,7 @@ namespace PureGame.Engine.EntityData
 {
     public class EntityFactory
     {
-        public static Entity MakeEntityObject(Vector2 position, string fileName, Direction facingDirection = Direction.Down)
+        public static Entity MakeEntityObject(Point position, string fileName, Direction facingDirection = Direction.Down)
         {
             var e = new Entity
             {

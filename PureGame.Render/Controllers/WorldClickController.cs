@@ -72,13 +72,13 @@ namespace PureGame.Render.Controllers
             }
         }
 
-        public Vector2 WorldPosition(MouseState mouseState)
+        public Point WorldPosition(MouseState mouseState)
         {
             var position = GetClickVector2(mouseState);
             return Renderer.WorldPosition(position);
         }
 
-        public void Click(Vector2 position)
+        public void Click(Point position)
         {
             Client.Click(position);
         }

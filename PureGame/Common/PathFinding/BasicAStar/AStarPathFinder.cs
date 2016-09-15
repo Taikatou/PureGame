@@ -1,25 +1,25 @@
-﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
-namespace PureGame.Common
+namespace PureGame.Common.PathFinding.BasicAStar
 {
     public class AStarPathFinder : IPathfinder
     {
-        private Node[,] _mapNodes;
+        public Node[,] MapNodes;
         private Node GetNode(int x, int y)
         {
-            if(_mapNodes[x, y] == null)
+            if(MapNodes[x, y] == null)
             {
                 var walkAble = SearchParameters.Map.ValidPosition(x, y);
-                _mapNodes[x, y] = new Node(x, y, walkAble, SearchParameters.EndLocation);
+                MapNodes[x, y] = new Node(x, y, walkAble, SearchParameters.EndLocation);
             }
-            return _mapNodes[x, y];
+            return MapNodes[x, y];
         }
-        private Node startNode;
-        private Node endNode;
-        int width => SearchParameters.Map.MapWidth;
-        int height => SearchParameters.Map.MapHeight;
-        private SearchParameters SearchParameters;
+        private readonly Node _startNode;
+        private readonly Node _endNode;
+        public int Width => SearchParameters.Map.MapWidth;
+        public int Height => SearchParameters.Map.MapHeight;
+        public readonly SearchParameters SearchParameters;
 
         /// <summary>
         /// Create a new instance of PathFinder
@@ -28,10 +28,10 @@ namespace PureGame.Common
         public AStarPathFinder(SearchParameters searchParameters)
         {
             SearchParameters = searchParameters;
-            _mapNodes = new Node[width, height];
-            startNode = GetNode(searchParameters.StartLocation.X, searchParameters.StartLocation.Y);
-            startNode.State = NodeState.Open;
-            endNode = GetNode(searchParameters.EndLocation.X, searchParameters.EndLocation.Y);
+            MapNodes = new Node[Width, Height];
+            _startNode = GetNode(searchParameters.StartLocation.X, searchParameters.StartLocation.Y);
+            _startNode.State = NodeState.Open;
+            _endNode = GetNode(searchParameters.EndLocation.X, searchParameters.EndLocation.Y);
         }
 
         /// <summary>
@@ -42,11 +42,11 @@ namespace PureGame.Common
         {
             // The start node is the first entry in the 'open' list
             var path = new List<Point>();
-            var success = Search(startNode);
+            var success = Search(_startNode);
             if (success)
             {
                 // If a path was found, follow the parents from the end node to build a list of locations
-                Node node = endNode;
+                var node = _endNode;
                 while (node.ParentNode != null)
                 {
                     path.Add(node.Location);
@@ -77,14 +77,16 @@ namespace PureGame.Common
             foreach (var nextNode in nextNodes)
             {
                 // Check whether the end node has been reached
-                if (nextNode.Location == endNode.Location)
+                if (nextNode.Location == _endNode.Location)
                 {
                     found = true;
-                    break;
                 }
                 else if(Search(nextNode))
                 {
                     found = true;
+                }
+                if (found)
+                {
                     break;
                 }
             }
@@ -100,21 +102,21 @@ namespace PureGame.Common
         /// <returns>A list of next possible nodes in the path</returns>
         private List<Node> GetAdjacentWalkableNodes(Node fromNode)
         {
-            List<Node> walkableNodes = new List<Node>();
-            IEnumerable<Point> nextLocations = GetAdjacentLocations(fromNode.Location);
+            var walkableNodes = new List<Node>();
+            var nextLocations = GetAdjacentLocations(fromNode.Location);
 
             foreach (var location in nextLocations)
             {
-                int x = location.X;
-                int y = location.Y;
+                var x = location.X;
+                var y = location.Y;
 
                 // Stay within the grid's boundaries
-                if (x < 0 || x >= width || y < 0 || y >= height)
+                if (x < 0 || x >= Width || y < 0 || y >= Height)
                     continue;
 
-                Node node = GetNode(x, y);
+                var node = GetNode(x, y);
                 // Ignore non-walkable nodes
-                if (!node.IsWalkable)
+                if (!node.IsWalkable && node != _endNode)
                     continue;
 
                 // Ignore already-closed nodes
@@ -124,8 +126,8 @@ namespace PureGame.Common
                 // Already-open nodes are only added to the list if their G-value is lower going via this route.
                 if (node.State == NodeState.Open)
                 {
-                    float traversalCost = Node.GetTraversalCost(node.Location, node.ParentNode.Location);
-                    float gTemp = fromNode.G + traversalCost;
+                    var traversalCost = Node.GetTraversalCost(node.Location, node.ParentNode.Location);
+                    var gTemp = fromNode.G + traversalCost;
                     if (gTemp < node.G)
                     {
                         node.ParentNode = fromNode;
@@ -151,7 +153,7 @@ namespace PureGame.Common
         /// <returns>The locations as an IEnumerable of Points</returns>
         private static IEnumerable<Point> GetAdjacentLocations(Point fromLocation)
         {
-            return new Point[]
+            return new[]
             {
                 new Point(fromLocation.X-1, fromLocation.Y  ),
                 new Point(fromLocation.X,   fromLocation.Y+1),

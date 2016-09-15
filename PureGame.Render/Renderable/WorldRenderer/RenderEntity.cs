@@ -21,7 +21,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         private bool _standingTimer;
 
         private Animation _currentAnimation;
-        private Vector2 _previousPosition;
+        private Point _previousPosition;
         public RenderEntity(Entity baseEntity, EntityPositionFinder positionFinder, ContentManager content)
         {
             _positionFinder = positionFinder;
@@ -66,9 +66,9 @@ namespace PureGame.Render.Renderable.WorldRenderer
             _previousPosition = baseEntity.Position;
             GetAnimation();
         }
-        public Rectangle Rect => new Rectangle(_positionFinder.GetEntityScreenPosition(BaseEntity).ToPoint(),
+        public Rectangle Rect => new Rectangle(_positionFinder.GetEntityScreenPosition(BaseEntity),
                                                _positionFinder.TileSize.ToPoint());
-        public Rectangle FinalRect => new Rectangle(_positionFinder.GetScreenPosition(BaseEntity.Position).ToPoint(),
+        public Rectangle FinalRect => new Rectangle(_positionFinder.GetScreenPosition(BaseEntity.Position),
                                                     _positionFinder.TileSize.ToPoint());
 
         public void Draw(SpriteBatch spriteBatch)

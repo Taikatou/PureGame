@@ -64,7 +64,7 @@ namespace PureGame.Render
         {
             Player.Running = active;
         }
-        public void Click(Vector2 position)
+        public void Click(Point position)
         {
             var spatialHash = CurrentWorld.EntityManager.SpatialHash;
             var spatialTrigger = CurrentWorld.TriggerManager.SpatialTriggers;
