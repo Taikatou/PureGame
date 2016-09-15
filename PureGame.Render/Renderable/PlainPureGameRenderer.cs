@@ -15,9 +15,9 @@ namespace PureGame.Render.Renderable
         private readonly PureGameClient _gameClient;
         public RenderWorldLayer Render;
         public List<RenderLayer> ToRender;
-        private readonly Entity _player;
+        private readonly IEntity _player;
         private readonly float _baseZoom;
-        public PlainPureGameRenderer(PureGameClient gameClient, ViewportAdapter viewPort, Entity player, float zoom)
+        public PlainPureGameRenderer(PureGameClient gameClient, ViewportAdapter viewPort, IEntity player, float zoom)
         {
             _baseZoom = zoom;
             _player = player;

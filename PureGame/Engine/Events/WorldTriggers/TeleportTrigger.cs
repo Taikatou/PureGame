@@ -21,7 +21,7 @@ namespace PureGame.Engine.Events.WorldTriggers
             return "Teleport trigger at" + Position + "Endpoint " + EndPosition;
         }
 
-        public override TriggerEvent GetTriggerEvent(Entity entity)
+        public override TriggerEvent GetTriggerEvent(IEntity entity)
         {
             var trigger = new TriggerEvent();
             trigger.Event += (sender, args) =>

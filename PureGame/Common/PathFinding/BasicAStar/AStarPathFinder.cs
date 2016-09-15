@@ -5,20 +5,17 @@ namespace PureGame.Common.PathFinding.BasicAStar
 {
     public class AStarPathFinder : IPathfinder
     {
-        public Node[,] MapNodes;
-        private Node GetNode(int x, int y)
+        public Dictionary<Point, Node> MapNodes;
+        //node has to be walkable
+        private Node GetNode(Point p)
         {
-            if(MapNodes[x, y] == null)
+            if(!MapNodes.ContainsKey(p))
             {
-                var walkAble = SearchParameters.Map.ValidPosition(x, y);
-                MapNodes[x, y] = new Node(x, y, walkAble, SearchParameters.EndLocation);
+                MapNodes[p] = new Node(p, SearchParameters.EndLocation);
             }
-            return MapNodes[x, y];
+            return MapNodes[p];
         }
-        private readonly Node _startNode;
         private readonly Node _endNode;
-        public int Width => SearchParameters.Map.MapWidth;
-        public int Height => SearchParameters.Map.MapHeight;
         public readonly SearchParameters SearchParameters;
 
         /// <summary>
@@ -28,10 +25,8 @@ namespace PureGame.Common.PathFinding.BasicAStar
         public AStarPathFinder(SearchParameters searchParameters)
         {
             SearchParameters = searchParameters;
-            MapNodes = new Node[Width, Height];
-            _startNode = GetNode(searchParameters.StartLocation.X, searchParameters.StartLocation.Y);
-            _startNode.State = NodeState.Open;
-            _endNode = GetNode(searchParameters.EndLocation.X, searchParameters.EndLocation.Y);
+            MapNodes = new Dictionary<Point, Node>();
+            _endNode = GetNode(searchParameters.EndLocation);
         }
 
         /// <summary>
@@ -42,7 +37,8 @@ namespace PureGame.Common.PathFinding.BasicAStar
         {
             // The start node is the first entry in the 'open' list
             var path = new List<Point>();
-            var success = Search(_startNode);
+            var startNode = GetNode(SearchParameters.StartLocation);
+            var success = Search(startNode);
             if (success)
             {
                 // If a path was found, follow the parents from the end node to build a list of locations
@@ -60,11 +56,6 @@ namespace PureGame.Common.PathFinding.BasicAStar
             return path;
         }
 
-        /// <summary>
-        /// Attempts to find a path to the destination node using <paramref name="currentNode"/> as the starting location
-        /// </summary>
-        /// <param name="currentNode">The node from which to find a path</param>
-        /// <returns>True if a path to the destination has been found, otherwise false</returns>
         private bool Search(Node currentNode)
         {
             // Set the current node to Closed since it cannot be traversed more than once
@@ -77,7 +68,7 @@ namespace PureGame.Common.PathFinding.BasicAStar
             foreach (var nextNode in nextNodes)
             {
                 // Check whether the end node has been reached
-                if (nextNode.Location == _endNode.Location)
+                if (nextNode == _endNode)
                 {
                     found = true;
                 }
@@ -107,39 +98,33 @@ namespace PureGame.Common.PathFinding.BasicAStar
 
             foreach (var location in nextLocations)
             {
-                var x = location.X;
-                var y = location.Y;
-
-                // Stay within the grid's boundaries
-                if (x < 0 || x >= Width || y < 0 || y >= Height)
-                    continue;
-
-                var node = GetNode(x, y);
-                // Ignore non-walkable nodes
-                if (!node.IsWalkable && node != _endNode)
-                    continue;
-
-                // Ignore already-closed nodes
-                if (node.State == NodeState.Closed)
-                    continue;
-
-                // Already-open nodes are only added to the list if their G-value is lower going via this route.
-                if (node.State == NodeState.Open)
+                var walkAble = SearchParameters.Map.ValidPosition(location);
+                if (walkAble)
                 {
-                    var traversalCost = Node.GetTraversalCost(node.Location, node.ParentNode.Location);
-                    var gTemp = fromNode.G + traversalCost;
-                    if (gTemp < node.G)
+                    var node = GetNode(location);
+
+                    // Ignore already-closed nodes
+                    if (node.State == NodeState.Closed)
+                        continue;
+
+                    // Already-open nodes are only added to the list if their G-value is lower going via this route.
+                    if (node.State == NodeState.Open)
                     {
+                        var traversalCost = node.AddManHattanDistance(node.ParentNode.Location);
+                        var gTemp = fromNode.G + traversalCost;
+                        if (gTemp < node.G)
+                        {
+                            node.ParentNode = fromNode;
+                            walkableNodes.Add(node);
+                        }
+                    }
+                    else
+                    {
+                        // If it's untested, set the parent and flag it as 'Open' for consideration
                         node.ParentNode = fromNode;
+                        node.State = NodeState.Open;
                         walkableNodes.Add(node);
                     }
-                }
-                else
-                {
-                    // If it's untested, set the parent and flag it as 'Open' for consideration
-                    node.ParentNode = fromNode;
-                    node.State = NodeState.Open;
-                    walkableNodes.Add(node);
                 }
             }
 

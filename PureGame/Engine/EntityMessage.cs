@@ -5,11 +5,11 @@ namespace PureGame.Engine
 {
     public class EntityMessage
     {
-        public Entity Entity;
+        public IEntity Entity;
         public int Timer;
         public bool Complete => Timer <= 0;
 
-        public EntityMessage(Entity entity, int timer)
+        public EntityMessage(IEntity entity, int timer)
         {
             entity.Talking = true;
             Entity = entity;

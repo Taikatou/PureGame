@@ -10,22 +10,22 @@ namespace PureGame.Engine.EntityData
     {
         public List<ExpiringKey<Point>> ExpiringTiles;
         public Dictionary<ExpiringKey<Point>, TriggerEvent> TileEvents;
-        public Dictionary<ExpiringKey<Point>, Entity> KeyToEntity;
-        public Dictionary<Entity, ExpiringKey<Point>> EntityToKey;
-        public Dictionary<Point, Entity> SpatialHash;
-        public Dictionary<string, Entity> IdHash;
+        public Dictionary<ExpiringKey<Point>, IEntity> KeyToEntity;
+        public Dictionary<IEntity, ExpiringKey<Point>> EntityToKey;
+        public Dictionary<Point, IEntity> SpatialHash;
+        public Dictionary<string, IEntity> IdHash;
 
         public EntityManager()
         {
-            IdHash = new Dictionary<string, Entity>();
+            IdHash = new Dictionary<string, IEntity>();
             ExpiringTiles = new List<ExpiringKey<Point>>();
             TileEvents = new Dictionary<ExpiringKey<Point>, TriggerEvent>();
-            EntityToKey = new Dictionary<Entity, ExpiringKey<Point>>();
-            KeyToEntity = new Dictionary<ExpiringKey<Point>, Entity>();
-            SpatialHash = new Dictionary<Point, Entity>();
+            EntityToKey = new Dictionary<IEntity, ExpiringKey<Point>>();
+            KeyToEntity = new Dictionary<ExpiringKey<Point>, IEntity>();
+            SpatialHash = new Dictionary<Point, IEntity>();
         }
 
-        public void AddEntity(Entity e)
+        public void AddEntity(IEntity e)
         {
             if (!ContainsEntity(e))
             {
@@ -34,7 +34,7 @@ namespace PureGame.Engine.EntityData
             }
         }
 
-        public void RemoveEntity(Entity entity) => RemoveEntity(entity.Id);
+        public void RemoveEntity(IEntity entity) => RemoveEntity(entity.Id);
 
         public void RemoveEntity(string entityId)
         {
@@ -47,7 +47,7 @@ namespace PureGame.Engine.EntityData
             }
         }
 
-        public void MoveEntity(Entity e, TriggerEvent onCompleteEvent, Point newPosition)
+        public void MoveEntity(IEntity e, TriggerEvent onCompleteEvent, Point newPosition)
         {
             var movementKey = new ExpiringKey<Point>(e.Position, e.Speed);
             if (onCompleteEvent != null)
@@ -90,8 +90,8 @@ namespace PureGame.Engine.EntityData
             ExpiringTiles.RemoveAt(i);
         }
 
-        public bool ContainsEntity(Entity e) => SpatialHash.ContainsKey(e.Position) || IdHash.ContainsKey(e.Id);
+        public bool ContainsEntity(IEntity e) => SpatialHash.ContainsKey(e.Position) || IdHash.ContainsKey(e.Id);
 
-        public bool EntityCurrentlyMoving(Entity e) => EntityToKey.ContainsKey(e);
+        public bool EntityCurrentlyMoving(IEntity e) => EntityToKey.ContainsKey(e);
     }
 }

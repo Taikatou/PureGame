@@ -26,7 +26,7 @@ namespace PureGame.Engine
             }
         }
 
-        public void StartTalking(Entity entity)
+        public void StartTalking(IEntity entity)
         {
             var talkingEntity = new EntityMessage(entity, 500);
             _talkingEntities.Add(talkingEntity);

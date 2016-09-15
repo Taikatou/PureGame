@@ -15,7 +15,7 @@ namespace PureGame.Engine.Events.WorldTriggers
             SpatialTriggers = new Dictionary<Point, Trigger>();
         }
 
-        public TriggerEvent GetTriggerEvent(Entity entity, Point position)
+        public TriggerEvent GetTriggerEvent(IEntity entity, Point position)
         {
             TriggerEvent toReturn = null;
             if (SpatialTriggers.ContainsKey(position))

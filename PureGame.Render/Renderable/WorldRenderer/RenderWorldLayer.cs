@@ -24,7 +24,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         private readonly ViewportAdapter _viewPort;
         public readonly EntityPositionFinder PositionFinder;
         public FocusStack FocusStack;
-        public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, Entity player, float zoom)
+        public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, IEntity player, float zoom)
         {
             _toDraw = new ContainsList<RenderEntity>();
             _content = ContentManagerManager.RequestContentManager();
@@ -90,7 +90,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
             return point;
         }
 
-        public RenderEntity GetRenderEntity(Entity e)
+        public RenderEntity GetRenderEntity(IEntity e)
         {
             if (!_entitySprites.ContainsKey(e.Id))
             {
@@ -99,7 +99,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
             return _entitySprites[e.Id];
         }
 
-        public void RefreshEntity(Entity e)
+        public void RefreshEntity(IEntity e)
         {
             var tmpCamera = new Camera2D(_viewPort) { Zoom = Camera.Zoom };
             tmpCamera.LookAt(FocusStack.Focus.FinalPosition);

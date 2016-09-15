@@ -63,24 +63,23 @@ namespace PureGame.Render.Controllers
             if (CurrentPath != null && CurrentPath.Count > 0 && !currentlyMoving)
             {
                 var directionVector = NextPosition - player.Position;
-                Debug.WriteLine("Direction vector " + directionVector);
                 var direction = DirectionMapper.GetDirectionFromMovment(directionVector);
                 if(direction != Direction.None)
                 {
                     Client.Player.Running = Running;
                     Debug.WriteLine("Running: " + Client.Player.Running);
                     Client.MoveDirection(direction);
-                    CurrentPath.RemoveAt(0);
-                    if (CurrentPath.Count == 0)
+                }
+                CurrentPath.RemoveAt(0);
+                if (CurrentPath.Count == 0)
+                {
+                    if (Running)
                     {
-                        if (Running)
-                        {
-                            Running = false;
-                        }
-                        if(InteractAfter)
-                        {
-                            Client.ControllerA();
-                        }
+                        Running = false;
+                    }
+                    if (InteractAfter)
+                    {
+                        Client.ControllerA();
                     }
                 }
             }
@@ -110,8 +109,12 @@ namespace PureGame.Render.Controllers
         {
             var player = Client.Player;
             var searchParams = new SearchParameters(player.Position, endPosition, Client.CurrentWorld);
-            var pathFinder = PathFinderFactory.MakePathFinder(searchParams);
+            var pathFinder = PathFinderFactory.MakePathFinder(searchParams, Severity.Player);
             CurrentPath = pathFinder.FindPath();
+            foreach (var v in CurrentPath)
+            {
+                Debug.WriteLine(v.ToString());
+            }
             InteractAfter = Client.CurrentWorld.HasEntity(endPosition);
         }
 

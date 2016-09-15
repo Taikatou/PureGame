@@ -10,7 +10,7 @@ namespace PureGame.Render
     {
         public int Timer;
         public int TimerResetValue = 50;
-        public readonly Entity Player;
+        public readonly IEntity Player;
         public PureGame PureGame;
         public WorldArea CurrentWorld => PureGame.WorldManager.GetEntitysWorld(Player);
 
@@ -22,7 +22,7 @@ namespace PureGame.Render
             }
         }
 
-        public PureGameClient(Entity entity, PureGame pureGame)
+        public PureGameClient(IEntity entity, PureGame pureGame)
         {
             PureGame = pureGame;
             Player = entity;

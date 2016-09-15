@@ -15,8 +15,8 @@ namespace PureGame.Engine.World
         public int MapWidth => Map.Map.Width;
         public int MapHeight => Map.Map.Height;
         public TalkManager TalkManager;
-        public List<Entity> Entities;
-        public bool CurrentlyMoving(Entity e) => EntityManager.EntityCurrentlyMoving(e);
+        public List<IEntity> Entities;
+        public bool CurrentlyMoving(IEntity e) => EntityManager.EntityCurrentlyMoving(e);
         public virtual void Update(GameTime time)
         {
             EntityManager.Update(time);
@@ -26,7 +26,7 @@ namespace PureGame.Engine.World
         public WorldArea()
         {
             Content = ContentManagerManager.RequestContentManager();
-            Entities = new List<Entity>();
+            Entities = new List<IEntity>();
             EntityManager = new EntityManager();
             TriggerManager = new TriggerManager();
             TalkManager = new TalkManager();
@@ -37,7 +37,7 @@ namespace PureGame.Engine.World
             TriggerManager.WorldLoader = worldLoader;
         }
 
-        public void ProccessInteraction(Entity entity)
+        public void ProccessInteraction(IEntity entity)
         {
             if (!CurrentlyMoving(entity))
             {
@@ -51,7 +51,7 @@ namespace PureGame.Engine.World
             }
         }
 
-        public void ProccessInteraction(Entity entity, Entity interactWith)
+        public void ProccessInteraction(IEntity entity, IEntity interactWith)
         {
             var directionVector = entity.Position - interactWith.Position;
             var direction = DirectionMapper.GetDirectionFromMovment(directionVector);
@@ -59,7 +59,7 @@ namespace PureGame.Engine.World
             TalkManager.StartTalking(entity);
         }
 
-        public void ProccessMovement(Entity e)
+        public void ProccessMovement(IEntity e)
         {
             if (!EntityManager.EntityCurrentlyMoving(e))
             {
@@ -75,13 +75,13 @@ namespace PureGame.Engine.World
             }
         }
 
-        public void AddEntity(Entity e)
+        public void AddEntity(IEntity e)
         {
             EntityManager.AddEntity(e);
             Entities.Add(e);
         }
 
-        public void RemoveEntity(Entity e)
+        public void RemoveEntity(IEntity e)
         {
             EntityManager.RemoveEntity(e);
             Entities.Remove(e);
