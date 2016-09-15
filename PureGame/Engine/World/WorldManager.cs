@@ -11,20 +11,20 @@ namespace PureGame.Engine.World
         public event EventHandler OnWorldLoad;
         private readonly Dictionary<string, WorldArea> _worldDict;
         private readonly List<WorldArea> _worldList;
-        private readonly Dictionary<Entity, WorldArea> _entityMapper;
+        private readonly Dictionary<IEntity, WorldArea> _entityMapper;
         public WorldManager()
         {
             _worldList = new List<WorldArea>();
             _worldDict = new Dictionary<string, WorldArea>();
-            _entityMapper = new Dictionary<Entity, WorldArea>();
+            _entityMapper = new Dictionary<IEntity, WorldArea>();
         }
 
-        public void AddEntity<T>(Entity entity) where T : WorldArea, new()
+        public void AddEntity<T>(IEntity entity) where T : WorldArea, new()
         {
             AddEntity<T>(entity, entity.Position);
         }
 
-        public void AddEntity<T>(Entity entity, Point endPoint) where T : WorldArea, new()
+        public void AddEntity<T>(IEntity entity, Point endPoint) where T : WorldArea, new()
         {
             //if entity currently exists we remove it
             if (_entityMapper.ContainsKey(entity))
@@ -56,7 +56,7 @@ namespace PureGame.Engine.World
             }
         }
 
-        public WorldArea GetEntitysWorld(Entity entity)
+        public WorldArea GetEntitysWorld(IEntity entity)
         {
             return _entityMapper.ContainsKey(entity) ? _entityMapper[entity] : null;
         }

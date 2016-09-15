@@ -1,12 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoGame.Extended.Entities;
 
 namespace PureGame.Engine.EntityData
 {
     public class EntityFactory
     {
-        public static Entity MakeEntityObject(Point position, string fileName, Direction facingDirection = Direction.Down)
+        public static IEntity MakeEntityObject(Point position, string fileName, Direction facingDirection = Direction.Down)
         {
-            var e = new Entity
+            var e = new BaseEntity
             {
                 Position = position,
                 FileName = fileName,

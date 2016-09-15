@@ -8,6 +8,6 @@ namespace PureGame.Engine.Events.WorldTriggers
         public Point Position;
 
         public abstract override string ToString();
-        public abstract TriggerEvent GetTriggerEvent(Entity entity);
+        public abstract TriggerEvent GetTriggerEvent(IEntity entity);
     }
 }

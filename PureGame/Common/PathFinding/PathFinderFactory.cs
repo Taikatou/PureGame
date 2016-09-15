@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using PureGame.Common.PathFinding.BasicAStar;
-using PureGame.Common.PathFinding.EpPathFinding;
+using PureGame.Common.PathFinding.Dijkstra;
 
 namespace PureGame.Common.PathFinding
 {
