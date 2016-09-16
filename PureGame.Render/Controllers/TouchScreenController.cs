@@ -6,6 +6,7 @@ using PureGame.Render.Renderable.WorldRenderer;
 using System.Collections.Generic;
 using System.Diagnostics;
 using PureGame.Common.PathFinding;
+using PureGame.Common.PathFinding.BasicAStar;
 
 namespace PureGame.Render.Controllers
 {
@@ -67,7 +68,6 @@ namespace PureGame.Render.Controllers
                 if(direction != Direction.None)
                 {
                     Client.Player.Running = Running;
-                    Debug.WriteLine("Running: " + Client.Player.Running);
                     Client.MoveDirection(direction);
                 }
                 CurrentPath.RemoveAt(0);
@@ -109,7 +109,7 @@ namespace PureGame.Render.Controllers
         {
             var player = Client.Player;
             var searchParams = new SearchParameters(player.Position, endPosition, Client.CurrentWorld);
-            var pathFinder = PathFinderFactory.MakePathFinder(searchParams, Severity.Player);
+            var pathFinder = new AStarPathFinder(searchParams);
             CurrentPath = pathFinder.FindPath();
             foreach (var v in CurrentPath)
             {

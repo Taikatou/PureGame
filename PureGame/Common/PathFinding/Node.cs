@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 
-namespace PureGame.Common.PathFinding.BasicAStar
+namespace PureGame.Common.PathFinding
 {
     public class Node
     {
@@ -24,16 +24,16 @@ namespace PureGame.Common.PathFinding.BasicAStar
             {
                 // When setting the parent, also calculate the traversal cost from the start node to here (the 'G' value)
                 _parentNode = value;
-                G = _parentNode.G + AddManHattanDistance(_parentNode.Location);
+                G = _parentNode.G + GetTraversalCost(Location, _parentNode.Location);
             }
         }
 
-        public Node(Point point, Point endLocation)
+        public Node(Point point, Point endLocation, int max)
         {
             Location = point;
             State = NodeState.Untested;
-            H = AddManHattanDistance(endLocation);
-            G = 0;
+            H = GetTraversalCost(Location, endLocation);
+            G = max;
         }
 
         public override string ToString()
@@ -41,11 +41,11 @@ namespace PureGame.Common.PathFinding.BasicAStar
             return $"{Location.X}, {Location.Y}: {State}";
         }
 
-        internal int AddManHattanDistance(Point otherLocation)
+        internal static int GetTraversalCost(Point location, Point otherLocation)
         {
-            var deltaX = otherLocation.X - Location.X;
-            var deltaY = otherLocation.Y - Location.Y;
-            return deltaX + deltaY;
+            var deltaX = otherLocation.X - location.X;
+            var deltaY = otherLocation.Y - location.Y;
+            return Math.Abs(deltaX) + Math.Abs(deltaY);
         }
     }
 
