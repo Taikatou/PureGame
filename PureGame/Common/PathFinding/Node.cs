@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 
-namespace PureGame.Common.PathFinding.BasicAStar
+namespace PureGame.Common.PathFinding
 {
     public class Node
     {

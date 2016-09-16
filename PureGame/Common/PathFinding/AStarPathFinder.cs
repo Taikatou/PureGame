@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 
-namespace PureGame.Common.PathFinding.BasicAStar
+namespace PureGame.Common.PathFinding
 {
     public class AStarPathFinder : IPathfinder
     {
