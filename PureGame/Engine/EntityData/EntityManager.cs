@@ -57,7 +57,6 @@ namespace PureGame.Engine.EntityData
             ExpiringTiles.Add(movementKey);
             EntityToKey[e] = movementKey;
             KeyToEntity[movementKey] = e;
-            Debug.WriteLine("Move Entity " + e.Id + " to " + newPosition);
             e.Position = newPosition;
             SpatialHash[e.Position] = e;
         }

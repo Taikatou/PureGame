@@ -20,7 +20,7 @@ namespace PureGame.Common.PathFinding
                     toReturn = new AStarPathFinder(searchParameters);
                     break;
                 case Severity.Player:
-                    toReturn = new DijkstraPathFinder(searchParameters);
+                    toReturn = new AStarPathFinder(searchParameters);
                     break;
                 default:
                     toReturn = new AStarPathFinder(searchParameters);

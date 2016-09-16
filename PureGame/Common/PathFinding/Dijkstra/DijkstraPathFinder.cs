@@ -66,7 +66,6 @@ namespace PureGame.Common.PathFinding.Dijkstra
         public List<Point> FindPath()
         {
             var node = FindNodePath();
-            Debug.WriteLine(node.ToString());
             var toReturn = new List<Point>();
             while (node != null)
             {

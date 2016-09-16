@@ -67,7 +67,6 @@ namespace PureGame.Render.Controllers
                 if(direction != Direction.None)
                 {
                     Client.Player.Running = Running;
-                    Debug.WriteLine("Running: " + Client.Player.Running);
                     Client.MoveDirection(direction);
                 }
                 CurrentPath.RemoveAt(0);
