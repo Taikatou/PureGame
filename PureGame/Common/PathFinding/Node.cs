@@ -13,8 +13,6 @@ namespace PureGame.Common.PathFinding
 
         public int H { get; }
 
-        public NodeState State { get; set; }
-
         public int F => G + H;
 
         public Node ParentNode
@@ -31,14 +29,13 @@ namespace PureGame.Common.PathFinding
         public Node(Point point, Point endLocation, int max)
         {
             Location = point;
-            State = NodeState.Untested;
             H = GetTraversalCost(Location, endLocation);
             G = max;
         }
 
         public override string ToString()
         {
-            return $"{Location.X}, {Location.Y}: {State}";
+            return $"{Location.X}, {Location.Y}";
         }
 
         internal static int GetTraversalCost(Point location, Point otherLocation)

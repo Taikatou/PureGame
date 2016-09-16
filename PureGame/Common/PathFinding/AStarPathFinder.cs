@@ -6,15 +6,16 @@ namespace PureGame.Common.PathFinding
     public class AStarPathFinder : IPathfinder
     {
         public Dictionary<Point, Node> MapNodes;
+        public HashSet<Node> ClosedNodes;
         private readonly Node _endNode;
+        private readonly int _max;
         public readonly SearchParameters SearchParameters;
-        public int Max;
         //node has to be walkable
         private Node GetNode(Point p)
         {
             if(!MapNodes.ContainsKey(p))
             {
-                MapNodes[p] = new Node(p, SearchParameters.EndLocation, Max);
+                MapNodes[p] = new Node(p, SearchParameters.EndLocation, _max);
             }
             return MapNodes[p];
         }
@@ -23,10 +24,11 @@ namespace PureGame.Common.PathFinding
         {
             SearchParameters = searchParameters;
             MapNodes = new Dictionary<Point, Node>();
+            ClosedNodes = new HashSet<Node>();
             _endNode = GetNode(searchParameters.EndLocation);
             var width = SearchParameters.Map.MapWidth;
             var height = SearchParameters.Map.MapHeight;
-            Max = width*height;
+            _max = width*height;
         }
 
         public List<Point> FindPath()
@@ -63,7 +65,7 @@ namespace PureGame.Common.PathFinding
                 }
                 else
                 {
-                    currentNode.State = NodeState.Closed;
+                    ClosedNodes.Add(currentNode);
                     GetNodesToAnalysis(currentNode, queue);
                     queue.Remove(currentNode);
                 }
@@ -80,24 +82,24 @@ namespace PureGame.Common.PathFinding
                 if (SearchParameters.Map.ValidPosition(location))
                 {
                     var node = GetNode(location);
-
                     // Already-open nodes are only added to the list if their G-value is lower going via this route.
-                    if (node.State == NodeState.Open)
+                    if (!ClosedNodes.Contains(node))
                     {
-                        var traversalCost = Node.GetTraversalCost(node.Location, fromNode.Location);
-                        var gTemp = fromNode.G + traversalCost;
-                        if (gTemp < node.G)
+                        if (node.ParentNode == null)
                         {
                             node.ParentNode = fromNode;
                             queue.Add(node);
                         }
-                    }
-                    else if (node.State == NodeState.Untested)
-                    {
-                        // If it's untested, set the parent and flag it as 'Open' for consideration
-                        node.ParentNode = fromNode;
-                        node.State = NodeState.Open;
-                        queue.Add(node);
+                        else
+                        {
+                            var traversalCost = Node.GetTraversalCost(node.Location, fromNode.Location);
+                            var gTemp = fromNode.G + traversalCost;
+                            if (gTemp < node.G)
+                            {
+                                node.ParentNode = fromNode;
+                                queue.Add(node);
+                            }
+                        }
                     }
                 }
             }
