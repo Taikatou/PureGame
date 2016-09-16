@@ -6,7 +6,7 @@ namespace PureGame.Common.PathFinding
     public class AStarPathFinder : IPathfinder
     {
         public Dictionary<Point, Node> MapNodes;
-        public HashSet<Node> ClosedNodes;
+        public HashSet<Point> ClosedNodes;
         private readonly Node _endNode;
         private readonly int _max;
         public readonly SearchParameters SearchParameters;
@@ -24,7 +24,7 @@ namespace PureGame.Common.PathFinding
         {
             SearchParameters = searchParameters;
             MapNodes = new Dictionary<Point, Node>();
-            ClosedNodes = new HashSet<Node>();
+            ClosedNodes = new HashSet<Point>();
             _endNode = GetNode(searchParameters.EndLocation);
             var width = SearchParameters.Map.MapWidth;
             var height = SearchParameters.Map.MapHeight;
@@ -65,7 +65,8 @@ namespace PureGame.Common.PathFinding
                 }
                 else
                 {
-                    ClosedNodes.Add(currentNode);
+                    ClosedNodes.Add(currentNode.Location);
+                    MapNodes.Remove(currentNode.Location);
                     GetNodesToAnalysis(currentNode, queue);
                     queue.Remove(currentNode);
                 }
@@ -79,30 +80,35 @@ namespace PureGame.Common.PathFinding
 
             foreach (var location in nextLocations)
             {
-                if (SearchParameters.Map.ValidPosition(location))
+                var nodeOpen = !ClosedNodes.Contains(location);
+                if (nodeOpen && ValidPosition(location))
                 {
                     var node = GetNode(location);
                     // Already-open nodes are only added to the list if their G-value is lower going via this route.
-                    if (!ClosedNodes.Contains(node))
+                    if (node.ParentNode == null)
                     {
-                        if (node.ParentNode == null)
+                        node.ParentNode = fromNode;
+                        queue.Add(node);
+                    }
+                    else
+                    {
+                        var traversalCost = Node.GetTraversalCost(node.Location, fromNode.Location);
+                        var gTemp = fromNode.G + traversalCost;
+                        if (gTemp < node.G)
                         {
                             node.ParentNode = fromNode;
                             queue.Add(node);
                         }
-                        else
-                        {
-                            var traversalCost = Node.GetTraversalCost(node.Location, fromNode.Location);
-                            var gTemp = fromNode.G + traversalCost;
-                            if (gTemp < node.G)
-                            {
-                                node.ParentNode = fromNode;
-                                queue.Add(node);
-                            }
-                        }
                     }
                 }
             }
+        }
+
+        public bool ValidPosition(Point point)
+        {
+            var foundEnd = _endNode.Location == point;
+            var validPosition = foundEnd || SearchParameters.Map.ValidPosition(point);
+            return validPosition;
         }
 
         private static IEnumerable<Point> GetAdjacentLocations(Point fromLocation)

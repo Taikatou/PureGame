@@ -110,10 +110,6 @@ namespace PureGame.Render.Controllers
             var searchParams = new SearchParameters(player.Position, endPosition, Client.CurrentWorld);
             var pathFinder = new AStarPathFinder(searchParams);
             CurrentPath = pathFinder.FindPath();
-            foreach (var v in CurrentPath)
-            {
-                Debug.WriteLine(v.ToString());
-            }
             InteractAfter = Client.CurrentWorld.HasEntity(endPosition);
         }
 
