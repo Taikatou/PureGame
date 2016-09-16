@@ -6,7 +6,6 @@ using PureGame.Render.Renderable.WorldRenderer;
 using System.Collections.Generic;
 using System.Diagnostics;
 using PureGame.Common.PathFinding;
-using PureGame.Common.PathFinding.BasicAStar;
 
 namespace PureGame.Render.Controllers
 {

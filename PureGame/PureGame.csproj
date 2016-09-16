@@ -38,8 +38,8 @@
   <ItemGroup>
     <Compile Include="Common\IFocusable.cs" />
     <Compile Include="Common\IPathFinder.cs" />
-    <Compile Include="Common\PathFinding\BasicAStar\AStarPathFinder.cs" />
-    <Compile Include="Common\PathFinding\BasicAStar\Node.cs" />
+    <Compile Include="Common\PathFinding\AStarPathFinder.cs" />
+    <Compile Include="Common\PathFinding\Node.cs" />
     <Compile Include="Common\SearchParameters.cs" />
     <Compile Include="Engine\ContentManagerManager.cs" />
     <Compile Include="Engine\DirectionMapper.cs" />
