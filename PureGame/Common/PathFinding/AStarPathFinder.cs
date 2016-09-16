@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 
 namespace PureGame.Common.PathFinding
@@ -13,28 +14,47 @@ namespace PureGame.Common.PathFinding
         //node has to be walkable
         private Node GetNode(Point p)
         {
-            if(!MapNodes.ContainsKey(p))
+            Node toReturn = null;
+            if (MapNodes.ContainsKey(p))
+            {
+                toReturn = MapNodes[p];
+            }
+            else if (ValidPosition(p))
             {
                 MapNodes[p] = new Node(p, SearchParameters.EndLocation, _max);
+                toReturn = MapNodes[p];
             }
-            return MapNodes[p];
+            else
+            {
+                ClosedNodes.Add(p);
+            }
+            return toReturn;
         }
 
         public AStarPathFinder(SearchParameters searchParameters)
         {
+            var width = searchParameters.Map.MapWidth;
+            var height = searchParameters.Map.MapHeight;
+            _max = width * height;
             SearchParameters = searchParameters;
             MapNodes = new Dictionary<Point, Node>();
             ClosedNodes = new HashSet<Point>();
-            _endNode = GetNode(searchParameters.EndLocation);
-            var width = SearchParameters.Map.MapWidth;
-            var height = SearchParameters.Map.MapHeight;
-            _max = width*height;
+            var endPoint = searchParameters.EndLocation;
+            _endNode = ForceNode(endPoint, endPoint, _max);
+            MapNodes[searchParameters.EndLocation] = _endNode;
+        }
+
+        public Node ForceNode(Point start, Point end, int max)
+        {
+            var node = new Node(start, end, max);
+            return node;
         }
 
         public List<Point> FindPath()
         {
             var path = new List<Point>();
-            var startNode = GetNode(SearchParameters.StartLocation);
+            var startPos = SearchParameters.StartLocation;
+            var startNode = ForceNode(startPos, _endNode.Location, 0);
             if (Search(startNode))
             {
                 // If a path was found, follow the parents from the end node to build a list of locations
@@ -80,10 +100,14 @@ namespace PureGame.Common.PathFinding
 
             foreach (var location in nextLocations)
             {
-                var nodeOpen = !ClosedNodes.Contains(location);
-                if (nodeOpen && ValidPosition(location))
+                var nodeClosed = ClosedNodes.Contains(location);
+                Node node = null;
+                if (!nodeClosed)
                 {
-                    var node = GetNode(location);
+                    node = GetNode(location);
+                }
+                if (node != null)
+                {
                     // Already-open nodes are only added to the list if their G-value is lower going via this route.
                     if (node.ParentNode == null)
                     {
