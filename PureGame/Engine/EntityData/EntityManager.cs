@@ -65,7 +65,7 @@ namespace PureGame.Engine.EntityData
             for (var i = 0; i < ExpiringTiles.Count; i++)
             {
                 ExpiringTiles[i].Update(time);
-                if (ExpiringTiles[i].TimeLeft <= 0)
+                if (ExpiringTiles[i].Complete)
                 {
                     RemoveTile(i);
                 }
@@ -75,7 +75,7 @@ namespace PureGame.Engine.EntityData
         public void RemoveTile(int i)
         {
             var tile = ExpiringTiles[i];
-            var position = tile.Key;
+            var position = tile.Value;
             var entity = KeyToEntity[tile];
             SpatialHash.Remove(position);
             EntityToKey.Remove(entity);

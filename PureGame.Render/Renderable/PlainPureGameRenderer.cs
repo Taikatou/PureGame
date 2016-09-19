@@ -49,6 +49,7 @@ namespace PureGame.Render.Renderable
             if (Render != null)
             {
                 var zoom = Render.Camera.Zoom;
+                Render.UnLoad();
                 Render = new RenderWorldLayer(CurrentWorld, ViewPort, _player, zoom);
             }
             else

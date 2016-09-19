@@ -1,35 +1,48 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.EntityData;
 using System.Collections.Generic;
+using PureGame.Engine.Communication;
+using PureGame.Engine.World;
 
 namespace PureGame.Engine
 {
     public class TalkManager
     {
-        private readonly List<EntityMessage> _talkingEntities;
+        private readonly List<ITextBox> _talkingEntities;
+        private readonly Dictionary<ITextBox, IEntity> _entityDict;
 
         public TalkManager()
         {
-            _talkingEntities = new List<EntityMessage>();
+            _talkingEntities = new List<ITextBox>();
+            _entityDict = new Dictionary<ITextBox, IEntity>();
         }
 
         public void Update(GameTime time)
         {
-            for(var i = 0; i < _talkingEntities.Count; i++)
+            var toRemoveList = new List<ITextBox>();
+            foreach(var textBox in _talkingEntities)
             {
-                var talkingEntity = _talkingEntities[i];
-                talkingEntity.Update(time);
-                if (talkingEntity.Complete)
+                textBox.Update(time);
+                if (textBox.Complete)
                 {
-                    _talkingEntities.Remove(talkingEntity);
+                    toRemoveList.Add(textBox);
                 }
+            }
+            foreach (var toRemove in toRemoveList)
+            {
+                _talkingEntities.Remove(toRemove);
+                var entity = _entityDict[toRemove];
+                entity.Talking = false;
+                _entityDict.Remove(toRemove);
             }
         }
 
         public void StartTalking(IEntity entity)
         {
-            var talkingEntity = new EntityMessage(entity, 500);
-            _talkingEntities.Add(talkingEntity);
+            var textBox = entity.Interaction;
+            _entityDict[textBox] = entity;
+            entity.Talking = true;
+            _talkingEntities.Add(textBox);
         }
     }
 }

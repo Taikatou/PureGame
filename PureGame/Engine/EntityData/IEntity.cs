@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using PureGame.Engine.Communication;
 
 namespace PureGame.Engine.EntityData
 {
@@ -15,5 +16,6 @@ namespace PureGame.Engine.EntityData
         bool Talking { get; set; }
         event EventHandler OnMoveEvent;
         void MomentumChange();
+        ITextBox Interaction { get; }
     }
 }

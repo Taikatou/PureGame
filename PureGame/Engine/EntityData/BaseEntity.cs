@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using PureGame.Engine.Communication;
 
 namespace PureGame.Engine.EntityData
 {
@@ -19,6 +20,13 @@ namespace PureGame.Engine.EntityData
         public event EventHandler OnMoveEvent;
 
         public void MomentumChange() => OnMoveEvent?.Invoke(this, null);
+        public ITextBox Interaction
+        {
+            get
+            {
+                return new PlainTextBox();
+            }
+        }
 
         public override string ToString() => $"EntityObject Id:{Id}, FileName:{FileName}, Position:{Position}";
     }

@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using PureGame.Engine;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
 using PureGame.Engine.World.EntityMover;
@@ -11,11 +9,10 @@ namespace PureGame
     {
         public WorldManager WorldManager;
         public EntityMoverManager EntitiyMover;
-        public PureGame(ContentManager content)
+        public PureGame()
         {
             WorldManager = new WorldManager();
             EntitiyMover = new EntityMoverManager();
-            ContentManagerManager.Instance = new ContentManagerManager(content);
         }
 
         public void Update(GameTime time)

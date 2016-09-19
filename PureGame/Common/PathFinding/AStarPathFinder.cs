@@ -129,8 +129,7 @@ namespace PureGame.Common.PathFinding
 
         public bool ValidPosition(Point point)
         {
-            var foundEnd = _endNode.Location == point;
-            var validPosition = foundEnd || SearchParameters.Map.ValidPosition(point);
+            var validPosition = SearchParameters.Map.ValidPositionNotTrigger(point);
             return validPosition;
         }
 

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Screens;
 using MonoGame.Extended.ViewportAdapters;
+using PureGame.Engine;
 using PureGame.Engine.EntityData;
 using PureGame.Render;
 using PureGame.Render.Renderable;
@@ -24,7 +25,8 @@ namespace PureGame.DesktopGl.Screens
             var graphicsDeviceService = (IGraphicsDeviceService)serviceProvider.GetService(typeof(IGraphicsDeviceService));
             var viewportAdapter = new DefaultViewportAdapter(graphicsDeviceService.GraphicsDevice);
             _spriteBatch = new SpriteBatch(graphicsDeviceService.GraphicsDevice);
-            PureGame = new PureGame(Content);
+            ContentManagerManager.Instance = new ContentManagerManager(Content);
+            PureGame = new PureGame();
             var player = EntityFactory.MakeEntityObject(new Point(4, 4), "CharacterSheet");
             _gameClient = new PureGameClient(player, PureGame);
             _gameRenderer = new PlainPureGameRenderer(_gameClient, viewportAdapter, player, 0.25f);

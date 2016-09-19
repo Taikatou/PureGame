@@ -58,6 +58,7 @@
     <Compile Include="Renderable\RenderLayer.cs" />
     <Compile Include="Renderable\PlainPureGameRenderer.cs" />
     <Compile Include="Renderable\WorldRenderer\EntityPositionFinder.cs" />
+    <Compile Include="Renderable\WorldRenderer\EntityTextRenderer.cs" />
     <Compile Include="Renderable\WorldRenderer\FocusEntity.cs" />
     <Compile Include="Renderable\WorldRenderer\FocusVector.cs" />
     <Compile Include="Renderable\WorldRenderer\RenderEntity.cs" />

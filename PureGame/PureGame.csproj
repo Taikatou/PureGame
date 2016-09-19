@@ -36,6 +36,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Engine\Communication\ITextBox.cs" />
+    <Compile Include="Engine\Communication\PlainTextBox.cs" />
     <Compile Include="Engine\World\Controllers\AbstractController.cs" />
     <Compile Include="Common\ContainsList.cs" />
     <Compile Include="Common\IFocusable.cs" />
@@ -50,7 +52,6 @@
     <Compile Include="Engine\EntityData\BaseEntity.cs" />
     <Compile Include="Engine\EntityData\EntityManager.cs" />
     <Compile Include="Engine\EntityData\IEntity.cs" />
-    <Compile Include="Engine\EntityMessage.cs" />
     <Compile Include="Engine\Events\WorldTriggers\TeleportTrigger.cs" />
     <Compile Include="Engine\Events\WorldTriggers\TriggerEvent.cs" />
     <Compile Include="Engine\Events\WorldTriggers\TriggerManager.cs" />

@@ -66,7 +66,9 @@ namespace PureGame.Render.Renderable.WorldRenderer
             _previousPosition = baseEntity.Position;
             GetAnimation();
         }
-        public Rectangle Rect => new Rectangle(_positionFinder.GetEntityScreenPosition(BaseEntity),
+
+        public Point ScreenPosition => _positionFinder.GetEntityScreenPosition(BaseEntity);
+        public Rectangle Rect => new Rectangle(ScreenPosition,
                                                _positionFinder.TileSize.ToPoint());
         public Rectangle FinalRect => new Rectangle(_positionFinder.GetScreenPosition(BaseEntity.Position),
                                                     _positionFinder.TileSize.ToPoint());

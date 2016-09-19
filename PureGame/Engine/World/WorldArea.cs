@@ -57,7 +57,7 @@ namespace PureGame.Engine.World
             var directionVector = entity.Position - interactWith.Position;
             var direction = DirectionMapper.GetDirectionFromMovment(directionVector);
             interactWith.FacingDirection = direction;
-            TalkManager.StartTalking(entity);
+            TalkManager.StartTalking(interactWith);
         }
 
         public void ProccessMovement(IEntity e)
@@ -103,6 +103,12 @@ namespace PureGame.Engine.World
             return withinLimits && entityCollision && mapCollision;
         }
 
+        public bool ValidPositionNotTrigger(Point position)
+        {
+            var validPosition = ValidPosition(position);
+            var triggerCollision = !TriggerManager.SpatialTriggers.ContainsKey(position);
+            return validPosition && triggerCollision;
+        }
         public bool ValidPosition(int x, int y)
         {
             return ValidPosition(new Point(x, y));

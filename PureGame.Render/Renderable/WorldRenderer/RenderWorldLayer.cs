@@ -22,12 +22,14 @@ namespace PureGame.Render.Renderable.WorldRenderer
         private readonly ContainsList<RenderEntity> _toDraw;
         private readonly ContentManager _content;
         private readonly ViewportAdapter _viewPort;
+        private readonly EntityTextRenderer _textRenderer;
         public readonly EntityPositionFinder PositionFinder;
         public FocusStack FocusStack;
         public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, IEntity player, float zoom)
         {
             _toDraw = new ContainsList<RenderEntity>();
             _content = ContentManagerManager.RequestContentManager();
+            _textRenderer = new EntityTextRenderer(_content);
             _viewPort = viewPort;
             World = world;
             Camera = new Camera2D(viewPort) { Zoom=zoom };
@@ -53,6 +55,11 @@ namespace PureGame.Render.Renderable.WorldRenderer
             RefreshToDraw();
         }
 
+        public void UnLoad()
+        {
+            _content.Unload();
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             var transformMatrix = Camera.GetViewMatrix();
@@ -64,10 +71,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
             }
             foreach (var r in _toDraw.Elements)
             {
-                if(r.BaseEntity.Talking)
-                {
-                    //draw text boxes
-                }
+                _textRenderer.Draw(spriteBatch, r);
             }
             spriteBatch.End();
         }
