@@ -1,14 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
-using PureGame.Engine;
+using PureGame.Engine.World.EntityMover;
 using PureGame.Render.Renderable.WorldRenderer;
 
 namespace PureGame.Render.Controllers
 {
     public class TouchScreenController : CameraController
     {
-        public bool Running;
-        public bool InteractAfter;
+        private EntityMover _entityMover;
         public TouchScreenController(RenderWorldLayer renderer, PureGameClient client) : base(renderer, client)
         {
             TouchPanel.EnabledGestures = GestureType.Pinch | GestureType.FreeDrag | GestureType.DoubleTap | GestureType.Tap;
@@ -28,7 +27,7 @@ namespace PureGame.Render.Controllers
                         Tap(gesture);
                         break;
                     case GestureType.DoubleTap:
-                        Running = true;
+                        SetRunning();
                         break;
                     case GestureType.FreeDrag:
                         MoveCamera(gesture);
@@ -46,6 +45,14 @@ namespace PureGame.Render.Controllers
                         Renderer.FocusStack.EndMove();
                     }
                 }
+            }
+        }
+
+        public void SetRunning()
+        {
+            if (_entityMover != null)
+            {
+                _entityMover.Running = true;
             }
         }
 
@@ -72,7 +79,7 @@ namespace PureGame.Render.Controllers
         public void MoveEntity(Point endPosition)
         {
             var entity = Client.Entity;
-            Client.PureGame.AddEntityMover(entity, endPosition, Running);
+            _entityMover = Client.PureGame.AddEntityMover(entity, endPosition);
         }
 
         public void PinchZoom(GestureSample gesture)

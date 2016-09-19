@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using PureGame.Engine.EntityData;
 
@@ -13,14 +14,15 @@ namespace PureGame.Engine.World.EntityMover
             _entityMoverDict = new Dictionary<IEntity, EntityMover>();
         }
 
-        public void AddMover(WorldArea world, IEntity entity, Point endPoint, bool running)
+        public EntityMover AddMover(WorldArea world, IEntity entity, Point endPoint)
         {
             if (_entityMoverDict.ContainsKey(entity))
             {
                 _entityMoverDict.Remove(entity);
             }
-            var newEntityMover = new EntityMover(world, entity, endPoint, running);
+            var newEntityMover = new EntityMover(world, entity, endPoint);
             _entityMoverDict[entity] = newEntityMover;
+            return _entityMoverDict[entity];
         }
 
         public void Update(GameTime time)

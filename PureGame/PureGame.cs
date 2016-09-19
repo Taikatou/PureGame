@@ -24,14 +24,16 @@ namespace PureGame
             EntitiyMover.Update(time);
         }
 
-        public void AddEntityMover(IEntity entity, Point endPoint, bool running)
+        public EntityMover AddEntityMover(IEntity entity, Point endPoint)
         {
+            EntityMover toReturn = null;
             var entityMapper = WorldManager.EntityMapper;
             if (entityMapper.ContainsKey(entity))
             {
                 var world = entityMapper[entity];
-                EntitiyMover.AddMover(world, entity, endPoint, running);
+                toReturn = EntitiyMover.AddMover(world, entity, endPoint);
             }
+            return toReturn;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using PureGame.Common;
 using PureGame.Common.PathFinding;
@@ -9,7 +10,7 @@ namespace PureGame.Engine.World.EntityMover
 {
     public class EntityMover
     {
-        public bool Complete;
+        public bool Complete => CurrentPath.Count == 0;
         public IEntity Entity;
         public Point EndPoint;
         public List<Point> CurrentPath;
@@ -18,7 +19,7 @@ namespace PureGame.Engine.World.EntityMover
         public bool InteractAfter;
         public bool Running;
 
-        public EntityMover(WorldArea world, IEntity entity, Point endPoint, bool running)
+        public EntityMover(WorldArea world, IEntity entity, Point endPoint)
         {
             Entity = entity;
             EndPoint = endPoint;
@@ -27,13 +28,13 @@ namespace PureGame.Engine.World.EntityMover
             CurrentPath = pathFinder.FindPath();
             Controller = new BaseController(world, entity);
             InteractAfter = world.HasEntity(endPoint);
-            Running = running;
+            Running = false;
         }
 
         public void Update(GameTime time)
         {
             var currentlyMoving = Controller.CurrentWorld.EntityManager.EntityCurrentlyMoving(Entity);
-            if (CurrentPath != null && CurrentPath.Count > 0 && !currentlyMoving)
+            if (!Complete && !currentlyMoving)
             {
                 var directionVector = NextPosition - Entity.Position;
                 var direction = DirectionMapper.GetDirectionFromMovment(directionVector);
@@ -43,12 +44,8 @@ namespace PureGame.Engine.World.EntityMover
                     Controller.MoveDirection(direction);
                 }
                 CurrentPath.RemoveAt(0);
-                if (CurrentPath.Count == 0)
+                if (Complete)
                 {
-                    if (Running)
-                    {
-                        Running = false;
-                    }
                     if (InteractAfter)
                     {
                         Controller.Interact();
