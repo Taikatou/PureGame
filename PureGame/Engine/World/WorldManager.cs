@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
+using PureGame.Common;
 using PureGame.Engine.EntityData;
 
 namespace PureGame.Engine.World
@@ -10,13 +11,13 @@ namespace PureGame.Engine.World
     {
         public event EventHandler OnWorldLoad;
         private readonly Dictionary<string, WorldArea> _worldDict;
-        private readonly List<WorldArea> _worldList;
-        private readonly Dictionary<IEntity, WorldArea> _entityMapper;
+        private readonly UpdateList<WorldArea> _worldList;
+        public readonly Dictionary<IEntity, WorldArea> EntityMapper;
         public WorldManager()
         {
-            _worldList = new List<WorldArea>();
+            _worldList = new UpdateList<WorldArea>();
             _worldDict = new Dictionary<string, WorldArea>();
-            _entityMapper = new Dictionary<IEntity, WorldArea>();
+            EntityMapper = new Dictionary<IEntity, WorldArea>();
         }
 
         public void AddEntity<T>(IEntity entity) where T : WorldArea, new()
@@ -27,16 +28,16 @@ namespace PureGame.Engine.World
         public void AddEntity<T>(IEntity entity, Point endPoint) where T : WorldArea, new()
         {
             //if entity currently exists we remove it
-            if (_entityMapper.ContainsKey(entity))
+            if (EntityMapper.ContainsKey(entity))
             {
-                _entityMapper[entity].RemoveEntity(entity);
+                EntityMapper[entity].RemoveEntity(entity);
             }
             entity.Position = endPoint;
             var worldType = typeof(T).ToString();
             LoadWorld<T>(worldType);
-            _entityMapper[entity] = _worldDict[worldType];
+            EntityMapper[entity] = _worldDict[worldType];
             Debug.WriteLine("Add entity " + entity.Id);
-            _entityMapper[entity].AddEntity(entity);
+            EntityMapper[entity].AddEntity(entity);
 
             OnWorldLoad?.Invoke(this, null);
         }
@@ -51,22 +52,19 @@ namespace PureGame.Engine.World
                 _worldList.Add(world);
                 foreach (var entity in world.Entities)
                 {
-                    _entityMapper[entity] = _worldDict[worldType];
+                    EntityMapper[entity] = _worldDict[worldType];
                 }
             }
         }
 
         public WorldArea GetEntitysWorld(IEntity entity)
         {
-            return _entityMapper.ContainsKey(entity) ? _entityMapper[entity] : null;
+            return EntityMapper.ContainsKey(entity) ? EntityMapper[entity] : null;
         }
 
         public void Update(GameTime time)
         {
-            for (var i = 0; i < _worldList.Count; i++)
-            {
-                _worldList[i].Update(time);
-            }
+            _worldList.Update(time);
         }
     }
 }

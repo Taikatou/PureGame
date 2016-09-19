@@ -46,7 +46,6 @@
     <Compile Include="Controllers\CameraController.cs" />
     <Compile Include="Controllers\TouchScreenController.cs" />
     <Compile Include="Controllers\WorldClickController.cs" />
-    <Compile Include="Common\ContainsList.cs" />
     <Compile Include="Common\Loader.cs" />
     <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\WorldKeyBoardController.cs" />

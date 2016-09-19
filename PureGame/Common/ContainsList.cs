@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PureGame.Render.Common
+namespace PureGame.Common
 {
     public class ContainsList <T>
     {

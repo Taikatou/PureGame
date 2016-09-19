@@ -3,16 +3,16 @@ using Microsoft.Xna.Framework;
 using PureGame.Engine;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
+using PureGame.Engine.World.Controllers;
 
 namespace PureGame.Render
 {
-    public class PureGameClient
+    public class PureGameClient : AbstractController
     {
         public int Timer;
         public int TimerResetValue = 50;
-        public readonly IEntity Player;
         public PureGame PureGame;
-        public WorldArea CurrentWorld => PureGame.WorldManager.GetEntitysWorld(Player);
+        public override WorldArea CurrentWorld => PureGame.WorldManager.GetEntitysWorld(Entity);
 
         public void Update(GameTime time)
         {
@@ -22,34 +22,17 @@ namespace PureGame.Render
             }
         }
 
-        public PureGameClient(IEntity entity, PureGame pureGame)
+        public PureGameClient(IEntity entity, PureGame pureGame) : base(entity)
         {
             PureGame = pureGame;
-            Player = entity;
-        }
-
-        public void ControllerA()
-        {
-            CurrentWorld.ProccessInteraction(Player);
-        }
-
-        public void FaceDirection(Direction direction)
-        {
-            Player.FacingDirection = direction;
-        }
-
-        public void MoveDirection(Direction direction)
-        {
-            Player.MovementDirection = direction;
-            CurrentWorld.ProccessMovement(Player);
         }
 
         public void ControllerDPad(Direction direction)
         {
-            if (direction != Direction.None && !CurrentWorld.CurrentlyMoving(Player))
+            if (direction != Direction.None && !CurrentWorld.CurrentlyMoving(Entity))
             {
-                var entityMoving = CurrentWorld.EntityManager.EntityCurrentlyMoving(Player);
-                if (!entityMoving && Player.FacingDirection != direction)
+                var entityMoving = CurrentWorld.EntityManager.EntityCurrentlyMoving(Entity);
+                if (!entityMoving && Entity.FacingDirection != direction)
                 {
                     FaceDirection(direction);
                     Timer = TimerResetValue;
@@ -60,10 +43,7 @@ namespace PureGame.Render
                 }
             }
         }
-        public void ControllerB(bool active)
-        {
-            Player.Running = active;
-        }
+        
         public void Click(Point position)
         {
             var spatialHash = CurrentWorld.EntityManager.SpatialHash;

@@ -48,7 +48,7 @@ namespace PureGame.Render.Controllers
             }
             if (EButton.NewActive)
             {
-                _client.ControllerA();
+                _client.Interact();
             }
             var d = GetMovementDirection();
             if (d != Direction.None)
@@ -56,7 +56,7 @@ namespace PureGame.Render.Controllers
                 _client.ControllerDPad(d);
             }
             var bActive = BButton.Active;
-            _client.ControllerB(bActive);
+            _client.Running = bActive;
         }
 
         public WorldKeyBoardController(PureGameClient client)

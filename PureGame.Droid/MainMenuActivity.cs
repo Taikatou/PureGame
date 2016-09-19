@@ -15,7 +15,7 @@ namespace PureGame.Droid
 
             // Create your application here
             SetContentView(Resource.Layout.MainMenuLayout);
-            Button button = FindViewById<Button>(Resource.Id.PlayGameButton);
+            var button = FindViewById<Button>(Resource.Id.PlayGameButton);
             button.Click += delegate { StartActivity(typeof(GameActivity)); };
         }
     }

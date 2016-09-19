@@ -1,26 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
-using PureGame.Common;
-using PureGame.Engine;
+using PureGame.Engine.World.EntityMover;
 using PureGame.Render.Renderable.WorldRenderer;
-using System.Collections.Generic;
-using System.Diagnostics;
-using PureGame.Common.PathFinding;
 
 namespace PureGame.Render.Controllers
 {
     public class TouchScreenController : CameraController
     {
-        public List<Point> CurrentPath;
-        public bool Running;
-        public bool InteractAfter;
-        public Point NextPosition => CurrentPath[0];
+        private EntityMover _entityMover;
         public TouchScreenController(RenderWorldLayer renderer, PureGameClient client) : base(renderer, client)
         {
             TouchPanel.EnabledGestures = GestureType.Pinch | GestureType.FreeDrag | GestureType.DoubleTap | GestureType.Tap;
         }
 
-        public void TouchUpdate()
+        public override void Update(GameTime time)
         {
             while (TouchPanel.IsGestureAvailable)
             {
@@ -34,7 +27,7 @@ namespace PureGame.Render.Controllers
                         Tap(gesture);
                         break;
                     case GestureType.DoubleTap:
-                        Running = true;
+                        SetRunning();
                         break;
                     case GestureType.FreeDrag:
                         MoveCamera(gesture);
@@ -55,32 +48,11 @@ namespace PureGame.Render.Controllers
             }
         }
 
-        public override void Update(GameTime time)
+        public void SetRunning()
         {
-            TouchUpdate();
-            var player = Client.Player;
-            var currentlyMoving = Client.CurrentWorld.EntityManager.EntityCurrentlyMoving(player);
-            if (CurrentPath != null && CurrentPath.Count > 0 && !currentlyMoving)
+            if (_entityMover != null)
             {
-                var directionVector = NextPosition - player.Position;
-                var direction = DirectionMapper.GetDirectionFromMovment(directionVector);
-                if(direction != Direction.None)
-                {
-                    Client.Player.Running = Running;
-                    Client.MoveDirection(direction);
-                }
-                CurrentPath.RemoveAt(0);
-                if (CurrentPath.Count == 0)
-                {
-                    if (Running)
-                    {
-                        Running = false;
-                    }
-                    if (InteractAfter)
-                    {
-                        Client.ControllerA();
-                    }
-                }
+                _entityMover.Running = true;
             }
         }
 
@@ -106,11 +78,8 @@ namespace PureGame.Render.Controllers
 
         public void MoveEntity(Point endPosition)
         {
-            var player = Client.Player;
-            var searchParams = new SearchParameters(player.Position, endPosition, Client.CurrentWorld);
-            var pathFinder = new AStarPathFinder(searchParams);
-            CurrentPath = pathFinder.FindPath();
-            InteractAfter = Client.CurrentWorld.HasEntity(endPosition);
+            var entity = Client.Entity;
+            _entityMover = Client.PureGame.AddEntityMover(entity, endPosition);
         }
 
         public void PinchZoom(GestureSample gesture)
