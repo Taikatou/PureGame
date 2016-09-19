@@ -36,11 +36,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Engine\World\Controllers\AbstractController.cs" />
+    <Compile Include="Common\ContainsList.cs" />
     <Compile Include="Common\IFocusable.cs" />
     <Compile Include="Common\IPathFinder.cs" />
     <Compile Include="Common\PathFinding\AStarPathFinder.cs" />
     <Compile Include="Common\PathFinding\Node.cs" />
     <Compile Include="Common\SearchParameters.cs" />
+    <Compile Include="Common\UpdateList.cs" />
     <Compile Include="Engine\ContentManagerManager.cs" />
     <Compile Include="Engine\DirectionMapper.cs" />
     <Compile Include="Engine\EntityData\EntityFactory.cs" />
@@ -53,8 +56,11 @@
     <Compile Include="Engine\Events\WorldTriggers\TriggerManager.cs" />
     <Compile Include="Engine\Events\WorldTriggers\ITrigger.cs" />
     <Compile Include="Engine\TalkManager.cs" />
+    <Compile Include="Engine\World\Controllers\BaseController.cs" />
+    <Compile Include="Engine\World\EntityMover\EntityMoverManager.cs" />
     <Compile Include="Engine\World\ExpiringKey.cs" />
     <Compile Include="Engine\WorldMap.cs" />
+    <Compile Include="Engine\World\EntityMover\EntityMover.cs" />
     <Compile Include="Engine\World\WorldArea.cs" />
     <Compile Include="Engine\World\IWorldLoader.cs" />
     <Compile Include="IdFactory.cs" />

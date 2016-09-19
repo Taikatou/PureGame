@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using MonoGame.Extended;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.Events.WorldTriggers;
 
 namespace PureGame.Engine.World
 {
-    public class WorldArea 
+    public class WorldArea : IUpdate
     {
         public ContentManager Content;
         public EntityManager EntityManager;
