@@ -7,7 +7,6 @@ namespace PureGame.Render.Controllers
     {
         public RenderWorldLayer Renderer;
         public PureGameClient Client;
-        public bool PreviouslyMovingCamera;
         public Vector2 DragPosition;
 
         protected CameraController(RenderWorldLayer renderer, PureGameClient client)

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using PureGame.Common;
 using PureGame.Common.PathFinding;
@@ -17,7 +16,6 @@ namespace PureGame.Engine.World.EntityMover
         public Point NextPosition => CurrentPath[0];
         public BaseController Controller;
         public bool InteractAfter;
-        public bool Running;
 
         public EntityMover(WorldArea world, IEntity entity, Point endPoint)
         {
@@ -28,7 +26,6 @@ namespace PureGame.Engine.World.EntityMover
             CurrentPath = pathFinder.FindPath();
             Controller = new BaseController(world, entity);
             InteractAfter = world.HasEntity(endPoint);
-            Running = false;
         }
 
         public void Update(GameTime time)
@@ -40,16 +37,12 @@ namespace PureGame.Engine.World.EntityMover
                 var direction = DirectionMapper.GetDirectionFromMovment(directionVector);
                 if (direction != Direction.None)
                 {
-                    Entity.Running = Running;
                     Controller.MoveDirection(direction);
                 }
                 CurrentPath.RemoveAt(0);
-                if (Complete)
+                if (Complete && InteractAfter)
                 {
-                    if (InteractAfter)
-                    {
-                        Controller.Interact();
-                    }
+                    Controller.Interact();
                 }
             }
         }

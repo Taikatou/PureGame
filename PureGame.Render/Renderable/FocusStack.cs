@@ -32,7 +32,7 @@ namespace PureGame.Render.Renderable
             Stack.Pop();
         }
 
-        public void BeginMove()
+        private void BeginMove()
         {
             if (!_moving)
             {
@@ -64,6 +64,10 @@ namespace PureGame.Render.Renderable
                     focusVector.Position -= moveBy;
                     RefreshEvent?.Invoke(this, null);
                 }
+            }
+            else
+            {
+                BeginMove();
             }
         }
     }

@@ -9,6 +9,7 @@ namespace PureGame.Render.Controllers
         public bool Active;
         public bool PreviouslyActive;
         public bool NewActive => Active && !PreviouslyActive;
+        public bool Change => Active != PreviouslyActive;
 
         public SmartKey(Keys key, Controls control)
         {

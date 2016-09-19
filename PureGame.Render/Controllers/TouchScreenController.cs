@@ -7,10 +7,9 @@ namespace PureGame.Render.Controllers
 {
     public class TouchScreenController : CameraController
     {
-        private EntityMover _entityMover;
         public TouchScreenController(RenderWorldLayer renderer, PureGameClient client) : base(renderer, client)
         {
-            TouchPanel.EnabledGestures = GestureType.Pinch | GestureType.FreeDrag | GestureType.DoubleTap | GestureType.Tap;
+            TouchPanel.EnabledGestures = GestureType.Pinch | GestureType.FreeDrag | GestureType.DoubleTap | GestureType.Tap | GestureType.DragComplete;
         }
 
         public override void Update(GameTime time)
@@ -27,59 +26,64 @@ namespace PureGame.Render.Controllers
                         Tap(gesture);
                         break;
                     case GestureType.DoubleTap:
-                        SetRunning();
+                        DoubleTap();
                         break;
                     case GestureType.FreeDrag:
                         MoveCamera(gesture);
                         break;
-                }
-            }
-            if (PreviouslyMovingCamera)
-            {
-                var touchCol = TouchPanel.GetState();
-                foreach (var touch in touchCol)
-                {
-                    if (touch.State == TouchLocationState.Released)
-                    {
-                        PreviouslyMovingCamera = false;
-                        Renderer.FocusStack.EndMove();
-                    }
+                    case GestureType.DragComplete:
+                        Release();
+                        break;
                 }
             }
         }
 
-        public void SetRunning()
+        public void Release()
         {
-            if (_entityMover != null)
+            Renderer.FocusStack.EndMove();
+        }
+
+        public void DoubleTap()
+        {
+            var entityMover = GetEntitymover();
+            if (entityMover != null)
             {
-                _entityMover.Running = true;
+                entityMover.Entity.Running = true;
             }
         }
 
         public void MoveCamera(GestureSample gesture)
         {
-            if (!PreviouslyMovingCamera)
-            {
-                Renderer.FocusStack.BeginMove();
-                PreviouslyMovingCamera = true;
-                DragPosition = gesture.Position;
-            }
-            else
-            {
-                MoveCameraBy(gesture.Position);
-            }
+            MoveCameraBy(gesture.Position);
         }
 
         public void Tap(GestureSample gesture)
         {
+            var entityMover = GetEntitymover();
+            if (entityMover == null || entityMover.Complete)
+            {
+                Client.Entity.Running = false;
+            }
             var touchPosition = Renderer.WorldPosition(gesture.Position);
             MoveEntity(touchPosition);
+        }
+
+        public EntityMover GetEntitymover()
+        {
+            var entityDict = Client.PureGame.EntitiyMover.EntityMoverDict;
+            var player = Client.Entity;
+            EntityMover toReturn = null;
+            if (entityDict.ContainsKey(player))
+            {
+                toReturn = entityDict[player];
+            }
+            return toReturn;
         }
 
         public void MoveEntity(Point endPosition)
         {
             var entity = Client.Entity;
-            _entityMover = Client.PureGame.AddEntityMover(entity, endPosition);
+            Client.PureGame.AddEntityMover(entity, endPosition);
         }
 
         public void PinchZoom(GestureSample gesture)

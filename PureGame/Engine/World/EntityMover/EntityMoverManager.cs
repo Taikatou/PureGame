@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using PureGame.Engine.EntityData;
 
@@ -7,28 +6,27 @@ namespace PureGame.Engine.World.EntityMover
 {
     public class EntityMoverManager
     {
-        private readonly Dictionary<IEntity, EntityMover> _entityMoverDict;
+        public readonly Dictionary<IEntity, EntityMover> EntityMoverDict;
 
         public EntityMoverManager()
         {
-            _entityMoverDict = new Dictionary<IEntity, EntityMover>();
+            EntityMoverDict = new Dictionary<IEntity, EntityMover>();
         }
 
-        public EntityMover AddMover(WorldArea world, IEntity entity, Point endPoint)
+        public void AddMover(WorldArea world, IEntity entity, Point endPoint)
         {
-            if (_entityMoverDict.ContainsKey(entity))
+            if (EntityMoverDict.ContainsKey(entity))
             {
-                _entityMoverDict.Remove(entity);
+                EntityMoverDict.Remove(entity);
             }
             var newEntityMover = new EntityMover(world, entity, endPoint);
-            _entityMoverDict[entity] = newEntityMover;
-            return _entityMoverDict[entity];
+            EntityMoverDict[entity] = newEntityMover;
         }
 
         public void Update(GameTime time)
         {
             var toRemoveList = new List<EntityMover>();
-            foreach (var entityMover in _entityMoverDict.Values)
+            foreach (var entityMover in EntityMoverDict.Values)
             {
                 entityMover.Update(time);
                 if (entityMover.Complete)
@@ -38,7 +36,7 @@ namespace PureGame.Engine.World.EntityMover
             }
             foreach (var entityMover in toRemoveList)
             {
-                _entityMoverDict.Remove(entityMover.Entity);
+                EntityMoverDict.Remove(entityMover.Entity);
             }
         }
     }

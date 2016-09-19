@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using System.Diagnostics;
 using PureGame.Engine.Events.WorldTriggers;
 using PureGame.Engine.World;
 

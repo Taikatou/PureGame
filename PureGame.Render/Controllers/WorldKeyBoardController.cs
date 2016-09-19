@@ -55,8 +55,11 @@ namespace PureGame.Render.Controllers
             {
                 _client.ControllerDPad(d);
             }
-            var bActive = BButton.Active;
-            _client.Running = bActive;
+            if (BButton.Change)
+            {
+                var bActive = BButton.Active;
+                _client.Running = bActive;
+            }
         }
 
         public WorldKeyBoardController(PureGameClient client)

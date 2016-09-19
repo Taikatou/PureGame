@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoGame.Extended.Entities;
 
 namespace PureGame.Engine.EntityData
 {

@@ -7,11 +7,13 @@ namespace PureGame.Render.Controllers
     public class WorldClickController : CameraController
     {
         private MouseState _previousState;
+        public SmartKey Button;
         private int PreviousScrollValue => _previousState.ScrollWheelValue;
 
         public WorldClickController(RenderWorldLayer renderer, PureGameClient client) : base(renderer, client)
         {
             _previousState = Mouse.GetState();
+            Button = new SmartKey(Keys.C, Controls.A);
         }
 
         public bool PreviouslyReleased => _previousState.LeftButton == ButtonState.Released;
@@ -21,18 +23,19 @@ namespace PureGame.Render.Controllers
         {
             var mouseState = Mouse.GetState();
             var keyBoardState = Keyboard.GetState();
+            Button.Update(keyBoardState);
             if (keyBoardState.IsKeyDown(Keys.D))
             {
                 DebugUpdate(mouseState);
             }
-            else if (keyBoardState.IsKeyDown(Keys.C))
+            else if (Button.Active)
             {
                 CameraUpdate(mouseState);
             }
-            else if (PreviouslyMovingCamera)
+            //!Button.Active implied
+            else if (Button.PreviouslyActive)
             {
                 Renderer.FocusStack.EndMove();
-                PreviouslyMovingCamera = false;
             }
             if (mouseState.ScrollWheelValue != PreviousScrollValue)
             {
@@ -48,11 +51,6 @@ namespace PureGame.Render.Controllers
             {
                 if (PreviouslyReleased)
                 {
-                    if (!PreviouslyMovingCamera)
-                    {
-                        Renderer.FocusStack.BeginMove();
-                    }
-                    PreviouslyMovingCamera = true;
                     DragPosition = GetClickVector2(mouseState);
                 }
                 else
