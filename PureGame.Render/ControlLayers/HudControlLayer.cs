@@ -6,6 +6,7 @@ using PureGame.Render.Renderable.HudRenderer;
 
 namespace PureGame.Render.ControlLayers
 {
+    class HudControlLayer : IControlAbleLayer
     {
         public HudRenderLayer HudRenderer;
 
