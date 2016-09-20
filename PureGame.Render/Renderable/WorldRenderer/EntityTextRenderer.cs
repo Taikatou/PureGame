@@ -13,7 +13,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
             Font = content.Load<BitmapFont>("Fonts/montserrat-32");
         }
 
-        public void Draw(SpriteBatch spriteBatch, RenderEntity renderEntity)
+        public void Draw(SpriteBatch spriteBatch, EntityRender renderEntity)
         {
             if (renderEntity.BaseEntity.Talking)
             {

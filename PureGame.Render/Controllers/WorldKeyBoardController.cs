@@ -35,30 +35,33 @@ namespace PureGame.Render.Controllers
             return Direction.None;
         }
 
-        public void Update(GameTime time, IControlLayer layer)
+        public void Update(GameTime time, List<IControlAbleLayer> layers)
         {
             var state = Keyboard.GetState();
-            // C is for camera
-            if (!state.IsKeyDown(Keys.C))
+            foreach (var layer in layers)
             {
-                foreach (var button in _buttons)
+                // C is for camera
+                if (!state.IsKeyDown(Keys.C))
                 {
-                    button.Update(state);
+                    foreach (var button in _buttons)
+                    {
+                        button.Update(state);
+                    }
                 }
-            }
-            if (EButton.NewActive)
-            {
-                layer.Interact();
-            }
-            var d = GetMovementDirection();
-            if (d != Direction.None)
-            {
-                layer.ControllerDPad(d);
-            }
-            if (BButton.Change)
-            {
-                var bActive = BButton.Active;
-                layer.Cancel(bActive);
+                if (EButton.NewActive)
+                {
+                    layer.Interact();
+                }
+                var d = GetMovementDirection();
+                if (d != Direction.None)
+                {
+                    layer.ControllerDPad(d);
+                }
+                if (BButton.Change)
+                {
+                    var bActive = BButton.Active;
+                    layer.Cancel(bActive);
+                }
             }
         }
 

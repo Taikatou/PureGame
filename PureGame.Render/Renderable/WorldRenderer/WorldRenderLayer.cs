@@ -13,30 +13,28 @@ using PureGame.Common;
 
 namespace PureGame.Render.Renderable.WorldRenderer
 {
-    public class RenderWorldLayer
+    public class WorldRenderLayer
     {
         public WorldArea World;
-        private readonly Dictionary<string, RenderEntity> _entitySprites;
+        private readonly Dictionary<string, EntityRender> _entitySprites;
         private readonly TiledMap _map;
         public Camera2D Camera;
-        private readonly ContainsList<RenderEntity> _toDraw;
+        public readonly ContainsList<EntityRender> ToDraw;
         private readonly ContentManager _content;
         private readonly ViewportAdapter _viewPort;
-        private readonly EntityTextRenderer _textRenderer;
         public readonly EntityPositionFinder PositionFinder;
         public FocusStack FocusStack;
-        public RenderWorldLayer(WorldArea world, ViewportAdapter viewPort, IEntity player, float zoom)
+        public WorldRenderLayer(WorldArea world, ViewportAdapter viewPort, IEntity player, float zoom)
         {
-            _toDraw = new ContainsList<RenderEntity>();
+            ToDraw = new ContainsList<EntityRender>();
             _content = ContentManagerManager.RequestContentManager();
-            _textRenderer = new EntityTextRenderer(_content);
             _viewPort = viewPort;
             World = world;
             Camera = new Camera2D(viewPort) { Zoom=zoom };
             _map = world.Map.Map;
             var tileSize = new Vector2(_map.TileWidth, _map.TileHeight);
             PositionFinder = new EntityPositionFinder(world, tileSize);
-            _entitySprites = new Dictionary<string, RenderEntity>();
+            _entitySprites = new Dictionary<string, EntityRender>();
             FocusStack = new FocusStack(Camera);
             FocusStack.Push(new FocusEntity(player, PositionFinder));
             foreach (var entity in world.Entities)
@@ -65,20 +63,16 @@ namespace PureGame.Render.Renderable.WorldRenderer
             var transformMatrix = Camera.GetViewMatrix();
             spriteBatch.Begin(transformMatrix: transformMatrix);
             _map.Draw(transformMatrix);
-            foreach (var r in _toDraw.Elements)
+            foreach (var r in ToDraw.Elements)
             {
                 r.Draw(spriteBatch);
-            }
-            foreach (var r in _toDraw.Elements)
-            {
-                _textRenderer.Draw(spriteBatch, r);
             }
             spriteBatch.End();
         }
 
         public void Update(GameTime time)
         {
-            foreach (var toDraw in _toDraw.Elements)
+            foreach (var toDraw in ToDraw.Elements)
             {
                 toDraw.Update(time);
             }
@@ -93,11 +87,11 @@ namespace PureGame.Render.Renderable.WorldRenderer
             return point;
         }
 
-        public RenderEntity GetRenderEntity(IEntity e)
+        public EntityRender GetRenderEntity(IEntity e)
         {
             if (!_entitySprites.ContainsKey(e.Id))
             {
-                _entitySprites[e.Id] = new RenderEntity(e, PositionFinder, _content);
+                _entitySprites[e.Id] = new EntityRender(e, PositionFinder, _content);
             }
             return _entitySprites[e.Id];
         }
@@ -108,12 +102,12 @@ namespace PureGame.Render.Renderable.WorldRenderer
             tmpCamera.LookAt(FocusStack.Focus.FinalPosition);
             var renderEntity = GetRenderEntity(e);
             var camerasContains = CameraFunctions.CamerasContains(renderEntity.Rect, Camera, tmpCamera);
-            _toDraw.AddOrRemove(renderEntity, camerasContains);
+            ToDraw.AddOrRemove(renderEntity, camerasContains);
         }
 
         public void Sort()
         {
-            _toDraw.Elements = _toDraw.Elements.OrderBy(x => x.BaseEntity.Position.Y).ToList();
+            ToDraw.Elements = ToDraw.Elements.OrderBy(x => x.BaseEntity.Position.Y).ToList();
         }
 
         public void RefreshToDraw()

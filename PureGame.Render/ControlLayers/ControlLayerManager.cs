@@ -4,37 +4,25 @@ namespace PureGame.Render.ControlLayers
 {
     public class ControlLayerManager
     {
-        public List<SortedController> Controllers;
+        public Dictionary<int, IControlAbleLayer> ControlableDict;
+        public List<IControlAbleLayer> ControlLayers;
 
         public ControlLayerManager()
         {
-            Controllers = new List<SortedController>();
+            ControlableDict = new Dictionary<int, IControlAbleLayer>();
+            ControlLayers = new List<IControlAbleLayer>();
         }
 
-        public void AddController(IControlLayer controller)
+        public void AddController(IControlAbleLayer layer, int layerDepth)
         {
-            var depth = Controllers.Count;
-            var sortedController = new SortedController(controller, depth);
-            Controllers.Add(sortedController);
-            Sort();
-        }
-
-        public void Sort()
-        {
-            Controllers.Sort((node1, node2) => node1.LayerDepth.CompareTo(node2.LayerDepth));
-        }
-
-        public void AddController(IControlLayer layer, int layerDepth)
-        {
-            if (layerDepth < Controllers.Count)
+            if (ControlableDict.ContainsKey(layerDepth))
             {
-                var toRemove = Controllers[layerDepth];
+                var toRemove = ControlableDict[layerDepth];
+                ControlLayers.Remove(toRemove);
                 toRemove.UnLoad();
-                Controllers.Remove(toRemove);
             }
-            var controlLayer = new SortedController(layer, layerDepth);
-            Controllers.Add(controlLayer);
-            Sort();
+            ControlableDict[layerDepth] = layer;
+            ControlLayers.Add(layer);
         }
     }
 }

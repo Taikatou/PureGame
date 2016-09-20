@@ -4,7 +4,7 @@ using PureGame.Engine;
 
 namespace PureGame.Render.ControlLayers
 {
-    public interface IControlLayer
+    public interface IControlAbleLayer
     {
         void Tap(Vector2 position);
         void DoubleTap();

@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
-using PureGame.Engine.World.EntityMover;
 using PureGame.Render.ControlLayers;
 
 namespace PureGame.Render.Controllers
@@ -12,48 +12,51 @@ namespace PureGame.Render.Controllers
             TouchPanel.EnabledGestures = GestureType.Pinch | GestureType.FreeDrag | GestureType.DoubleTap | GestureType.Tap | GestureType.DragComplete;
         }
 
-        public override void Update(GameTime time, IControlLayer layer)
+        public override void Update(GameTime time, List<IControlAbleLayer> layers)
         {
             while (TouchPanel.IsGestureAvailable)
             {
                 var gesture = TouchPanel.ReadGesture();
-                switch (gesture.GestureType)
+                foreach (var layer in layers)
                 {
-                    case GestureType.Pinch:
-                        Pinch(layer, gesture);
-                        break;
-                    case GestureType.Tap:
-                        Tap(gesture, layer);
-                        break;
-                    case GestureType.DoubleTap:
-                        DoubleTap(layer);
-                        break;
-                    case GestureType.FreeDrag:
-                        Drag(layer, gesture);
-                        break;
-                    case GestureType.DragComplete:
-                        ReleaseDrag(layer);
-                        break;
+                    switch (gesture.GestureType)
+                    {
+                        case GestureType.Pinch:
+                            Pinch(layer, gesture);
+                            break;
+                        case GestureType.Tap:
+                            Tap(gesture, layer);
+                            break;
+                        case GestureType.DoubleTap:
+                            DoubleTap(layer);
+                            break;
+                        case GestureType.FreeDrag:
+                            Drag(layer, gesture);
+                            break;
+                        case GestureType.DragComplete:
+                            ReleaseDrag(layer);
+                            break;
+                    }
                 }
             }
         }
 
-        public void DoubleTap(IControlLayer layer)
+        public void DoubleTap(IControlAbleLayer layer)
         {
             layer.DoubleTap();
         }
 
-        public void Drag(IControlLayer layer, GestureSample gesture)
+        public void Drag(IControlAbleLayer layer, GestureSample gesture)
         {
             Drag(gesture.Position, layer);
         }
 
-        public void Tap(GestureSample gesture, IControlLayer layer)
+        public void Tap(GestureSample gesture, IControlAbleLayer layer)
         {
             layer.Tap(gesture.Position);
         }
 
-        public void Pinch(IControlLayer layer, GestureSample gesture)
+        public void Pinch(IControlAbleLayer layer, GestureSample gesture)
         {
             var dist = Vector2.Distance(gesture.Position, gesture.Position2);
 

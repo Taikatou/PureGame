@@ -6,12 +6,12 @@ using PureGame.Render.Renderable.WorldRenderer;
 
 namespace PureGame.Render.ControlLayers
 {
-    public class WorldControlLayer : IControlLayer
+    public class WorldControlAbleLayer : IControlAbleLayer
     {
-        public RenderWorldLayer Renderer;
+        public WorldRenderLayer Renderer;
         public PureGameClient Client;
 
-        public WorldControlLayer(RenderWorldLayer renderer, PureGameClient client)
+        public WorldControlAbleLayer(WorldRenderLayer renderer, PureGameClient client)
         {
             Renderer = renderer;
             Client = client;

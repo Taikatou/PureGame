@@ -1,73 +1,63 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PureGame.Engine;
+using PureGame.Render.Renderable.TextRenderer;
 
 namespace PureGame.Render.ControlLayers
 {
-    public class SortedController : IControlLayer
+    class TextControlAbleLayer : IControlAbleLayer
     {
-        public IControlLayer Layer;
-        public int LayerDepth;
+        public TextRenderLayer RenderLayer;
 
-        public SortedController(IControlLayer layer, int depth)
+        public TextControlAbleLayer(TextRenderLayer renderLayer)
         {
-            Layer = layer;
-            LayerDepth = depth;
+            RenderLayer = renderLayer;
         }
-
         public void Tap(Vector2 position)
         {
-            Layer.Tap(position);
         }
 
         public void DoubleTap()
         {
-            Layer.DoubleTap();
         }
 
         public void Zoom(float zoomBy)
         {
-            Layer.Zoom(zoomBy);
         }
 
         public void Drag(Vector2 dragBy)
         {
-            Layer.Drag(dragBy);
         }
 
         public void ReleaseDrag()
         {
-            Layer.ReleaseDrag();
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Layer.Draw(spriteBatch);
+            RenderLayer.Draw(spriteBatch);
         }
 
         public void Update(GameTime time)
         {
-            Layer.Update(time);
+            RenderLayer.Update(time);
         }
 
         public void ControllerDPad(Direction direction)
         {
-            Layer.ControllerDPad(direction);
         }
 
         public void Cancel(bool cancelValue)
         {
-            Layer.Cancel(cancelValue);
         }
 
         public void Interact()
         {
-            Layer.Interact();
         }
 
         public void UnLoad()
         {
-            Layer.UnLoad();
+            RenderLayer.UnLoad();
         }
     }
 }
