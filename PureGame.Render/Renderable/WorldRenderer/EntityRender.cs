@@ -9,7 +9,7 @@ using PureGame.Engine;
 
 namespace PureGame.Render.Renderable.WorldRenderer
 {
-    public class RenderEntity : IRenderable
+    public class EntityRender : IRenderable
     {
         public readonly IEntity BaseEntity;
         private readonly Texture2D _entityTexture;
@@ -22,7 +22,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
 
         private Animation _currentAnimation;
         private Point _previousPosition;
-        public RenderEntity(IEntity baseEntity, EntityPositionFinder positionFinder, ContentManager content)
+        public EntityRender(IEntity baseEntity, EntityPositionFinder positionFinder, ContentManager content)
         {
             _positionFinder = positionFinder;
             BaseEntity = baseEntity;

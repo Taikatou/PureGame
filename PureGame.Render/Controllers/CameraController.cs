@@ -1,29 +1,43 @@
 ﻿using Microsoft.Xna.Framework;
-using PureGame.Render.ControlLayers;
+using PureGame.Render.Controlables;
 
 namespace PureGame.Render.Controllers
 {
     public abstract class CameraController : IController
     {
+        public bool ChangeDrag;
         public Vector2 DragPosition;
+        public Vector2 NewDragPosition;
 
-        public abstract void Update(GameTime time, IControlLayer layer);
+        public virtual void Update(GameTime time)
+        {
+            if (ChangeDrag)
+            {
+                DragPosition = NewDragPosition;
+                ChangeDrag = false;
+            }
+        }
+        public abstract void UpdateLayer(GameTime time, IControlableLayer layers);
 
-        public void Zoom(float zoomBy, IControlLayer layer)
+        public void Zoom(float zoomBy, IControlableLayer layer)
         {
             layer.Zoom(zoomBy);
         }
 
-        public void ReleaseDrag(IControlLayer layer)
+        public void ReleaseDrag(IControlableLayer layer)
         {
             layer.ReleaseDrag();
         }
 
-        public void Drag(Vector2 newDragPosition, IControlLayer layer)
+        public void Drag(Vector2 newDragPosition, IControlableLayer layer)
         {
             var moveBy = newDragPosition - DragPosition;
             layer.Drag(moveBy);
-            DragPosition = newDragPosition;
+            if (!ChangeDrag)
+            {
+                NewDragPosition = newDragPosition;
+                ChangeDrag = true;
+            }
         }
 
         public void Click(Point position)

@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using PureGame.Engine;
-using PureGame.Render.ControlLayers;
+using PureGame.Render.Controlables;
 
 namespace PureGame.Render.Controllers
 {
@@ -13,6 +13,7 @@ namespace PureGame.Render.Controllers
         public SmartKey CachedButton;
         public SmartKey BButton;
         public SmartKey EButton;
+        private KeyboardState _keyBoardState;
 
         public Direction GetMovementDirection()
         {
@@ -35,17 +36,21 @@ namespace PureGame.Render.Controllers
             return Direction.None;
         }
 
-        public void Update(GameTime time, IControlLayer layer)
+        public void Update(GameTime time)
         {
-            var state = Keyboard.GetState();
+            _keyBoardState = Keyboard.GetState();
             // C is for camera
-            if (!state.IsKeyDown(Keys.C))
+            if (!_keyBoardState.IsKeyDown(Keys.C))
             {
                 foreach (var button in _buttons)
                 {
-                    button.Update(state);
+                    button.Update(_keyBoardState);
                 }
             }
+        }
+
+        public void UpdateLayer(GameTime time, IControlableLayer layer)
+        {
             if (EButton.NewActive)
             {
                 layer.Interact();
@@ -86,6 +91,7 @@ namespace PureGame.Render.Controllers
             {
                 _buttons.Add(b);
             }
+            _keyBoardState = Keyboard.GetState();
         }
     }
 }

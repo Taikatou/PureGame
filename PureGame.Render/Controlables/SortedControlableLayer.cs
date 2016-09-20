@@ -2,14 +2,14 @@
 using Microsoft.Xna.Framework.Graphics;
 using PureGame.Engine;
 
-namespace PureGame.Render.ControlLayers
+namespace PureGame.Render.Controlables
 {
-    public class SortedController : IControlLayer
+    public class SortedControlableLayer : IControlableLayer
     {
-        public IControlLayer Layer;
+        public IControlableLayer Layer;
         public int LayerDepth;
 
-        public SortedController(IControlLayer layer, int depth)
+        public SortedControlableLayer(IControlableLayer layer, int depth)
         {
             Layer = layer;
             LayerDepth = depth;

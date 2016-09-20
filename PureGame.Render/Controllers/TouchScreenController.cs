@@ -1,22 +1,35 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
-using PureGame.Engine.World.EntityMover;
-using PureGame.Render.ControlLayers;
+using PureGame.Render.Controlables;
 
 namespace PureGame.Render.Controllers
 {
     public class TouchScreenController : CameraController
     {
+        private readonly List<GestureSample> _gestures;
         public TouchScreenController()
         {
             TouchPanel.EnabledGestures = GestureType.Pinch | GestureType.FreeDrag | GestureType.DoubleTap | GestureType.Tap | GestureType.DragComplete;
+            _gestures = new List<GestureSample>();
         }
 
-        public override void Update(GameTime time, IControlLayer layer)
+        public override void Update(GameTime time)
         {
+            base.Update(time);
+            _gestures.Clear();
             while (TouchPanel.IsGestureAvailable)
             {
                 var gesture = TouchPanel.ReadGesture();
+                _gestures.Add(gesture);
+            }
+        }
+
+        public override void UpdateLayer(GameTime time, IControlableLayer layer)
+        {
+            foreach(var gesture in _gestures)
+            {
                 switch (gesture.GestureType)
                 {
                     case GestureType.Pinch:
@@ -38,22 +51,22 @@ namespace PureGame.Render.Controllers
             }
         }
 
-        public void DoubleTap(IControlLayer layer)
+        public void DoubleTap(IControlableLayer layer)
         {
             layer.DoubleTap();
         }
 
-        public void Drag(IControlLayer layer, GestureSample gesture)
+        public void Drag(IControlableLayer layer, GestureSample gesture)
         {
             Drag(gesture.Position, layer);
         }
 
-        public void Tap(GestureSample gesture, IControlLayer layer)
+        public void Tap(GestureSample gesture, IControlableLayer layer)
         {
             layer.Tap(gesture.Position);
         }
 
-        public void Pinch(IControlLayer layer, GestureSample gesture)
+        public void Pinch(IControlableLayer layer, GestureSample gesture)
         {
             var dist = Vector2.Distance(gesture.Position, gesture.Position2);
 

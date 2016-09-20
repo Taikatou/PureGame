@@ -1,73 +1,65 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using PureGame.Render.ControlLayers;
-using PureGame.Render.Renderable.WorldRenderer;
+using PureGame.Render.Controlables;
 
 namespace PureGame.Render.Controllers
 {
     public class WorldClickController : CameraController
     {
         private MouseState _previousState;
+        private MouseState _mouseState;
+        private KeyboardState _keyboardState;
         public SmartKey Button;
         private int PreviousScrollValue => _previousState.ScrollWheelValue;
+        public bool PreviouslyReleased => _previousState.LeftButton == ButtonState.Released;
 
         public WorldClickController()
         {
             _previousState = Mouse.GetState();
             Button = new SmartKey(Keys.C, Controls.A);
+            _mouseState = Mouse.GetState();
         }
-
-        public bool PreviouslyReleased => _previousState.LeftButton == ButtonState.Released;
         public Vector2 GetClickVector2(MouseState mouseState) => new Vector2(mouseState.X, mouseState.Y);
 
-        public override void Update(GameTime time, IControlLayer layer)
+        public override void Update(GameTime time)
         {
-            var mouseState = Mouse.GetState();
-            var keyBoardState = Keyboard.GetState();
-            Button.Update(keyBoardState);
-            if (keyBoardState.IsKeyDown(Keys.D))
+            base.Update(time);
+            _previousState = _mouseState;
+            _mouseState = Mouse.GetState();
+            _keyboardState = Keyboard.GetState();
+            Button.Update(_keyboardState);
+        }
+
+        public override void UpdateLayer(GameTime time, IControlableLayer layer)
+        {
+            if (_mouseState.LeftButton == ButtonState.Pressed)
             {
-                DebugUpdate(mouseState);
+                if (_keyboardState.IsKeyDown(Keys.D) && PreviouslyReleased)
+                {
+                    var position = GetClickVector2(_mouseState);
+                    Click(position.ToPoint());
+                }
+                else if (Button.Active)
+                {
+                    if (PreviouslyReleased)
+                    {
+                        DragPosition = GetClickVector2(_mouseState);
+                    }
+                    else
+                    {
+                        var newDragPosition = GetClickVector2(_mouseState);
+                        Drag(newDragPosition, layer);
+                    }
+                }
             }
-            else if (Button.Active)
-            {
-                CameraUpdate(mouseState, layer);
-            }
-            //!Button.Active implied
-            else if (Button.PreviouslyActive)
+            if (!Button.Active && Button.PreviouslyActive)
             {
                 ReleaseDrag(layer);
             }
-            if (mouseState.ScrollWheelValue != PreviousScrollValue)
+            if (_mouseState.ScrollWheelValue != PreviousScrollValue)
             {
-                var zoomBy = mouseState.ScrollWheelValue - PreviousScrollValue;
-                Zoom((float)zoomBy / 1000, layer);
-            }
-            _previousState = mouseState;
-        }
-
-        public void CameraUpdate(MouseState mouseState, IControlLayer layer)
-        {
-            if (mouseState.LeftButton == ButtonState.Pressed)
-            {
-                if (PreviouslyReleased)
-                {
-                    DragPosition = GetClickVector2(mouseState);
-                }
-                else
-                {
-                    var newDragPosition = GetClickVector2(mouseState);
-                    Drag(newDragPosition, layer);
-                }
-            }
-        }
-
-        public void DebugUpdate(MouseState mouseState)
-        {
-            if (mouseState.LeftButton == ButtonState.Pressed && PreviouslyReleased)
-            {
-                var position = GetClickVector2(mouseState);
-                Click(position.ToPoint());
+                var zoomBy = _mouseState.ScrollWheelValue - PreviousScrollValue;
+                Zoom((float) zoomBy/1000, layer);
             }
         }
     }

@@ -43,11 +43,14 @@
   <ItemGroup>
     <Compile Include="Animate\Animation.cs" />
     <Compile Include="Animate\AnimationFrame.cs" />
-    <Compile Include="ControlLayers\ControlLayerManager.cs" />
-    <Compile Include="ControlLayers\IControlLayer.cs" />
-    <Compile Include="ControlLayers\SortedController.cs" />
-    <Compile Include="ControlLayers\WorldControlLayer.cs" />
+    <Compile Include="Controlables\ControlLayerManager.cs" />
+    <Compile Include="Controlables\HudControlableLayer.cs" />
+    <Compile Include="Controlables\IControlableLayer.cs" />
+    <Compile Include="Controlables\SortedControlableLayer.cs" />
+    <Compile Include="Controlables\TextControlableLayer.cs" />
+    <Compile Include="Controlables\WorldControlableLayer.cs" />
     <Compile Include="Controllers\CameraController.cs" />
+    <Compile Include="Controllers\ControllerManager.cs" />
     <Compile Include="Controllers\TouchScreenController.cs" />
     <Compile Include="Controllers\WorldClickController.cs" />
     <Compile Include="Common\Loader.cs" />
@@ -58,14 +61,17 @@
     <Compile Include="PureGameClient.cs" />
     <Compile Include="Renderable\CameraFunctions.cs" />
     <Compile Include="Renderable\FocusStack.cs" />
+    <Compile Include="Renderable\HudRenderer\HudLayer.cs" />
+    <Compile Include="Renderable\HudRenderer\HudRenderLayer.cs" />
     <Compile Include="Renderable\IRenderable.cs" />
     <Compile Include="Renderable\PlainPureGameRenderer.cs" />
+    <Compile Include="Renderable\TextRenderer\TextRenderLayer.cs" />
     <Compile Include="Renderable\WorldRenderer\EntityPositionFinder.cs" />
     <Compile Include="Renderable\WorldRenderer\EntityTextRenderer.cs" />
     <Compile Include="Renderable\WorldRenderer\FocusEntity.cs" />
     <Compile Include="Renderable\WorldRenderer\FocusVector.cs" />
-    <Compile Include="Renderable\WorldRenderer\RenderEntity.cs" />
-    <Compile Include="Renderable\WorldRenderer\RenderWorldLayer.cs" />
+    <Compile Include="Renderable\WorldRenderer\EntityRender.cs" />
+    <Compile Include="Renderable\WorldRenderer\WorldRenderLayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Extended">
