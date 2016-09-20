@@ -1,16 +1,15 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PureGame.Engine;
 using PureGame.Render.Renderable.HudRenderer;
 
-namespace PureGame.Render.ControlLayers
+namespace PureGame.Render.Controlables
 {
-    class HudControlLayer : IControlAbleLayer
+    class HudControlableLayer : IControlableLayer
     {
         public HudRenderLayer HudRenderer;
 
-        public HudControlLayer(HudRenderLayer hudRenderer)
+        public HudControlableLayer(HudRenderLayer hudRenderer)
         {
             HudRenderer = hudRenderer;
         }

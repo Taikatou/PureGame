@@ -4,8 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.ViewportAdapters;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
+using PureGame.Render.Controlables;
 using PureGame.Render.Controllers;
-using PureGame.Render.ControlLayers;
 using PureGame.Render.Renderable.HudRenderer;
 using PureGame.Render.Renderable.TextRenderer;
 using PureGame.Render.Renderable.WorldRenderer;
@@ -18,7 +18,7 @@ namespace PureGame.Render.Renderable
         private readonly PureGameClient _gameClient;
         public WorldRenderLayer Render;
         public ControlLayerManager ControlLayers;
-        public List<IController> Controllers;
+        public ControllerManager ControllerManager;
         private readonly IEntity _player;
         private readonly float _baseZoom;
 
@@ -31,19 +31,17 @@ namespace PureGame.Render.Renderable
             _gameClient = gameClient;
             ViewPort = viewPort;
             ControlLayers = new ControlLayerManager();
-            var hudController = new HudControlLayer(new HudRenderLayer());
+            var hudController = new HudControlableLayer(new HudRenderLayer());
             ControlLayers.AddController(hudController, 2);
-            Controllers = new List<IController>
-            {
-                new WorldClickController(),
-                new TouchScreenController(),
-                new WorldKeyBoardController()
-            };
+            ControllerManager = new ControllerManager();
+            ControllerManager.Add(new WorldClickController());
+            ControllerManager.Add(new TouchScreenController());
+            ControllerManager.Add(new WorldKeyBoardController());
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (var render in ControlLayers.ControlableDict.Values)
+            foreach (var render in ControlLayers.ControlLayers)
             {
                 render.Draw(spriteBatch);
             }
@@ -51,13 +49,14 @@ namespace PureGame.Render.Renderable
 
         public void Update(GameTime time)
         {
-            foreach (var controller in Controllers)
+            ControllerManager.Update(time);
+            ControlLayers.Update(time);
+            foreach (var layer in ControlLayers.ControlLayers)
             {
-                controller.Update(time, ControlLayers.ControlLayers);
-            }
-            foreach (var controlLayer in ControlLayers.ControlableDict.Values)
-            {
-                controlLayer.Update(time);
+                foreach (var controller in ControllerManager.Controllers)
+                {
+                    controller.UpdateLayer(time, layer);
+                }
             }
         }
 
@@ -72,9 +71,9 @@ namespace PureGame.Render.Renderable
             {
                 Render = new WorldRenderLayer(CurrentWorld, ViewPort, _player, _baseZoom);
             }
-            var worldControl = new WorldControlAbleLayer(Render, _gameClient);
+            var worldControl = new WorldControlableLayer(Render, _gameClient);
             ControlLayers.AddController(worldControl, 0);
-            var textController = new TextControlAbleLayer(new TextRenderLayer(Render));
+            var textController = new TextControlableLayer(new TextRenderLayer(Render));
             ControlLayers.AddController(textController, 1);
         }
     }

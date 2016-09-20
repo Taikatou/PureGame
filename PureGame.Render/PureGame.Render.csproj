@@ -43,12 +43,14 @@
   <ItemGroup>
     <Compile Include="Animate\Animation.cs" />
     <Compile Include="Animate\AnimationFrame.cs" />
-    <Compile Include="ControlLayers\ControlLayerManager.cs" />
-    <Compile Include="ControlLayers\HudControlLayer.cs" />
-    <Compile Include="ControlLayers\IControlAbleLayer.cs" />
-    <Compile Include="ControlLayers\TextControlAbleLayer.cs" />
-    <Compile Include="ControlLayers\WorldControlAbleLayer.cs" />
+    <Compile Include="Controlables\ControlLayerManager.cs" />
+    <Compile Include="Controlables\HudControlableLayer.cs" />
+    <Compile Include="Controlables\IControlableLayer.cs" />
+    <Compile Include="Controlables\SortedControlableLayer.cs" />
+    <Compile Include="Controlables\TextControlableLayer.cs" />
+    <Compile Include="Controlables\WorldControlableLayer.cs" />
     <Compile Include="Controllers\CameraController.cs" />
+    <Compile Include="Controllers\ControllerManager.cs" />
     <Compile Include="Controllers\TouchScreenController.cs" />
     <Compile Include="Controllers\WorldClickController.cs" />
     <Compile Include="Common\Loader.cs" />

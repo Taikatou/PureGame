@@ -4,14 +4,14 @@ using PureGame.Engine;
 using PureGame.Engine.World.EntityMover;
 using PureGame.Render.Renderable.WorldRenderer;
 
-namespace PureGame.Render.ControlLayers
+namespace PureGame.Render.Controlables
 {
-    public class WorldControlAbleLayer : IControlAbleLayer
+    public class WorldControlableLayer : IControlableLayer
     {
         public WorldRenderLayer Renderer;
         public PureGameClient Client;
 
-        public WorldControlAbleLayer(WorldRenderLayer renderer, PureGameClient client)
+        public WorldControlableLayer(WorldRenderLayer renderer, PureGameClient client)
         {
             Renderer = renderer;
             Client = client;

@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using PureGame.Engine;
-using PureGame.Render.ControlLayers;
+using PureGame.Render.Controlables;
 
 namespace PureGame.Render.Controllers
 {
@@ -17,6 +16,7 @@ namespace PureGame.Render.Controllers
 
     public interface IController
     {
-        void Update(GameTime time, List<IControlAbleLayer> layers);
+        void Update(GameTime time);
+        void UpdateLayer(GameTime time, IControlableLayer layer);
     }
 }
