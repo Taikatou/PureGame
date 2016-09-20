@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="Animate\Animation.cs" />
     <Compile Include="Animate\AnimationFrame.cs" />
+    <Compile Include="ControlLayers\ControlLayerManager.cs" />
     <Compile Include="ControlLayers\IControlLayer.cs" />
+    <Compile Include="ControlLayers\SortedController.cs" />
     <Compile Include="ControlLayers\WorldControlLayer.cs" />
     <Compile Include="Controllers\CameraController.cs" />
     <Compile Include="Controllers\TouchScreenController.cs" />

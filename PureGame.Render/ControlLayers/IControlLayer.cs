@@ -16,5 +16,6 @@ namespace PureGame.Render.ControlLayers
         void ControllerDPad(Direction direction);
         void Cancel(bool cancelValue);
         void Interact();
+        void UnLoad();
     }
 }

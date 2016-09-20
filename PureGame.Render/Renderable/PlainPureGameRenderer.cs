@@ -15,17 +15,20 @@ namespace PureGame.Render.Renderable
         public ViewportAdapter ViewPort;
         private readonly PureGameClient _gameClient;
         public RenderWorldLayer Render;
-        public List<IControlLayer> ToRender;
+        public ControlLayerManager ControlLayers;
         public List<IController> Controllers;
         private readonly IEntity _player;
         private readonly float _baseZoom;
+
+        public WorldArea CurrentWorld => _gameClient.CurrentWorld;
+
         public PlainPureGameRenderer(PureGameClient gameClient, ViewportAdapter viewPort, IEntity player, float zoom)
         {
             _baseZoom = zoom;
             _player = player;
             _gameClient = gameClient;
             ViewPort = viewPort;
-            ToRender = new List<IControlLayer> { null };
+            ControlLayers = new ControlLayerManager();
             Controllers = new List<IController>
             {
                 new WorldClickController(),
@@ -36,7 +39,7 @@ namespace PureGame.Render.Renderable
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (var render in ToRender)
+            foreach (var render in ControlLayers.Controllers)
             {
                 render.Draw(spriteBatch);
             }
@@ -44,34 +47,32 @@ namespace PureGame.Render.Renderable
 
         public void Update(GameTime time)
         {
-            foreach (var controlLayer in ToRender)
+            foreach (var controlLayer in ControlLayers.Controllers)
             {
                 foreach (var controller in Controllers)
                 {
                     controller.Update(time, controlLayer);
                 }
             }
-            foreach (var controlLayer in ToRender)
+            foreach (var controlLayer in ControlLayers.Controllers)
             {
                 controlLayer.Update(time);
             }
         }
-
-        public WorldArea CurrentWorld => _gameClient.CurrentWorld;
 
         public void LoadWorld()
         {
             if (Render != null)
             {
                 var zoom = Render.Camera.Zoom;
-                Render.UnLoad();
                 Render = new RenderWorldLayer(CurrentWorld, ViewPort, _player, zoom);
             }
             else
             {
                 Render = new RenderWorldLayer(CurrentWorld, ViewPort, _player, _baseZoom);
             }
-            ToRender[0] = new WorldControlLayer(Render, _gameClient);
+            var worldControl = new WorldControlLayer(Render, _gameClient);
+            ControlLayers.AddController(worldControl, 0);
         }
     }
 }

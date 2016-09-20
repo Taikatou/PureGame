@@ -72,6 +72,11 @@ namespace PureGame.Render.ControlLayers
             Client.Interact();
         }
 
+        public void UnLoad()
+        {
+            Renderer.UnLoad();
+        }
+
         public void Zoom(float zoomBy)
         {
             var camera = Renderer.Camera;
