@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using PureGame.Engine;
+using PureGame.Render.ControlLayers;
 
 namespace PureGame.Render.Controllers
 {
@@ -9,7 +10,6 @@ namespace PureGame.Render.Controllers
     {
         private readonly List<SmartKey> _buttons;
         private readonly List<SmartKey> _dpadButtons;
-        private readonly PureGameClient _client;
         public SmartKey CachedButton;
         public SmartKey BButton;
         public SmartKey EButton;
@@ -35,7 +35,7 @@ namespace PureGame.Render.Controllers
             return Direction.None;
         }
 
-        public void Update(GameTime time)
+        public void Update(GameTime time, IControlLayer layer)
         {
             var state = Keyboard.GetState();
             // C is for camera
@@ -48,23 +48,22 @@ namespace PureGame.Render.Controllers
             }
             if (EButton.NewActive)
             {
-                _client.Interact();
+                layer.Interact();
             }
             var d = GetMovementDirection();
             if (d != Direction.None)
             {
-                _client.ControllerDPad(d);
+                layer.ControllerDPad(d);
             }
             if (BButton.Change)
             {
                 var bActive = BButton.Active;
-                _client.Running = bActive;
+                layer.Cancel(bActive);
             }
         }
 
-        public WorldKeyBoardController(PureGameClient client)
+        public WorldKeyBoardController()
         {
-            _client = client;
             BButton = new SmartKey(Keys.B, Controls.B);
             EButton = new SmartKey(Keys.E, Controls.A);
             _dpadButtons = new List<SmartKey>

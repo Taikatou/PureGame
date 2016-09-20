@@ -29,7 +29,7 @@ namespace PureGame.Engine.World.Controllers
             CurrentWorld.ProccessMovement(Entity);
         }
 
-        public AbstractController(IEntity entity)
+        protected AbstractController(IEntity entity)
         {
             Entity = entity;
         }

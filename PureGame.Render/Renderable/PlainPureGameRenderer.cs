@@ -5,6 +5,7 @@ using MonoGame.Extended.ViewportAdapters;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
 using PureGame.Render.Controllers;
+using PureGame.Render.ControlLayers;
 using PureGame.Render.Renderable.WorldRenderer;
 
 namespace PureGame.Render.Renderable
@@ -14,7 +15,8 @@ namespace PureGame.Render.Renderable
         public ViewportAdapter ViewPort;
         private readonly PureGameClient _gameClient;
         public RenderWorldLayer Render;
-        public List<RenderLayer> ToRender;
+        public List<IControlLayer> ToRender;
+        public List<IController> Controllers;
         private readonly IEntity _player;
         private readonly float _baseZoom;
         public PlainPureGameRenderer(PureGameClient gameClient, ViewportAdapter viewPort, IEntity player, float zoom)
@@ -23,7 +25,13 @@ namespace PureGame.Render.Renderable
             _player = player;
             _gameClient = gameClient;
             ViewPort = viewPort;
-            ToRender = new List<RenderLayer>{ null };
+            ToRender = new List<IControlLayer> { null };
+            Controllers = new List<IController>
+            {
+                new WorldClickController(),
+                new TouchScreenController(),
+                new WorldKeyBoardController()
+            };
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -36,9 +44,16 @@ namespace PureGame.Render.Renderable
 
         public void Update(GameTime time)
         {
-            foreach (var renderable in ToRender)
+            foreach (var controlLayer in ToRender)
             {
-                renderable.Update(time);
+                foreach (var controller in Controllers)
+                {
+                    controller.Update(time, controlLayer);
+                }
+            }
+            foreach (var controlLayer in ToRender)
+            {
+                controlLayer.Update(time);
             }
         }
 
@@ -56,10 +71,7 @@ namespace PureGame.Render.Renderable
             {
                 Render = new RenderWorldLayer(CurrentWorld, ViewPort, _player, _baseZoom);
             }
-            Render.Controllers.Add(new WorldKeyBoardController(_gameClient));
-            Render.Controllers.Add(new WorldClickController(Render, _gameClient));
-            Render.Controllers.Add(new TouchScreenController(Render, _gameClient));
-            ToRender[0] = Render;
+            ToRender[0] = new WorldControlLayer(Render, _gameClient);
         }
     }
 }

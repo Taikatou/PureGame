@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using PureGame.Render.ControlLayers;
 using PureGame.Render.Renderable.WorldRenderer;
 
 namespace PureGame.Render.Controllers
@@ -10,7 +11,7 @@ namespace PureGame.Render.Controllers
         public SmartKey Button;
         private int PreviousScrollValue => _previousState.ScrollWheelValue;
 
-        public WorldClickController(RenderWorldLayer renderer, PureGameClient client) : base(renderer, client)
+        public WorldClickController()
         {
             _previousState = Mouse.GetState();
             Button = new SmartKey(Keys.C, Controls.A);
@@ -19,7 +20,7 @@ namespace PureGame.Render.Controllers
         public bool PreviouslyReleased => _previousState.LeftButton == ButtonState.Released;
         public Vector2 GetClickVector2(MouseState mouseState) => new Vector2(mouseState.X, mouseState.Y);
 
-        public override void Update(GameTime time)
+        public override void Update(GameTime time, IControlLayer layer)
         {
             var mouseState = Mouse.GetState();
             var keyBoardState = Keyboard.GetState();
@@ -30,22 +31,22 @@ namespace PureGame.Render.Controllers
             }
             else if (Button.Active)
             {
-                CameraUpdate(mouseState);
+                CameraUpdate(mouseState, layer);
             }
             //!Button.Active implied
             else if (Button.PreviouslyActive)
             {
-                Renderer.FocusStack.EndMove();
+                ReleaseDrag(layer);
             }
             if (mouseState.ScrollWheelValue != PreviousScrollValue)
             {
                 var zoomBy = mouseState.ScrollWheelValue - PreviousScrollValue;
-                ZoomCamera((float)zoomBy / 1000);
+                Zoom((float)zoomBy / 1000, layer);
             }
             _previousState = mouseState;
         }
 
-        public void CameraUpdate(MouseState mouseState)
+        public void CameraUpdate(MouseState mouseState, IControlLayer layer)
         {
             if (mouseState.LeftButton == ButtonState.Pressed)
             {
@@ -56,7 +57,7 @@ namespace PureGame.Render.Controllers
                 else
                 {
                     var newDragPosition = GetClickVector2(mouseState);
-                    MoveCameraBy(newDragPosition);
+                    Drag(newDragPosition, layer);
                 }
             }
         }
@@ -65,20 +66,9 @@ namespace PureGame.Render.Controllers
         {
             if (mouseState.LeftButton == ButtonState.Pressed && PreviouslyReleased)
             {
-                var position = WorldPosition(mouseState);
-                Click(position);
+                var position = GetClickVector2(mouseState);
+                Click(position.ToPoint());
             }
-        }
-
-        public Point WorldPosition(MouseState mouseState)
-        {
-            var position = GetClickVector2(mouseState);
-            return Renderer.WorldPosition(position);
-        }
-
-        public void Click(Point position)
-        {
-            Client.Click(position);
         }
     }
 }

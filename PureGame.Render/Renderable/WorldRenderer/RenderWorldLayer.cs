@@ -13,7 +13,7 @@ using PureGame.Common;
 
 namespace PureGame.Render.Renderable.WorldRenderer
 {
-    public class RenderWorldLayer : RenderLayer
+    public class RenderWorldLayer
     {
         public WorldArea World;
         private readonly Dictionary<string, RenderEntity> _entitySprites;
@@ -60,7 +60,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
             _content.Unload();
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             var transformMatrix = Camera.GetViewMatrix();
             spriteBatch.Begin(transformMatrix: transformMatrix);
@@ -76,9 +76,8 @@ namespace PureGame.Render.Renderable.WorldRenderer
             spriteBatch.End();
         }
 
-        public override void Update(GameTime time)
+        public void Update(GameTime time)
         {
-            base.Update(time);
             foreach (var toDraw in _toDraw.Elements)
             {
                 toDraw.Update(time);

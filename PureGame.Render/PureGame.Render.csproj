@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="Animate\Animation.cs" />
     <Compile Include="Animate\AnimationFrame.cs" />
+    <Compile Include="ControlLayers\IControlLayer.cs" />
+    <Compile Include="ControlLayers\WorldControlLayer.cs" />
     <Compile Include="Controllers\CameraController.cs" />
     <Compile Include="Controllers\TouchScreenController.cs" />
     <Compile Include="Controllers\WorldClickController.cs" />
@@ -55,7 +57,6 @@
     <Compile Include="Renderable\CameraFunctions.cs" />
     <Compile Include="Renderable\FocusStack.cs" />
     <Compile Include="Renderable\IRenderable.cs" />
-    <Compile Include="Renderable\RenderLayer.cs" />
     <Compile Include="Renderable\PlainPureGameRenderer.cs" />
     <Compile Include="Renderable\WorldRenderer\EntityPositionFinder.cs" />
     <Compile Include="Renderable\WorldRenderer\EntityTextRenderer.cs" />

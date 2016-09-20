@@ -7,7 +7,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
 {
     public class EntityTextRenderer
     {
-        protected BitmapFont Font { get; private set; }
+        protected BitmapFont Font { get; }
         public EntityTextRenderer(ContentManager content)
         {
             Font = content.Load<BitmapFont>("Fonts/montserrat-32");

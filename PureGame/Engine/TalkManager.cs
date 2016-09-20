@@ -2,7 +2,6 @@
 using PureGame.Engine.EntityData;
 using System.Collections.Generic;
 using PureGame.Engine.Communication;
-using PureGame.Engine.World;
 
 namespace PureGame.Engine
 {

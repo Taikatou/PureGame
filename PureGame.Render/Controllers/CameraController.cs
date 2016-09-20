@@ -1,39 +1,34 @@
 ﻿using Microsoft.Xna.Framework;
-using PureGame.Render.Renderable.WorldRenderer;
+using PureGame.Render.ControlLayers;
 
 namespace PureGame.Render.Controllers
 {
     public abstract class CameraController : IController
     {
-        public RenderWorldLayer Renderer;
-        public PureGameClient Client;
         public Vector2 DragPosition;
 
-        protected CameraController(RenderWorldLayer renderer, PureGameClient client)
+        public abstract void Update(GameTime time, IControlLayer layer);
+
+        public void Zoom(float zoomBy, IControlLayer layer)
         {
-            Renderer = renderer;
-            Client = client;
+            layer.Zoom(zoomBy);
         }
 
-        public abstract void Update(GameTime time);
-
-        public void ZoomCamera(float zoomBy)
+        public void ReleaseDrag(IControlLayer layer)
         {
-            var camera = Renderer.Camera;
-            var zoom = camera.Zoom;
-            zoom += zoomBy;
-            if (zoom >= camera.MinimumZoom && zoom <= camera.MaximumZoom)
-            {
-                camera.Zoom = zoom;
-                Renderer.RefreshToDraw();
-            }
+            layer.ReleaseDrag();
         }
 
-        public void MoveCameraBy(Vector2 newDragPosition)
+        public void Drag(Vector2 newDragPosition, IControlLayer layer)
         {
             var moveBy = newDragPosition - DragPosition;
-            Renderer.FocusStack.MoveFocusBy(moveBy);
+            layer.Drag(moveBy);
             DragPosition = newDragPosition;
+        }
+
+        public void Click(Point position)
+        {
+            
         }
     }
 }
