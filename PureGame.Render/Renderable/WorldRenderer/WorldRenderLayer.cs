@@ -18,18 +18,18 @@ namespace PureGame.Render.Renderable.WorldRenderer
         public WorldArea World;
         private readonly Dictionary<string, EntityRender> _entitySprites;
         private readonly TiledMap _map;
-        public Camera2D Camera;
+        public readonly Camera2D Camera;
         public readonly ContainsList<EntityRender> ToDraw;
         private readonly ContentManager _content;
-        private readonly ViewportAdapter _viewPort;
+        private readonly Camera2D _tmpCamera;
         public readonly EntityPositionFinder PositionFinder;
         public FocusStack FocusStack;
         public WorldRenderLayer(WorldArea world, ViewportAdapter viewPort, IEntity player, float zoom)
         {
             ToDraw = new ContainsList<EntityRender>();
             _content = ContentManagerManager.RequestContentManager();
-            _viewPort = viewPort;
             World = world;
+            _tmpCamera = new Camera2D(viewPort) { Zoom=zoom };
             Camera = new Camera2D(viewPort) { Zoom=zoom };
             _map = world.Map.Map;
             var tileSize = new Vector2(_map.TileWidth, _map.TileHeight);
@@ -98,10 +98,10 @@ namespace PureGame.Render.Renderable.WorldRenderer
 
         public void RefreshEntity(IEntity e)
         {
-            var tmpCamera = new Camera2D(_viewPort) { Zoom = Camera.Zoom };
-            tmpCamera.LookAt(FocusStack.Focus.FinalPosition);
+            _tmpCamera.Zoom = Camera.Zoom;
+            _tmpCamera.LookAt(FocusStack.Focus.FinalPosition);
             var renderEntity = GetRenderEntity(e);
-            var camerasContains = CameraFunctions.CamerasContains(renderEntity.Rect, Camera, tmpCamera);
+            var camerasContains = CameraFunctions.CamerasContains(renderEntity.Rect, Camera, _tmpCamera);
             ToDraw.AddOrRemove(renderEntity, camerasContains);
         }
 
