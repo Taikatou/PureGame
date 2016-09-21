@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using PureGame.Render.Controllers.Common;
 
-namespace PureGame.Render.Controllers.GamePadController
+namespace PureGame.Render.Controllers.GamePad
 {
     public class GamePadController : AbstractSmartController<SmartButton>
     {
@@ -30,10 +30,10 @@ namespace PureGame.Render.Controllers.GamePadController
         }
         public override void Update(GameTime time)
         {
-            var capabilities = GamePad.GetCapabilities(PlayerIndex.One);
+            var capabilities = Microsoft.Xna.Framework.Input.GamePad.GetCapabilities(PlayerIndex.One);
             if (capabilities.IsConnected)
             {
-                var state = GamePad.GetState(PlayerIndex.One);
+                var state = Microsoft.Xna.Framework.Input.GamePad.GetState(PlayerIndex.One);
                 foreach (var button in SmartControls)
                 {
                     button.Update(state);

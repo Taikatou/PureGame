@@ -1,14 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.ViewportAdapters;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
 using PureGame.Render.Controlables;
 using PureGame.Render.Controllers;
-using PureGame.Render.Controllers.GamePadController;
-using PureGame.Render.Controllers.KeyBoard;
 using PureGame.Render.Renderable.HudRenderer;
 using PureGame.Render.Renderable.TextRenderer;
 using PureGame.Render.Renderable.WorldRenderer;
@@ -27,7 +23,7 @@ namespace PureGame.Render.Renderable
 
         public WorldArea CurrentWorld => _gameClient.CurrentWorld;
 
-        public PlainPureGameRenderer(PureGameClient gameClient, ViewportAdapter viewPort, IEntity player, float zoom)
+        public PlainPureGameRenderer(PureGameClient gameClient, ViewportAdapter viewPort, IEntity player, IControllerSettings settings, float zoom)
         {
             _baseZoom = zoom;
             _player = player;
@@ -36,11 +32,12 @@ namespace PureGame.Render.Renderable
             ControlLayers = new ControlLayerManager();
             var hudController = new HudControlableLayer(new HudRenderLayer());
             ControlLayers.AddController(hudController, 2);
-            ControllerManager = new ControllerManager();
-            ControllerManager.Add(new WorldClickController());
-            ControllerManager.Add(new TouchScreenController());
-            ControllerManager.Add(new WorldKeyBoardController());
-            ControllerManager.Add(new GamePadController());
+            ControllerManager = ControllerManagerFactory.MakeControllerManager(settings);
+
+            foreach (var controller in ControllerManager.AllControllers)
+            {
+                ControllerManager.EnableController(true, controller);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)

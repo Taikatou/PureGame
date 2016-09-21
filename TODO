@@ -1,4 +1,16 @@
 Get gamepad a b buttons working with non 360 gamepads
+
 textboxes
 	Create new font that is bigger.
 	Render texture as well.
+
+TextBoxLayer
+	Click on textboxes to complete
+
+GUI
+	Menu button
+	Control Settings
+
+Shared Preferences
+	Controlers
+	Graphics

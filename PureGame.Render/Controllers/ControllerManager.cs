@@ -17,7 +17,6 @@ namespace PureGame.Render.Controllers
 
         public void Add(IController controller)
         {
-            EnabledControllers.Add(controller);
             AllControllers.Add(controller);
         }
 

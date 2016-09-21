@@ -29,7 +29,7 @@ namespace PureGame.DesktopGl.Screens
             PureGame = new PureGame();
             var player = EntityFactory.MakeEntityObject(new Point(4, 4), "CharacterSheet");
             _gameClient = new PureGameClient(player, PureGame);
-            _gameRenderer = new PlainPureGameRenderer(_gameClient, viewportAdapter, player, 0.25f);
+            _gameRenderer = new PlainPureGameRenderer(_gameClient, viewportAdapter, player, new ControllerSettings(),  0.25f);
             PureGame.WorldManager.OnWorldLoad += (sender, args) => _gameRenderer.LoadWorld();
             PureGame.WorldManager.AddEntity<BasicWorld>(player);
         }

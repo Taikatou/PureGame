@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using PureGame.Render.Controllers.Common;
 
-namespace PureGame.Render.Controllers.GamePadController
+namespace PureGame.Render.Controllers.GamePad
 {
     public class SmartButton : SmartControl
     {
