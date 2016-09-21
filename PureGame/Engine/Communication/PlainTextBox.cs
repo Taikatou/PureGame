@@ -5,17 +5,21 @@ namespace PureGame.Engine.Communication
 {
     public class PlainTextBox : ITextBox
     {
-        public bool Complete
+        private int Timer;
+
+        public PlainTextBox(int timer)
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            Timer = timer;
         }
+
+        public bool Complete => Timer <= 0;
 
         public void Update(GameTime time)
         {
-            throw new NotImplementedException();
+            if (!Complete)
+            {
+                Timer -= time.ElapsedGameTime.Milliseconds;
+            }
         }
     }
 }

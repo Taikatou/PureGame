@@ -15,7 +15,7 @@ namespace PureGame.Engine.World
         public WorldMap Map;
         public int MapWidth => Map.Map.Width;
         public int MapHeight => Map.Map.Height;
-        public TalkManager TalkManager;
+        public TextManager TalkManager;
         public List<IEntity> Entities;
         public bool CurrentlyMoving(IEntity e) => EntityManager.EntityCurrentlyMoving(e);
         public virtual void Update(GameTime time)
@@ -30,7 +30,7 @@ namespace PureGame.Engine.World
             Entities = new List<IEntity>();
             EntityManager = new EntityManager();
             TriggerManager = new TriggerManager();
-            TalkManager = new TalkManager();
+            TalkManager = new TextManager();
         }
 
         public virtual void OnInit(IWorldLoader worldLoader)

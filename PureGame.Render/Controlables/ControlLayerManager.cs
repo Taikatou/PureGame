@@ -27,7 +27,7 @@ namespace PureGame.Render.Controlables
             ControlableDict[layerDepth] = sortedLayer;
 
             ControlLayers.Add(sortedLayer);
-            ControlLayers.Sort((layer1, layer2) => layer2.LayerDepth.CompareTo(layer1.LayerDepth));
+            ControlLayers.Sort((layer1, layer2) => layer1.LayerDepth.CompareTo(layer2.LayerDepth));
         }
 
         public void Update(GameTime time)

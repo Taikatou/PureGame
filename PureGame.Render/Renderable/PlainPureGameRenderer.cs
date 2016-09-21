@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.ViewportAdapters;
@@ -6,6 +7,8 @@ using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
 using PureGame.Render.Controlables;
 using PureGame.Render.Controllers;
+using PureGame.Render.Controllers.GamePadController;
+using PureGame.Render.Controllers.KeyBoard;
 using PureGame.Render.Renderable.HudRenderer;
 using PureGame.Render.Renderable.TextRenderer;
 using PureGame.Render.Renderable.WorldRenderer;
@@ -37,6 +40,7 @@ namespace PureGame.Render.Renderable
             ControllerManager.Add(new WorldClickController());
             ControllerManager.Add(new TouchScreenController());
             ControllerManager.Add(new WorldKeyBoardController());
+            ControllerManager.Add(new GamePadController());
         }
 
         public void Draw(SpriteBatch spriteBatch)

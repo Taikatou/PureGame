@@ -24,7 +24,7 @@ namespace PureGame.Engine.EntityData
         {
             get
             {
-                return new PlainTextBox();
+                return new PlainTextBox(5000);
             }
         }
 

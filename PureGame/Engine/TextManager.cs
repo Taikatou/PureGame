@@ -5,12 +5,12 @@ using PureGame.Engine.Communication;
 
 namespace PureGame.Engine
 {
-    public class TalkManager
+    public class TextManager
     {
         private readonly List<ITextBox> _talkingEntities;
         private readonly Dictionary<ITextBox, IEntity> _entityDict;
 
-        public TalkManager()
+        public TextManager()
         {
             _talkingEntities = new List<ITextBox>();
             _entityDict = new Dictionary<ITextBox, IEntity>();

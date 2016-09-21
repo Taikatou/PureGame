@@ -5,23 +5,43 @@ namespace PureGame.Render.Controllers
 {
     public class ControllerManager
     {
-        public List<IController> Controllers;
+        public List<IController> Controllers => EnabledControllers;
+        public List<IController> EnabledControllers;
+        public List<IController> AllControllers;
 
         public ControllerManager()
         {
-            Controllers = new List<IController>();
+            EnabledControllers = new List<IController>();
+            AllControllers = new List<IController>();
         }
 
         public void Add(IController controller)
         {
-            Controllers.Add(controller);
+            EnabledControllers.Add(controller);
+            AllControllers.Add(controller);
         }
 
         public void Update(GameTime time)
         {
-            foreach (var controller in Controllers)
+            foreach (var controller in EnabledControllers)
             {
                 controller.Update(time);
+            }
+        }
+
+        public void EnableController(bool enable, IController controller)
+        {
+            var needToAdd = EnabledControllers.Contains(controller) == !enable;
+            if (needToAdd && AllControllers.Contains(controller))
+            {
+                if (enable)
+                {
+                    EnabledControllers.Add(controller);
+                }
+                else
+                {
+                    EnabledControllers.Remove(controller);
+                }
             }
         }
     }

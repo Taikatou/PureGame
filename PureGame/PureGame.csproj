@@ -56,7 +56,7 @@
     <Compile Include="Engine\Events\WorldTriggers\TriggerEvent.cs" />
     <Compile Include="Engine\Events\WorldTriggers\TriggerManager.cs" />
     <Compile Include="Engine\Events\WorldTriggers\ITrigger.cs" />
-    <Compile Include="Engine\TalkManager.cs" />
+    <Compile Include="Engine\TextManager.cs" />
     <Compile Include="Engine\World\Controllers\BaseController.cs" />
     <Compile Include="Engine\World\EntityMover\EntityMoverManager.cs" />
     <Compile Include="Engine\World\ExpiringKey.cs" />

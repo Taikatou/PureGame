@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using PureGame.Render.Controlables;
+using PureGame.Render.Controllers.KeyBoard;
 
 namespace PureGame.Render.Controllers
 {
