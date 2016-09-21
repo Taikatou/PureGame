@@ -13,7 +13,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
     {
         public readonly IEntity BaseEntity;
         private readonly Texture2D _entityTexture;
-        private readonly EntityPositionFinder _positionFinder;
+        public readonly EntityPositionFinder PositionFinder;
         //Right Left Up Down
         private readonly Animation[] _walking;
         private readonly Animation[] _standing;
@@ -24,7 +24,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         private Point _previousPosition;
         public EntityRender(IEntity baseEntity, EntityPositionFinder positionFinder, ContentManager content)
         {
-            _positionFinder = positionFinder;
+            PositionFinder = positionFinder;
             BaseEntity = baseEntity;
             _entityTexture = AssetLoader.LoadTexture(content, baseEntity.FileName);
             _walking = new Animation[4];
@@ -67,11 +67,11 @@ namespace PureGame.Render.Renderable.WorldRenderer
             GetAnimation();
         }
 
-        public Point ScreenPosition => _positionFinder.GetEntityScreenPosition(BaseEntity);
+        public Point ScreenPosition => PositionFinder.GetEntityScreenPosition(BaseEntity);
         public Rectangle Rect => new Rectangle(ScreenPosition,
-                                               _positionFinder.TileSize.ToPoint());
-        public Rectangle FinalRect => new Rectangle(_positionFinder.GetScreenPosition(BaseEntity.Position),
-                                                    _positionFinder.TileSize.ToPoint());
+                                               PositionFinder.TileSize.ToPoint());
+        public Rectangle FinalRect => new Rectangle(PositionFinder.GetScreenPosition(BaseEntity.Position),
+                                                    PositionFinder.TileSize.ToPoint());
 
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -87,8 +87,8 @@ namespace PureGame.Render.Renderable.WorldRenderer
 
         public void GetAnimation()
         {
-            var screenPosition = _positionFinder.GetScreenPosition(_previousPosition);
-            var entityPosition = _positionFinder.GetEntityScreenPosition(BaseEntity);
+            var screenPosition = PositionFinder.GetScreenPosition(_previousPosition);
+            var entityPosition = PositionFinder.GetEntityScreenPosition(BaseEntity);
             var direction = (int)BaseEntity.FacingDirection;
             if (screenPosition == entityPosition)
             {
