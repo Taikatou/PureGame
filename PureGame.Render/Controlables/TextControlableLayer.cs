@@ -13,8 +13,9 @@ namespace PureGame.Render.Controlables
         {
             RenderLayer = renderLayer;
         }
-        public void Tap(Vector2 position)
+        public bool Tap(Vector2 position)
         {
+            return RenderLayer.Tap(position);
         }
 
         public void DoubleTap()
@@ -53,6 +54,8 @@ namespace PureGame.Render.Controlables
 
         public void Interact()
         {
+            
+            
         }
 
         public void UnLoad()

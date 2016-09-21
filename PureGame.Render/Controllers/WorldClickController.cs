@@ -35,12 +35,7 @@ namespace PureGame.Render.Controllers
         {
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
-                if (_keyboardState.IsKeyDown(Keys.D) && PreviouslyReleased)
-                {
-                    var position = GetClickVector2(_mouseState);
-                    Click(position.ToPoint());
-                }
-                else if (Button.Active)
+                if (Button.Active)
                 {
                     if (PreviouslyReleased)
                     {
@@ -51,6 +46,11 @@ namespace PureGame.Render.Controllers
                         var newDragPosition = GetClickVector2(_mouseState);
                         Drag(newDragPosition, layer);
                     }
+                }
+                else if (PreviouslyReleased)
+                {
+                    var position = GetClickVector2(_mouseState);
+                    layer.Tap(position);
                 }
             }
             if (!Button.Active && Button.PreviouslyActive)

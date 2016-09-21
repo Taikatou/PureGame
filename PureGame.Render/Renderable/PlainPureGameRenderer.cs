@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.ViewportAdapters;
 using PureGame.Engine.EntityData;
@@ -33,7 +34,6 @@ namespace PureGame.Render.Renderable
             var hudController = new HudControlableLayer(new HudRenderLayer());
             ControlLayers.AddController(hudController, 2);
             ControllerManager = ControllerManagerFactory.MakeControllerManager(settings);
-
             foreach (var controller in ControllerManager.AllControllers)
             {
                 ControllerManager.EnableController(true, controller);
@@ -52,11 +52,13 @@ namespace PureGame.Render.Renderable
         {
             ControllerManager.Update(time);
             ControlLayers.Update(time);
-            foreach (var layer in ControlLayers.ControlLayers)
+            var count = ControlLayers.ControlLayers.Count;
+            var layers = ControlLayers.ControlLayers;
+            for (var i = count - 1; i >= 0; i--)
             {
                 foreach (var controller in ControllerManager.Controllers)
                 {
-                    controller.UpdateLayer(time, layer);
+                    controller.UpdateLayer(time, layers[i]);
                 }
             }
         }

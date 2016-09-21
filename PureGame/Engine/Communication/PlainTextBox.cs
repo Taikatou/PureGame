@@ -11,7 +11,11 @@ namespace PureGame.Engine.Communication
             _timer = timer;
         }
 
-        public bool Complete => _timer <= 0;
+        public bool Complete
+        {
+            get { return _timer <= 0; }
+            set { _timer = 0; }
+        }
 
         public void Update(GameTime time)
         {

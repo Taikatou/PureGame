@@ -1,0 +1,45 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended;
+using MonoGame.Extended.BitmapFonts;
+using PureGame.Engine.Communication;
+using PureGame.Render.Renderable.WorldRenderer;
+
+namespace PureGame.Render.Renderable.TextRenderer
+{
+    public class TextBoxRenderer
+    {
+        private readonly string _text = "Interacting";
+        private readonly Vector2 _position;
+        private readonly Rectangle _textBoxSpace;
+        private ITextBox _interaction;
+
+        public TextBoxRenderer(BitmapFont font, EntityRender r)
+        {
+            var offset = r.PositionFinder.Offset;
+            _interaction = r.BaseEntity.Interaction;
+            _position = r.ScreenPosition.ToVector2() - (offset * 2);
+            var textSpace = font.MeasureString(_text);
+            var textBoxSize = new Size((int)(textSpace.Width * 1.2), (int)(textSpace.Height * 1.2));
+            _textBoxSpace = new Rectangle(_position.ToPoint(), textBoxSize);
+            var difference = _textBoxSpace.Width - textSpace.Width;
+            _position.X += (int)(difference / 2);
+        }
+
+        public bool Tap(Vector2 position)
+        {
+            var found = _textBoxSpace.Contains(position);
+            if (found)
+            {
+                _interaction.Complete = true;
+            }
+            return found;
+        }
+
+        public void Draw(SpriteBatch spriteBatch, Texture2D textBoxTexture, BitmapFont font)
+        {
+            spriteBatch.Draw(textBoxTexture, _textBoxSpace, null, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, _text, _position, Color.Black);
+        }
+    }
+}

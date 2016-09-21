@@ -39,10 +39,5 @@ namespace PureGame.Render.Controllers
                 ChangeDrag = true;
             }
         }
-
-        public void Click(Point position)
-        {
-            
-        }
     }
 }

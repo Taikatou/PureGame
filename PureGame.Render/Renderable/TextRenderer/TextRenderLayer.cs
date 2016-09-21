@@ -1,6 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.BitmapFonts;
 using PureGame.Engine;
+using PureGame.Render.Common;
 using PureGame.Render.Renderable.WorldRenderer;
 
 namespace PureGame.Render.Renderable.TextRenderer
@@ -8,18 +11,22 @@ namespace PureGame.Render.Renderable.TextRenderer
     public class TextRenderLayer
     {
         public WorldRenderLayer WorldRender;
-        private readonly EntityTextRenderer _textRenderer;
+        protected BitmapFont Font { get; }
+        protected Texture2D TextBoxTexture;
+        public Dictionary<EntityRender, TextBoxRenderer> TextBoxDict;
 
         public TextRenderLayer(WorldRenderLayer worldRender)
         {
             WorldRender = worldRender;
             var content = ContentManagerManager.RequestContentManager();
-            _textRenderer = new EntityTextRenderer(content);
+            Font = content.Load<BitmapFont>("Fonts/montserrat-84");
+            TextBoxTexture = AssetLoader.LoadTexture(content, "outline");
+            TextBoxDict = new Dictionary<EntityRender, TextBoxRenderer>();
         }
 
         public void Update(GameTime time)
         {
-            
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -28,14 +35,41 @@ namespace PureGame.Render.Renderable.TextRenderer
             spriteBatch.Begin(transformMatrix: transformMatrix);
             foreach (var r in WorldRender.ToDraw.Elements)
             {
-                _textRenderer.Draw(spriteBatch, r);
+                if (r.BaseEntity.Talking)
+                {
+                    var textBox = GetTextBox(r);
+                    textBox.Draw(spriteBatch, TextBoxTexture, Font);
+                }
             }
             spriteBatch.End();
         }
 
+        public TextBoxRenderer GetTextBox(EntityRender r)
+        {
+            if (!TextBoxDict.ContainsKey(r))
+            {
+                TextBoxDict[r] = new TextBoxRenderer(Font, r);
+            }
+            return TextBoxDict[r];
+        }
+
         public void UnLoad()
         {
-            
+
+        }
+
+        public bool Tap(Vector2 position)
+        {
+            var found = false;
+            foreach (var r in WorldRender.ToDraw.Elements)
+            {
+                if (r.BaseEntity.Talking)
+                {
+                    var textBox = GetTextBox(r);
+                    found = found || textBox.Tap(position);
+                }
+            }
+            return found;
         }
     }
 }

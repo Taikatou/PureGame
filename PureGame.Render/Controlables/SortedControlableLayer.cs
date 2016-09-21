@@ -15,9 +15,9 @@ namespace PureGame.Render.Controlables
             LayerDepth = depth;
         }
 
-        public void Tap(Vector2 position)
+        public bool Tap(Vector2 position)
         {
-            Layer.Tap(position);
+            return Layer.Tap(position);
         }
 
         public void DoubleTap()

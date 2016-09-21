@@ -16,7 +16,7 @@ namespace PureGame.Render.Controlables
             Renderer = renderer;
             Client = client;
         }
-        public void Tap(Vector2 position)
+        public bool Tap(Vector2 position)
         {
             var entityMover = GetEntitymover();
             if (entityMover == null || entityMover.Complete)
@@ -26,6 +26,7 @@ namespace PureGame.Render.Controlables
             var endPosition = Renderer.WorldPosition(position);
             var entity = Client.Entity;
             Client.PureGame.AddEntityMover(entity, endPosition);
+            return false;
         }
 
         public void DoubleTap()

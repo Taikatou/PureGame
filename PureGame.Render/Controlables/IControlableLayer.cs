@@ -6,7 +6,7 @@ namespace PureGame.Render.Controlables
 {
     public interface IControlableLayer
     {
-        void Tap(Vector2 position);
+        bool Tap(Vector2 position);
         void DoubleTap();
         void Zoom(float zoomBy);
         void Drag(Vector2 dragBy);

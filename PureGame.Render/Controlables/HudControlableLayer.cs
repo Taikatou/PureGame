@@ -48,9 +48,9 @@ namespace PureGame.Render.Controlables
             
         }
 
-        public void Tap(Vector2 position)
+        public bool Tap(Vector2 position)
         {
-            
+            return false;
         }
 
         public void UnLoad()
