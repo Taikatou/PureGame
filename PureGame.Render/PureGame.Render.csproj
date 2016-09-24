@@ -55,8 +55,10 @@
     <Compile Include="Controllers\ControllerManager.cs" />
     <Compile Include="Controllers\ControllerManagerFactory.cs" />
     <Compile Include="Controllers\GamePad\GamePadController.cs" />
-    <Compile Include="Controllers\GamePad\SmartButton.cs" />
+    <Compile Include="Controllers\GamePad\SmartButtonControl.cs" />
+    <Compile Include="Controllers\GamePad\SmartJoyStickControl.cs" />
     <Compile Include="Controllers\IControllerSettings.cs" />
+    <Compile Include="Controllers\KeyBoard\DualSmartKey.cs" />
     <Compile Include="Controllers\KeyBoard\SmartKey.cs" />
     <Compile Include="Controllers\KeyBoard\WorldKeyBoardController.cs" />
     <Compile Include="Controllers\TouchScreenController.cs" />

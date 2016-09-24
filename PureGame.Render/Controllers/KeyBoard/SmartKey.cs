@@ -5,18 +5,18 @@ namespace PureGame.Render.Controllers.KeyBoard
 {
     public class SmartKey : SmartControl
     {
-        private readonly Keys _key;
+        public readonly Keys Key;
 
         public SmartKey(Keys key, Controls control) : base(control)
         {
-            _key = key;
+            Key = key;
             Control = control;
         }
 
-        public void Update(KeyboardState state)
+        public virtual void Update(KeyboardState state)
         {
             PreviouslyActive = Active;
-            Active = state.IsKeyDown(_key);
+            Active = state.IsKeyDown(Key);
         }
     }
 }

@@ -61,6 +61,7 @@ namespace PureGame.Render.Renderable.TextRenderer
         public bool Tap(Vector2 position)
         {
             var found = false;
+            position = WorldRender.ScreenToWorld(position);
             foreach (var r in WorldRender.ToDraw.Elements)
             {
                 if (r.BaseEntity.Talking)

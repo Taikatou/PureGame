@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.BitmapFonts;
@@ -11,8 +12,8 @@ namespace PureGame.Render.Renderable.TextRenderer
     {
         private readonly string _text = "Interacting";
         private readonly Vector2 _position;
-        private readonly Rectangle _textBoxSpace;
-        private ITextBox _interaction;
+        private Rectangle _textBoxSpace;
+        private readonly ITextBox _interaction;
 
         public TextBoxRenderer(BitmapFont font, EntityRender r)
         {
@@ -29,9 +30,10 @@ namespace PureGame.Render.Renderable.TextRenderer
         public bool Tap(Vector2 position)
         {
             var found = _textBoxSpace.Contains(position);
+            Debug.WriteLine(position);
             if (found)
             {
-                _interaction.Complete = true;
+                _interaction.Interact();
             }
             return found;
         }

@@ -14,6 +14,18 @@ namespace PureGame.Render.Controllers.Common
         public T EButton;
         public abstract void Update(GameTime time);
 
+        public AbstractSmartController()
+        {
+            SmartControls = new List<T>();
+            DirectionalControls = new List<T>();
+        }
+
+        public void AddDirectionalControl(T controller)
+        {
+            DirectionalControls.Add(controller);
+            SmartControls.Add(controller);
+        }
+
         public void UpdateLayer(GameTime time, IControlableLayer layer)
         {
             if (EButton.NewActive)

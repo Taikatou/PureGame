@@ -1,32 +1,25 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using PureGame.Render.Controllers.Common;
 
 namespace PureGame.Render.Controllers.GamePad
 {
-    public class GamePadController : AbstractSmartController<SmartButton>
+    public class GamePadController : AbstractSmartController<SmartButtonControl>
     {
         public GamePadController()
         {
-            BButton = new SmartButton(Buttons.B, Controls.B);
-            EButton = new SmartButton(Buttons.A, Controls.A);
-            DirectionalControls = new List<SmartButton>
-            {
-                new SmartButton(Buttons.DPadLeft, Controls.Left),
-                new SmartButton(Buttons.DPadUp, Controls.Up),
-                new SmartButton(Buttons.DPadDown, Controls.Down),
-                new SmartButton(Buttons.DPadRight, Controls.Right)
-            };
-            SmartControls = new List<SmartButton>
-            {
-                EButton,
-                BButton
-            };
-            foreach (var b in DirectionalControls)
-            {
-                SmartControls.Add(b);
-            }
+            BButton = new SmartButtonControl(Buttons.B, Controls.B);
+            EButton = new SmartButtonControl(Buttons.A, Controls.A);
+            AddDirectionalControl(new SmartButtonControl(Buttons.DPadLeft, Controls.Left));
+            AddDirectionalControl(new SmartButtonControl(Buttons.DPadUp, Controls.Up));
+            AddDirectionalControl(new SmartButtonControl(Buttons.DPadDown, Controls.Down));
+            AddDirectionalControl(new SmartButtonControl(Buttons.DPadRight, Controls.Right));
+            AddDirectionalControl(new SmartJoyStickControl(Buttons.DPadDown, Controls.Down));
+            AddDirectionalControl(new SmartJoyStickControl(Buttons.DPadRight, Controls.Right));
+            AddDirectionalControl(new SmartJoyStickControl(Buttons.DPadUp, Controls.Up));
+            AddDirectionalControl(new SmartJoyStickControl(Buttons.DPadLeft, Controls.Left));
+            SmartControls.Add(EButton);
+            SmartControls.Add(BButton);
         }
         public override void Update(GameTime time)
         {

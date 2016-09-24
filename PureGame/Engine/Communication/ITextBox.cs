@@ -5,6 +5,7 @@ namespace PureGame.Engine.Communication
     public interface ITextBox
     {
         void Update(GameTime time);
-        bool Complete { get; set; }
+        bool Complete { get; }
+        void Interact();
     }
 }
