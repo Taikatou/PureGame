@@ -5,28 +5,31 @@ namespace PureGame.Render.Controllers.GamePad
 {
     class SmartJoyStickControl : SmartButtonControl
     {
-        private readonly bool _leftStick;
-        public SmartJoyStickControl(Buttons button, Controls control, bool leftStick=true) : base(button, control)
+        public static Buttons ThumbStickButton;
+        public SmartJoyStickControl(Buttons button, Controls control) : base(button, control)
         {
-            _leftStick = leftStick;
         }
 
         public override void Update(GamePadState state)
         {
             PreviouslyActive = Active;
-            var directonButton = GetThumbstickDirection(state);
-            Active = directonButton == Button;
+            Active = ThumbStickButton == Button;
         }
 
-        public Buttons GetThumbstickDirection(GamePadState state)
+        public static void UpdateJoyStick(GamePadState state, bool leftStick=true)
+        {
+            ThumbStickButton = GetThumbstickDirection(state, leftStick);
+        }
+
+        public static Buttons GetThumbstickDirection(GamePadState state, bool leftStick)
         {
             var thumbstickTolerance = 0.35f;
 
-            var direction = _leftStick ? state.ThumbSticks.Left : state.ThumbSticks.Right;
+            var direction = leftStick ? state.ThumbSticks.Left : state.ThumbSticks.Right;
 
             var absX = Math.Abs(direction.X);
             var absY = Math.Abs(direction.Y);
-            Buttons toReturn = (Buttons) 0;
+            var toReturn = (Buttons) 0;
             if (absX > absY && absX > thumbstickTolerance)
             {
                 toReturn = direction.X > 0 ? Buttons.DPadRight : Buttons.DPadLeft;

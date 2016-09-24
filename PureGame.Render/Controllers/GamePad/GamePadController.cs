@@ -27,6 +27,7 @@ namespace PureGame.Render.Controllers.GamePad
             if (capabilities.IsConnected)
             {
                 var state = Microsoft.Xna.Framework.Input.GamePad.GetState(PlayerIndex.One);
+                SmartJoyStickControl.UpdateJoyStick(state);
                 foreach (var button in SmartControls)
                 {
                     button.Update(state);
