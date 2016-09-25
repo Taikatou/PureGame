@@ -52,13 +52,14 @@ namespace PureGame.Render.Renderable
         {
             ControllerManager.Update(time);
             ControlLayers.Update(time);
+            var found = false;
             var count = ControlLayers.ControlLayers.Count;
             var layers = ControlLayers.ControlLayers;
-            for (var i = count - 1; i >= 0; i--)
+            for (var i = count - 1; i >= 0 && !found; i--)
             {
                 foreach (var controller in ControllerManager.Controllers)
                 {
-                    controller.UpdateLayer(time, layers[i]);
+                    found = found || controller.UpdateLayer(time, layers[i]);
                 }
             }
         }

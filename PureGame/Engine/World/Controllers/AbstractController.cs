@@ -13,9 +13,9 @@ namespace PureGame.Engine.World.Controllers
             set { Entity.Running = value; }
         }
 
-        public void Interact()
+        public bool Interact()
         {
-            CurrentWorld.ProccessInteraction(Entity);
+            return CurrentWorld.ProccessInteraction(Entity);
         }
 
         public void FaceDirection(Direction direction)

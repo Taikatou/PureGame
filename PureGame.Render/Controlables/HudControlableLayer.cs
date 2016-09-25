@@ -38,9 +38,9 @@ namespace PureGame.Render.Controlables
             HudRenderer.Draw(spriteBatch);
         }
 
-        public void Interact()
+        public bool Interact()
         {
-            
+            return false;
         }
 
         public void ReleaseDrag()

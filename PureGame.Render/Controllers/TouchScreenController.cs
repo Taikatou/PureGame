@@ -5,7 +5,7 @@ using PureGame.Render.Controlables;
 
 namespace PureGame.Render.Controllers
 {
-    public class TouchScreenController : CameraController
+    public class TouchScreenController : CameraController, IController
     {
         private readonly List<GestureSample> _gestures;
         public TouchScreenController()
@@ -14,9 +14,9 @@ namespace PureGame.Render.Controllers
             _gestures = new List<GestureSample>();
         }
 
-        public override void Update(GameTime time)
+        public void Update(GameTime time)
         {
-            base.Update(time);
+            base.Update();
             _gestures.Clear();
             while (TouchPanel.IsGestureAvailable)
             {
@@ -25,8 +25,9 @@ namespace PureGame.Render.Controllers
             }
         }
 
-        public override void UpdateLayer(GameTime time, IControlableLayer layer)
+        public bool UpdateLayer(GameTime time, IControlableLayer layer)
         {
+            var found = false;
             foreach(var gesture in _gestures)
             {
                 switch (gesture.GestureType)
@@ -35,7 +36,7 @@ namespace PureGame.Render.Controllers
                         Pinch(layer, gesture);
                         break;
                     case GestureType.Tap:
-                        Tap(gesture, layer);
+                        found = found || Tap(gesture, layer);
                         break;
                     case GestureType.DoubleTap:
                         DoubleTap(layer);
@@ -48,6 +49,7 @@ namespace PureGame.Render.Controllers
                         break;
                 }
             }
+            return found;
         }
 
         public void DoubleTap(IControlableLayer layer)
@@ -60,9 +62,9 @@ namespace PureGame.Render.Controllers
             Drag(gesture.Position, layer);
         }
 
-        public void Tap(GestureSample gesture, IControlableLayer layer)
+        public bool Tap(GestureSample gesture, IControlableLayer layer)
         {
-            layer.Tap(gesture.Position);
+            return layer.Tap(gesture.Position);
         }
 
         public void Pinch(IControlableLayer layer, GestureSample gesture)

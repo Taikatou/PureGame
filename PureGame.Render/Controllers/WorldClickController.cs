@@ -5,7 +5,7 @@ using PureGame.Render.Controllers.KeyBoard;
 
 namespace PureGame.Render.Controllers
 {
-    public class WorldClickController : CameraController
+    public class WorldClickController : CameraController, IController
     {
         private MouseState _previousState;
         private MouseState _mouseState;
@@ -20,19 +20,25 @@ namespace PureGame.Render.Controllers
             Button = new SmartKey(Keys.C, Controls.A);
             _mouseState = Mouse.GetState();
         }
-        public Vector2 GetClickVector2(MouseState mouseState) => new Vector2(mouseState.X, mouseState.Y);
 
-        public override void Update(GameTime time)
+        public Vector2 GetClickVector2(MouseState mouseState)
         {
-            base.Update(time);
+            var mousePosition = new Vector2(mouseState.X, mouseState.Y);
+            return mousePosition;
+        }
+
+        public void Update(GameTime time)
+        {
+            base.Update();
             _previousState = _mouseState;
             _mouseState = Mouse.GetState();
             _keyboardState = Keyboard.GetState();
             Button.Update(_keyboardState);
         }
 
-        public override void UpdateLayer(GameTime time, IControlableLayer layer)
+        public bool UpdateLayer(GameTime time, IControlableLayer layer)
         {
+            var found = false;
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
                 if (Button.Active)
@@ -50,7 +56,7 @@ namespace PureGame.Render.Controllers
                 else if (PreviouslyReleased)
                 {
                     var position = GetClickVector2(_mouseState);
-                    layer.Tap(position);
+                    found = layer.Tap(position);
                 }
             }
             if (!Button.Active && Button.PreviouslyActive)
@@ -62,6 +68,7 @@ namespace PureGame.Render.Controllers
                 var zoomBy = _mouseState.ScrollWheelValue - PreviousScrollValue;
                 Zoom((float) zoomBy/1000, layer);
             }
+            return found;
         }
     }
 }

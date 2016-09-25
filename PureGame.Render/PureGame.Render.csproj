@@ -55,6 +55,8 @@
     <Compile Include="Controllers\ControllerManager.cs" />
     <Compile Include="Controllers\ControllerManagerFactory.cs" />
     <Compile Include="Controllers\GamePad\GamePadController.cs" />
+    <Compile Include="Controllers\GamePad\JoyStickButton.cs" />
+    <Compile Include="Controllers\GamePad\JoyStickCameraController.cs" />
     <Compile Include="Controllers\GamePad\SmartButtonControl.cs" />
     <Compile Include="Controllers\GamePad\SmartJoyStickControl.cs" />
     <Compile Include="Controllers\IControllerSettings.cs" />

@@ -3,13 +3,13 @@ using PureGame.Render.Controlables;
 
 namespace PureGame.Render.Controllers
 {
-    public abstract class CameraController : IController
+    public class CameraController
     {
         public bool ChangeDrag;
         public Vector2 DragPosition;
         public Vector2 NewDragPosition;
 
-        public virtual void Update(GameTime time)
+        public virtual void Update()
         {
             if (ChangeDrag)
             {
@@ -17,7 +17,6 @@ namespace PureGame.Render.Controllers
                 ChangeDrag = false;
             }
         }
-        public abstract void UpdateLayer(GameTime time, IControlableLayer layers);
 
         public void Zoom(float zoomBy, IControlableLayer layer)
         {
@@ -38,6 +37,12 @@ namespace PureGame.Render.Controllers
                 NewDragPosition = newDragPosition;
                 ChangeDrag = true;
             }
+        }
+
+        public void MoveBy(Vector2 moveBy, IControlableLayer layer)
+        {
+            var newDragPosition = DragPosition + moveBy;
+            Drag(newDragPosition, layer);
         }
     }
 }

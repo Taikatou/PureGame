@@ -15,7 +15,7 @@ namespace PureGame.Render.Controlables
         void Update(GameTime time);
         void ControllerDPad(Direction direction);
         void Cancel(bool cancelValue);
-        void Interact();
+        bool Interact();
         void UnLoad();
     }
 }

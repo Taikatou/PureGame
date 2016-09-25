@@ -60,9 +60,9 @@ namespace PureGame.Render.Controlables
             Layer.Cancel(cancelValue);
         }
 
-        public void Interact()
+        public bool Interact()
         {
-            Layer.Interact();
+            return Layer.Interact();
         }
 
         public void UnLoad()

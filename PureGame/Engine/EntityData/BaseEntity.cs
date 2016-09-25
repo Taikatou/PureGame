@@ -15,16 +15,20 @@ namespace PureGame.Engine.EntityData
         public Direction MovementDirection { get; set; }
         public Direction FacingDirection { get; set; }
         public bool Running { get; set; }
+
         public bool Talking { get; set; }
+
         public int Speed => Running ? _runningSpeed : _walkingSpeed;
         public event EventHandler OnMoveEvent;
 
         public void MomentumChange() => OnMoveEvent?.Invoke(this, null);
+        private ITextBox _interaction;
         public ITextBox Interaction
         {
             get
             {
-                return new PlainTextBox(5000);
+                _interaction = new PlainTextBox(this, 5000);
+                return _interaction;
             }
         }
 

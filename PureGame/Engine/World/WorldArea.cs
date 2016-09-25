@@ -38,18 +38,21 @@ namespace PureGame.Engine.World
             TriggerManager.WorldLoader = worldLoader;
         }
 
-        public void ProccessInteraction(IEntity entity)
+        public bool ProccessInteraction(IEntity entity)
         {
+            var found = false;
             if (!CurrentlyMoving(entity))
             {
                 var facingPosition = DirectionMapper.GetMovementFromDirection(entity.FacingDirection);
                 var newPosition = entity.Position + facingPosition;
                 if (EntityManager.SpatialHash.ContainsKey(newPosition))
                 {
+                    found = true;
                     var interactEntity = EntityManager.SpatialHash[newPosition];
                     ProccessInteraction(entity, interactEntity);
                 }
             }
+            return found;
         }
 
         public void ProccessInteraction(IEntity entity, IEntity interactWith)

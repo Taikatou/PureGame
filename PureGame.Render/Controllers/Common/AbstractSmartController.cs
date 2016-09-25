@@ -14,7 +14,7 @@ namespace PureGame.Render.Controllers.Common
         public T EButton;
         public abstract void Update(GameTime time);
 
-        public AbstractSmartController()
+        protected AbstractSmartController()
         {
             SmartControls = new List<T>();
             DirectionalControls = new List<T>();
@@ -26,11 +26,12 @@ namespace PureGame.Render.Controllers.Common
             SmartControls.Add(controller);
         }
 
-        public void UpdateLayer(GameTime time, IControlableLayer layer)
+        public virtual bool UpdateLayer(GameTime time, IControlableLayer layer)
         {
+            var found = false;
             if (EButton.NewActive)
             {
-                layer.Interact();
+                found = layer.Interact();
             }
             var d = GetMovementDirection();
             if (d != Direction.None)
@@ -42,6 +43,7 @@ namespace PureGame.Render.Controllers.Common
                 var bActive = BButton.Active;
                 layer.Cancel(bActive);
             }
+            return found;
         }
 
         public Direction GetMovementDirection()

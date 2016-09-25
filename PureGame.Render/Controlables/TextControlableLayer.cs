@@ -52,10 +52,9 @@ namespace PureGame.Render.Controlables
         {
         }
 
-        public void Interact()
+        public bool Interact()
         {
-            
-            
+            return false;
         }
 
         public void UnLoad()

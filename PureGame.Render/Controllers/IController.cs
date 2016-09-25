@@ -17,6 +17,6 @@ namespace PureGame.Render.Controllers
     public interface IController
     {
         void Update(GameTime time);
-        void UpdateLayer(GameTime time, IControlableLayer layer);
+        bool UpdateLayer(GameTime time, IControlableLayer layer);
     }
 }

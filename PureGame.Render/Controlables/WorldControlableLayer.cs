@@ -68,9 +68,9 @@ namespace PureGame.Render.Controlables
             Client.Running = cancelValue;
         }
 
-        public void Interact()
+        public bool Interact()
         {
-            Client.Interact();
+            return Client.Interact();
         }
 
         public void UnLoad()
