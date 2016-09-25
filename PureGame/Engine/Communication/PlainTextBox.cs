@@ -6,19 +6,18 @@ namespace PureGame.Engine.Communication
     public class PlainTextBox : ITextBox
     {
         private int _timer;
-        private IEntity _entity;
+        public IEntity Entity { get; }
+        public bool Complete => _timer <= 0;
 
         public PlainTextBox(IEntity entity, int timer)
         {
             _timer = timer;
-            _entity = entity;
+            Entity = entity;
         }
-
-        public bool Complete => _timer <= 0;
 
         public void Interact()
         {
-            _entity.Talking = false;
+            Entity.Talking = false;
         }
 
         public void Update(GameTime time)

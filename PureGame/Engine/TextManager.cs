@@ -29,19 +29,36 @@ namespace PureGame.Engine
             }
             foreach (var toRemove in toRemoveList)
             {
-                _talkingEntities.Remove(toRemove);
                 var entity = _entityDict[toRemove];
                 entity.Talking = false;
-                _entityDict.Remove(toRemove);
+                Remove(entity.Interaction);
             }
         }
 
-        public void StartTalking(IEntity entity)
+        public void Interact(IEntity entity)
         {
-            var textBox = entity.Interaction;
-            _entityDict[textBox] = entity;
-            entity.Talking = true;
-            _talkingEntities.Add(textBox);
+            if (!entity.Talking)
+            {
+                entity.Talking = true;
+                var textBox = entity.Interaction;
+                _entityDict[textBox] = entity;
+                _talkingEntities.Add(textBox);
+            }
+            else
+            {
+                entity.Talking = false;
+                var textBox = _talkingEntities.Find(x => x.Entity.Id == entity.Id);
+                if (textBox != null)
+                {
+                    Remove(textBox);
+                }
+            }
+        }
+
+        public void Remove(ITextBox toRemove)
+        {
+            _talkingEntities.Remove(toRemove);
+            _entityDict.Remove(toRemove);
         }
     }
 }

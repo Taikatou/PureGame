@@ -60,7 +60,7 @@ namespace PureGame.Engine.World
             var directionVector = entity.Position - interactWith.Position;
             var direction = DirectionMapper.GetDirectionFromMovment(directionVector);
             interactWith.FacingDirection = direction;
-            TalkManager.StartTalking(interactWith);
+            TalkManager.Interact(interactWith);
         }
 
         public void ProccessMovement(IEntity e)
