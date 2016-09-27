@@ -73,10 +73,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Extended">
-      <HintPath>..\..\MonoGame.Extended\Source\MonoGame.Extended\bin\Debug\MonoGame.Extended.dll</HintPath>
+      <HintPath>..\Dependencies\MonoGame.Extended.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Framework">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
+      <HintPath>..\Dependencies\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
