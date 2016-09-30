@@ -4,9 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.BitmapFonts;
 using PureGame.Engine.Communication;
-using PureGame.Render.Renderable.WorldRenderer;
+using PureGame.Client.Renderable.WorldRenderer;
 
-namespace PureGame.Render.Renderable.TextRenderer
+namespace PureGame.Client.Renderable.TextRenderer
 {
     public class TextBoxRenderer
     {

@@ -2,7 +2,7 @@
 using PureGame.Common;
 using PureGame.Engine.EntityData;
 
-namespace PureGame.Render.Renderable.WorldRenderer
+namespace PureGame.Client.Renderable.WorldRenderer
 {
     public class FocusEntity : IFocusable
     {

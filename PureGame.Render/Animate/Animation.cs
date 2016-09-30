@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PureGame.Render.Animate
+namespace PureGame.Client.Animate
 {
     public class Animation
     {

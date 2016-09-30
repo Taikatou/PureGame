@@ -1,8 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PureGame.Engine;
 
-namespace PureGame.Render.Controlables
+namespace PureGame.Client.Controlables
 {
     public class SortedControlableLayer : IControlableLayer
     {
@@ -68,6 +69,11 @@ namespace PureGame.Render.Controlables
         public void UnLoad()
         {
             Layer.UnLoad();
+        }
+
+        public void Dispose()
+        {
+            Layer.Dispose();
         }
     }
 }

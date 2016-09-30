@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Input;
 
-namespace PureGame.Render.Controllers.GamePad
+namespace PureGame.Client.Controllers.GamePad
 {
     class SmartJoyStickControl : SmartButtonControl
     {

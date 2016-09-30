@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using PureGame.Common;
-using PureGame.Render.Renderable.WorldRenderer;
+using PureGame.Client.Renderable.WorldRenderer;
 using System;
 using System.Collections.Generic;
 
-namespace PureGame.Render.Renderable
+namespace PureGame.Client.Renderable
 {
     public class FocusStack
     {
@@ -14,7 +14,7 @@ namespace PureGame.Render.Renderable
         private bool _moving;
         public IFocusable Focus => Stack.Peek();
 
-        public event EventHandler RefreshEvent;
+        public EventHandler RefreshEvent;
 
         public FocusStack(Camera2D camera)
         {

@@ -1,6 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 
-namespace PureGame.Render.Renderable.HudRenderer
+namespace PureGame.Client.Renderable.HudRenderer
 {
     public class HudLayer
     {
@@ -12,6 +13,10 @@ namespace PureGame.Render.Renderable.HudRenderer
         public void UnLoad()
         {
             
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

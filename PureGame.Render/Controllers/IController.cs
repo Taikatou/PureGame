@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine;
-using PureGame.Render.Controlables;
+using PureGame.Client.Controlables;
 
-namespace PureGame.Render.Controllers
+namespace PureGame.Client.Controllers
 {
     public enum Controls
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Common;
 
-namespace PureGame.Render.Renderable.WorldRenderer
+namespace PureGame.Client.Renderable.WorldRenderer
 {
     public class FocusVector : IFocusable
     {

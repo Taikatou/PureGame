@@ -10,8 +10,10 @@ using PureGame.Engine.World;
 using System.Collections.Generic;
 using System.Linq;
 using PureGame.Common;
+using System;
+using PureGame.Client.Events;
 
-namespace PureGame.Render.Renderable.WorldRenderer
+namespace PureGame.Client.Renderable.WorldRenderer
 {
     public class WorldRenderLayer
     {
@@ -24,8 +26,10 @@ namespace PureGame.Render.Renderable.WorldRenderer
         private readonly Camera2D _tmpCamera;
         public readonly EntityPositionFinder PositionFinder;
         public FocusStack FocusStack;
+        public EventManager EventManager;
         public WorldRenderLayer(WorldArea world, ViewportAdapter viewPort, IEntity player, float zoom)
         {
+            EventManager = new EventManager();
             ToDraw = new ContainsList<EntityRender>();
             _content = ContentManagerManager.RequestContentManager();
             World = world;
@@ -41,21 +45,30 @@ namespace PureGame.Render.Renderable.WorldRenderer
             {
                 if (entity != player)
                 {
-                    entity.OnMoveEvent += (sender, args) =>
+                    EventHandler onMoveHandler = (sender, args) =>
                     {
                         RefreshEntity(entity);
                         Sort();
                     };
+                    EventManager.AddEvent(entity.OnMoveEvent, onMoveHandler);
                 }
             }
-            FocusStack.RefreshEvent += (sender, args) => RefreshToDraw();
-            player.OnMoveEvent += (sender, args) => RefreshToDraw();
+            EventHandler RefreshEvent = (sender, args) => RefreshToDraw();
+            EventManager.AddEvent(FocusStack.RefreshEvent, RefreshEvent);
+            EventHandler playerOnMoveHandler = (sender, args) => RefreshToDraw();
+            EventManager.AddEvent(player.OnMoveEvent, playerOnMoveHandler);
             RefreshToDraw();
         }
 
         public void UnLoad()
         {
             _content.Unload();
+            EventManager.UnSubscribe();
+        }
+
+        public void Dispose()
+        {
+            _content.Dispose();
         }
 
         public void Draw(SpriteBatch spriteBatch)

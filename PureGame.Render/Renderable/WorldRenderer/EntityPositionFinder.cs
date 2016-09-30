@@ -3,7 +3,7 @@ using PureGame.Engine;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
 
-namespace PureGame.Render.Renderable.WorldRenderer
+namespace PureGame.Client.Renderable.WorldRenderer
 {
     public class EntityPositionFinder
     {

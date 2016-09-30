@@ -1,19 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
+using System;
 
 namespace PureGame.Engine.Events.WorldTriggers
 {
-    public class TeleportTrigger<T> : Trigger where T : WorldArea, new()
+    public class TeleportTrigger<T> : Trigger, IDisposable where T : WorldArea, new()
     {
         public Point EndPosition;
         private readonly IWorldLoader _worldLoader;
+        private TriggerEvent _trigger;
+        public EventHandler TriggerHandler;
 
         public TeleportTrigger(Point position, Point endPosition, IWorldLoader worldLoader)
         {
             Position = position;
             EndPosition = endPosition;
             _worldLoader = worldLoader;
+            _trigger = new TriggerEvent();
         }
 
         public override string ToString()
@@ -23,12 +27,17 @@ namespace PureGame.Engine.Events.WorldTriggers
 
         public override TriggerEvent GetTriggerEvent(IEntity entity)
         {
-            var trigger = new TriggerEvent();
-            trigger.Event += (sender, args) =>
+            TriggerHandler = (sender, args) =>
             {
                 _worldLoader.AddEntity<T>(entity, EndPosition);
             };
-            return trigger;
+            _trigger.Event += TriggerHandler;
+            return _trigger;
+        }
+
+        public void Dispose()
+        {
+            _trigger.Event -= TriggerHandler;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGame.Extended.Screens;
-using PureGame.DesktopGl.Screens;
-using PureGame.DesktopGl.Screens.MenuScreens;
+using PureGame.Deploy.Screens;
+using PureGame.Deploy.Screens.MenuScreens;
 
 namespace PureGame.DesktopGl
 {
@@ -30,7 +30,7 @@ namespace PureGame.DesktopGl
 
         protected override void LoadContent()
         {
-            ScreenComponent.Register(new GameScreen(Services));
+            ScreenComponent.Register(new GameScreen(Services, new ControllerSettings()));
         }
 
         protected override void Draw(GameTime gameTime)

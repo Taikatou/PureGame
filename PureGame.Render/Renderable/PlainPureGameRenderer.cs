@@ -3,13 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.ViewportAdapters;
 using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
-using PureGame.Render.Controlables;
-using PureGame.Render.Controllers;
-using PureGame.Render.Renderable.HudRenderer;
-using PureGame.Render.Renderable.TextRenderer;
-using PureGame.Render.Renderable.WorldRenderer;
+using PureGame.Client.Controlables;
+using PureGame.Client.Controllers;
+using PureGame.Client.Renderable.HudRenderer;
+using PureGame.Client.Renderable.TextRenderer;
+using PureGame.Client.Renderable.WorldRenderer;
 
-namespace PureGame.Render.Renderable
+namespace PureGame.Client.Renderable
 {
     public class PlainPureGameRenderer
     {
@@ -33,10 +33,6 @@ namespace PureGame.Render.Renderable
             var hudController = new HudControlableLayer(new HudRenderLayer());
             ControlLayers.AddController(hudController, 2);
             ControllerManager = ControllerManagerFactory.MakeControllerManager(settings);
-            foreach (var controller in ControllerManager.AllControllers)
-            {
-                ControllerManager.EnableController(true, controller);
-            }
         }
 
         public void Draw(SpriteBatch spriteBatch)

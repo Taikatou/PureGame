@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace PureGame.Render.Renderable
+namespace PureGame.Client.Renderable
 {
     public interface IRenderable
     {

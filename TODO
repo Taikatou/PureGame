@@ -1,15 +1,15 @@
 Get gamepad a b buttons working with non 360 gamepads
 
-textboxes
-	Render texture as well.
-
-TextBoxLayer
-	Click on textboxes to complete
-
 GUI
 	Menu button
 	Control Settings
 
-Shared Preferences
-	Controlers
-	Graphics
+Update screens
+	Other controlers
+
+AI
+	AI Mover
+
+Draw
+	player line movement
+	Draw circle at end

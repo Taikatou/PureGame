@@ -1,7 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using PureGame.Render.Controlables;
+using PureGame.Client.Controlables;
+using System.Diagnostics;
 
-namespace PureGame.Render.Controllers
+namespace PureGame.Client.Controllers
 {
     public class CameraController
     {
@@ -9,7 +10,7 @@ namespace PureGame.Render.Controllers
         public Vector2 DragPosition;
         public Vector2 NewDragPosition;
 
-        public virtual void Update()
+        public void Update()
         {
             if (ChangeDrag)
             {
@@ -41,7 +42,8 @@ namespace PureGame.Render.Controllers
 
         public void MoveBy(Vector2 moveBy, IControlableLayer layer)
         {
-            var newDragPosition = DragPosition + moveBy;
+            var roundmoveBy = moveBy.ToPoint().ToVector2();
+            var newDragPosition = DragPosition + roundmoveBy;
             Drag(newDragPosition, layer);
         }
     }

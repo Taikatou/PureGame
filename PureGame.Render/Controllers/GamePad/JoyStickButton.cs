@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Input;
 
-namespace PureGame.Render.Controllers.GamePad
+namespace PureGame.Client.Controllers.GamePad
 {
     public class JoyStickButton
     {

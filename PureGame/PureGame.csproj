@@ -68,8 +68,6 @@
     <Compile Include="PureGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Engine\World\WorldManager.cs" />
-    <Compile Include="WorldAreas\BasicWorld.cs" />
-    <Compile Include="WorldAreas\DifferentWorld.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Extended">

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-namespace PureGame.Render.Controlables
+namespace PureGame.Client.Controlables
 {
     public class ControlLayerManager
     {
@@ -22,6 +22,7 @@ namespace PureGame.Render.Controlables
                 var toRemove = ControlableDict[layerDepth];
                 ControlLayers.Remove(toRemove);
                 toRemove.UnLoad();
+                toRemove.Dispose();
             }
             var sortedLayer = new SortedControlableLayer(layer, layerDepth);
             ControlableDict[layerDepth] = sortedLayer;

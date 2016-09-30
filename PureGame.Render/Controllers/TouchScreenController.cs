@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
-using PureGame.Render.Controlables;
+using PureGame.Client.Controlables;
 
-namespace PureGame.Render.Controllers
+namespace PureGame.Client.Controllers
 {
     public class TouchScreenController : CameraController, IController
     {
@@ -16,7 +16,7 @@ namespace PureGame.Render.Controllers
 
         public void Update(GameTime time)
         {
-            base.Update();
+            Update();
             _gestures.Clear();
             while (TouchPanel.IsGestureAvailable)
             {

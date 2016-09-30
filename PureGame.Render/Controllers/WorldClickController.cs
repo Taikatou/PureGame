@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using PureGame.Render.Controlables;
-using PureGame.Render.Controllers.KeyBoard;
+using PureGame.Client.Controlables;
+using PureGame.Client.Controllers.KeyBoard;
 
-namespace PureGame.Render.Controllers
+namespace PureGame.Client.Controllers
 {
     public class WorldClickController : CameraController, IController
     {

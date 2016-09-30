@@ -1,4 +1,4 @@
-﻿namespace PureGame.Render.Controllers.Common
+﻿namespace PureGame.Client.Controllers.Common
 {
     public class SmartControl
     {

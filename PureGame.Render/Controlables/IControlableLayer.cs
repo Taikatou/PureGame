@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PureGame.Engine;
+using System;
 
-namespace PureGame.Render.Controlables
+namespace PureGame.Client.Controlables
 {
-    public interface IControlableLayer
+    public interface IControlableLayer : IDisposable
     {
         bool Tap(Vector2 position);
         void DoubleTap();

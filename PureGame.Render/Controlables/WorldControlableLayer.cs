@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using PureGame.Engine;
 using PureGame.Engine.World.EntityMover;
-using PureGame.Render.Renderable.WorldRenderer;
+using PureGame.Client.Renderable.WorldRenderer;
 
-namespace PureGame.Render.Controlables
+namespace PureGame.Client.Controlables
 {
     public class WorldControlableLayer : IControlableLayer
     {
@@ -76,6 +76,11 @@ namespace PureGame.Render.Controlables
         public void UnLoad()
         {
             Renderer.UnLoad();
+        }
+
+        public void Dispose()
+        {
+            Renderer.Dispose();
         }
 
         public void Zoom(float zoomBy)

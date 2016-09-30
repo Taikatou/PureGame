@@ -1,4 +1,4 @@
-﻿using PureGame.Render.Controllers;
+﻿using PureGame.Client.Controllers;
 
 namespace PureGame.DesktopGl
 {

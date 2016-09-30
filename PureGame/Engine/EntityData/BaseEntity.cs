@@ -32,6 +32,8 @@ namespace PureGame.Engine.EntityData
             }
         }
 
+        EventHandler IEntity.OnMoveEvent { get; set; }
+
         public override string ToString() => $"EntityObject Id:{Id}, FileName:{FileName}, Position:{Position}";
     }
 }

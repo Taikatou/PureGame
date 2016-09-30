@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using PureGame.Engine;
-using PureGame.Render.Controlables;
+using PureGame.Client.Controlables;
 
-namespace PureGame.Render.Controllers.Common
+namespace PureGame.Client.Controllers.Common
 {
     public abstract class AbstractSmartController<T> : IController where T : SmartControl
     {

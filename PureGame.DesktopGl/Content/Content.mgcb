@@ -10,14 +10,9 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\..\MonoGame.Extended\Source\MonoGame.Extended.Content.Pipeline\bin\MonoGame.Extended.Content.Pipeline.dll
+/reference:..\..\Dependencies\MonoGame.Extended.Content.Pipeline.dll
 
 #---------------------------------- Content ---------------------------------#
-
-#begin TileMaps/free-tileset.json
-/importer:TexturePackerJsonImporter
-/processor:TexturePackerProcessor
-/build:TileMaps/free-tileset.json
 
 #begin TileMaps/free-tileset.png
 /importer:TextureImporter
@@ -48,18 +43,6 @@
 /processor:TiledMapProcessor
 /build:TileMaps/level01.tmx
 
-#begin TileMaps/monogame-extended-logo.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:TileMaps/monogame-extended-logo.png
-
 #begin TileMaps/rpg_maker_vx_rtp_tileset_by_telles0808.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -71,11 +54,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:TileMaps/rpg_maker_vx_rtp_tileset_by_telles0808.png
-
-#begin TileMaps/untitled.tmx
-/importer:TiledMapImporter
-/processor:TiledMapProcessor
-/build:TileMaps/untitled.tmx
 
 #begin Fonts/montserrat-32.fnt
 /importer:BitmapFontImporter
@@ -187,4 +165,21 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/outline.png
+
+#begin TileMaps/8x8 pixel tiles.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:TileMaps/8x8 pixel tiles.png
+
+#begin TileMaps/level02.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:TileMaps/level02.tmx
 

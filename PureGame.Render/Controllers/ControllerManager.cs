@@ -1,46 +1,43 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-namespace PureGame.Render.Controllers
+namespace PureGame.Client.Controllers
 {
     public class ControllerManager
     {
-        public List<IController> Controllers => EnabledControllers;
-        public List<IController> EnabledControllers;
-        public List<IController> AllControllers;
+        public List<IController> Controllers;
 
         public ControllerManager()
         {
-            EnabledControllers = new List<IController>();
-            AllControllers = new List<IController>();
+            Controllers = new List<IController>();
         }
 
         public void Add(IController controller)
         {
-            AllControllers.Add(controller);
+            Controllers.Add(controller);
         }
 
         public void Update(GameTime time)
         {
-            foreach (var controller in EnabledControllers)
+            foreach (var controller in Controllers)
             {
                 controller.Update(time);
             }
         }
 
-        public void EnableController(bool enable, IController controller)
+        public void AddController(IController controller)
         {
-            var needToAdd = EnabledControllers.Contains(controller) == !enable;
-            if (needToAdd && AllControllers.Contains(controller))
+            if(!Controllers.Contains(controller))
             {
-                if (enable)
-                {
-                    EnabledControllers.Add(controller);
-                }
-                else
-                {
-                    EnabledControllers.Remove(controller);
-                }
+                Controllers.Add(controller);
+            }
+        }
+
+        public void RemoveController(IController controller)
+        {
+            if (Controllers.Contains(controller))
+            {
+                Controllers.Remove(controller);
             }
         }
     }

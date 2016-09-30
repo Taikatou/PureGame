@@ -2,12 +2,11 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PureGame.Engine.EntityData;
-using PureGame.Render.Animate;
-using PureGame.Render.Common;
+using PureGame.Client.Animate;
 using System;
 using PureGame.Engine;
 
-namespace PureGame.Render.Renderable.WorldRenderer
+namespace PureGame.Client.Renderable.WorldRenderer
 {
     public class EntityRender : IRenderable
     {
@@ -26,7 +25,7 @@ namespace PureGame.Render.Renderable.WorldRenderer
         {
             PositionFinder = positionFinder;
             BaseEntity = baseEntity;
-            _entityTexture = AssetLoader.LoadTexture(content, baseEntity.FileName);
+            _entityTexture = content.Load<Texture2D>($"Images/{baseEntity.FileName}");
             _walking = new Animation[4];
             _walking[(int)Direction.Down] = new Animation();
             _walking[(int)Direction.Down].AddFrame(new Rectangle(0, 0, 16, 16), TimeSpan.FromSeconds(.25));

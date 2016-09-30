@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PureGame.Engine;
-using PureGame.Render.Renderable.HudRenderer;
+using PureGame.Client.Renderable.HudRenderer;
 
-namespace PureGame.Render.Controlables
+namespace PureGame.Client.Controlables
 {
     class HudControlableLayer : IControlableLayer
     {
@@ -21,6 +21,11 @@ namespace PureGame.Render.Controlables
         public void ControllerDPad(Direction direction)
         {
             
+        }
+
+        public void Dispose()
+        {
+            HudRenderer.Dispose();
         }
 
         public void DoubleTap()

@@ -1,7 +1,7 @@
-﻿using PureGame.Render.Controllers.GamePad;
-using PureGame.Render.Controllers.KeyBoard;
+﻿using PureGame.Client.Controllers.GamePad;
+using PureGame.Client.Controllers.KeyBoard;
 
-namespace PureGame.Render.Controllers
+namespace PureGame.Client.Controllers
 {
     public class ControllerManagerFactory
     {

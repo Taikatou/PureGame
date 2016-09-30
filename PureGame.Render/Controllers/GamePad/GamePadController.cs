@@ -1,20 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using PureGame.Render.Controlables;
-using PureGame.Render.Controllers.Common;
+using PureGame.Client.Controlables;
+using PureGame.Client.Controllers.Common;
 
-namespace PureGame.Render.Controllers.GamePad
+namespace PureGame.Client.Controllers.GamePad
 {
     public class GamePadController : AbstractSmartController<SmartButtonControl>
     {
         private readonly JoyStickButton _joyStickButton;
-        private readonly JoyStickCameraController _joyStickCameraController;
+        private readonly GamePadCameraController _joyStickCameraController;
         public GamePadState State;
         public bool Connected;
         public GamePadController()
         {
             _joyStickButton = new JoyStickButton();
-            _joyStickCameraController = new JoyStickCameraController();
+            _joyStickCameraController = new GamePadCameraController();
             BButton = new SmartButtonControl(Buttons.B, Controls.B);
             EButton = new SmartButtonControl(Buttons.A, Controls.A);
             AddDirectionalControl(new SmartButtonControl(Buttons.DPadLeft, Controls.Left));

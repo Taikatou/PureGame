@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Input;
 
-namespace PureGame.Render.Controllers.KeyBoard
+namespace PureGame.Client.Controllers.KeyBoard
 {
     class DualSmartKey : SmartKey
     {

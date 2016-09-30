@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PureGame.Engine;
-using PureGame.Render.Renderable.TextRenderer;
+using PureGame.Client.Renderable.TextRenderer;
 
-namespace PureGame.Render.Controlables
+namespace PureGame.Client.Controlables
 {
     class TextControlableLayer : IControlableLayer
     {
@@ -60,6 +60,11 @@ namespace PureGame.Render.Controlables
         public void UnLoad()
         {
             RenderLayer.UnLoad();
+        }
+
+        public void Dispose()
+        {
+            RenderLayer.Dispose();
         }
     }
 }

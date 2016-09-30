@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace PureGame.Render.Renderable.HudRenderer
+namespace PureGame.Client.Renderable.HudRenderer
 {
     public class HudRenderLayer
     {
@@ -13,6 +14,7 @@ namespace PureGame.Render.Renderable.HudRenderer
             while (HudLayers.Count > 0)
             {
                 HudFocus.UnLoad();
+                HudFocus.Dispose();
                 HudLayers.Pop();
             }
         }
@@ -23,6 +25,11 @@ namespace PureGame.Render.Renderable.HudRenderer
             {
                 HudFocus.Update(time);
             }
+        }
+
+        public void Dispose()
+        {
+            UnLoad();
         }
 
         public void Draw(SpriteBatch spriteBatch)

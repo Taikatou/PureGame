@@ -1,4 +1,4 @@
-﻿namespace PureGame.Render.Controllers
+﻿namespace PureGame.Client.Controllers
 {
     public interface IControllerSettings
     {

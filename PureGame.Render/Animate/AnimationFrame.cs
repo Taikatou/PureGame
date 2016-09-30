@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 
-namespace PureGame.Render.Animate
+namespace PureGame.Client.Animate
 {
     public class AnimationFrame
     {

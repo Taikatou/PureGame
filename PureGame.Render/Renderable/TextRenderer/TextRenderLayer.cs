@@ -3,10 +3,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
 using PureGame.Engine;
-using PureGame.Render.Common;
-using PureGame.Render.Renderable.WorldRenderer;
+using PureGame.Client.Renderable.WorldRenderer;
+using Microsoft.Xna.Framework.Content;
 
-namespace PureGame.Render.Renderable.TextRenderer
+namespace PureGame.Client.Renderable.TextRenderer
 {
     public class TextRenderLayer
     {
@@ -14,13 +14,14 @@ namespace PureGame.Render.Renderable.TextRenderer
         protected BitmapFont Font { get; }
         protected Texture2D TextBoxTexture;
         public Dictionary<EntityRender, TextBoxRenderer> TextBoxDict;
+        private ContentManager _content;
 
         public TextRenderLayer(WorldRenderLayer worldRender)
         {
             WorldRender = worldRender;
-            var content = ContentManagerManager.RequestContentManager();
-            Font = content.Load<BitmapFont>("Fonts/montserrat-84");
-            TextBoxTexture = AssetLoader.LoadTexture(content, "outline");
+            _content = ContentManagerManager.RequestContentManager();
+            Font = _content.Load<BitmapFont>("Fonts/montserrat-84");
+            TextBoxTexture = _content.Load<Texture2D>($"Images/{"outline"}");
             TextBoxDict = new Dictionary<EntityRender, TextBoxRenderer>();
         }
 
@@ -55,7 +56,12 @@ namespace PureGame.Render.Renderable.TextRenderer
 
         public void UnLoad()
         {
+            _content.Unload();
+        }
 
+        public void Dispose()
+        {
+            _content.Dispose();
         }
 
         public bool Tap(Vector2 position)

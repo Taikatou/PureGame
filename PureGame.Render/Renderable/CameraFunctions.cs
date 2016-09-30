@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 
-namespace PureGame.Render.Renderable
+namespace PureGame.Client.Renderable
 {
     public class CameraFunctions
     {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using PureGame.Render.Controllers.Common;
+using PureGame.Client.Controllers.Common;
 
-namespace PureGame.Render.Controllers.KeyBoard
+namespace PureGame.Client.Controllers.KeyBoard
 {
     public class WorldKeyBoardController : AbstractSmartController<SmartKey>
     {

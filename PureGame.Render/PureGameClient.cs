@@ -5,7 +5,7 @@ using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
 using PureGame.Engine.World.Controllers;
 
-namespace PureGame.Render
+namespace PureGame.Client
 {
     public class PureGameClient : AbstractController
     {
