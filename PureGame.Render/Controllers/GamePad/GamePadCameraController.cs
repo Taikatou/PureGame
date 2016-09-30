@@ -9,6 +9,7 @@ namespace PureGame.Client.Controllers.GamePad
         public float ThumbStickTolerance = 0.35f;
         private readonly bool _leftStick;
         public const int DivZoomBy = 50;
+        public bool PreviousLyDragged;
 
         public GamePadCameraController(bool leftStick=false)
         {
@@ -39,7 +40,6 @@ namespace PureGame.Client.Controllers.GamePad
 
         public void UpdateJoyStick(GamePadState state, IControlableLayer layer)
         {
-            var snapBack = true;
             var direction = _leftStick ? state.ThumbSticks.Left : state.ThumbSticks.Right;
 
             var absX = Math.Abs(direction.X);
@@ -49,11 +49,12 @@ namespace PureGame.Client.Controllers.GamePad
                 direction.X = -direction.X;
                 direction *= 10;
                 MoveBy(direction, layer);
-                snapBack = false;
+                PreviousLyDragged = true;
             }
-            if (snapBack)
+            else if(PreviousLyDragged)
             {
                 ReleaseDrag(layer);
+                PreviousLyDragged = false;
             }
         }
     }

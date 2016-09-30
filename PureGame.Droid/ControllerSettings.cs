@@ -9,7 +9,7 @@ namespace PureGame.Droid
         private ISettings AppSettings => CrossSettings.Current;
 
         private const string GamePadEnabledKey = "game_pad_enabled";
-        private readonly bool GamePadEnabledDefault = true;
+        private readonly bool GamePadEnabledDefault = false;
 
         public bool GamePadEnabled
         {

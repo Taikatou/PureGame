@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Client.Controlables;
-using System.Diagnostics;
 
 namespace PureGame.Client.Controllers
 {
