@@ -70,7 +70,7 @@ namespace PureGame.Client.Controlables
 
         public bool Interact()
         {
-            return Client.Interact();
+            return Client.Interact(); 
         }
 
         public void UnLoad()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using PureGame.Common;
 
 namespace PureGame.Client.Events
 {

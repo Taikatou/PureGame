@@ -1,4 +1,4 @@
-﻿namespace PureGame.Client.Events
+﻿namespace PureGame.Common
 {
     public interface IUnSubscribe
     {

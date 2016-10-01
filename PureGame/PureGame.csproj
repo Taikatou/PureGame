@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Common\IUnSubscribe.cs" />
     <Compile Include="Engine\Communication\ITextBox.cs" />
     <Compile Include="Engine\Communication\PlainTextBox.cs" />
     <Compile Include="Engine\World\Controllers\AbstractController.cs" />

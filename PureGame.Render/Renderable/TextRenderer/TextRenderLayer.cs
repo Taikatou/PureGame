@@ -13,16 +13,16 @@ namespace PureGame.Client.Renderable.TextRenderer
         public WorldRenderLayer WorldRender;
         protected BitmapFont Font { get; }
         protected Texture2D TextBoxTexture;
-        public Dictionary<EntityRender, TextBoxRenderer> TextBoxDict;
-        private ContentManager _content;
+        public Dictionary<EntityRender, ITextBoxRenderer> TextBoxDict;
+        private readonly ContentManager _content;
 
         public TextRenderLayer(WorldRenderLayer worldRender)
         {
             WorldRender = worldRender;
             _content = ContentManagerManager.RequestContentManager();
             Font = _content.Load<BitmapFont>("Fonts/montserrat-84");
-            TextBoxTexture = _content.Load<Texture2D>($"Images/{"outline"}");
-            TextBoxDict = new Dictionary<EntityRender, TextBoxRenderer>();
+            TextBoxTexture = _content.Load<Texture2D>("Images/outline");
+            TextBoxDict = new Dictionary<EntityRender, ITextBoxRenderer>();
         }
 
         public void Update(GameTime time)
@@ -39,19 +39,19 @@ namespace PureGame.Client.Renderable.TextRenderer
                 if (r.BaseEntity.Talking)
                 {
                     var textBox = GetTextBox(r);
-                    textBox.Draw(spriteBatch, TextBoxTexture, Font);
+                    textBox.Draw(spriteBatch, TextBoxTexture);
                 }
             }
             spriteBatch.End();
         }
 
-        public TextBoxRenderer GetTextBox(EntityRender r)
+        public ITextBoxRenderer GetTextBox(EntityRender renderEntity)
         {
-            if (!TextBoxDict.ContainsKey(r))
+            if (!TextBoxDict.ContainsKey(renderEntity))
             {
-                TextBoxDict[r] = new TextBoxRenderer(Font, r);
+                TextBoxDict[renderEntity] = TextBoxRendererFactory.MakeTextBoxRenderer(Font, renderEntity);
             }
-            return TextBoxDict[r];
+            return TextBoxDict[renderEntity];
         }
 
         public void UnLoad()

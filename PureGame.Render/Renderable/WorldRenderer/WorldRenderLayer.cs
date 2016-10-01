@@ -15,7 +15,7 @@ using PureGame.Client.Events;
 
 namespace PureGame.Client.Renderable.WorldRenderer
 {
-    public class WorldRenderLayer
+    public class WorldRenderLayer : IUnSubscribe, IDisposable
     {
         public WorldArea World;
         private readonly Dictionary<string, EntityRender> _entitySprites;
@@ -53,9 +53,9 @@ namespace PureGame.Client.Renderable.WorldRenderer
                     EventManager.AddEvent(entity.OnMoveEvent, onMoveHandler);
                 }
             }
-            EventHandler RefreshEvent = (sender, args) => RefreshToDraw();
-            EventManager.AddEvent(FocusStack.RefreshEvent, RefreshEvent);
+            EventHandler refreshEvent = (sender, args) => RefreshToDraw();
             EventHandler playerOnMoveHandler = (sender, args) => RefreshToDraw();
+            EventManager.AddEvent(FocusStack.RefreshEvent, refreshEvent);
             EventManager.AddEvent(player.OnMoveEvent, playerOnMoveHandler);
             RefreshToDraw();
         }
@@ -63,7 +63,8 @@ namespace PureGame.Client.Renderable.WorldRenderer
         public void UnLoad()
         {
             _content.Unload();
-            EventManager.UnSubscribe();
+            UnSubscribe();
+            Dispose();
         }
 
         public void Dispose()
@@ -135,6 +136,11 @@ namespace PureGame.Client.Renderable.WorldRenderer
                 RefreshEntity(e);
                 Sort();
             }
+        }
+
+        public void UnSubscribe()
+        {
+            EventManager.UnSubscribe();
         }
     }
 }

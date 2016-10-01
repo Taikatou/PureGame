@@ -8,7 +8,7 @@ namespace PureGame.Engine.Communication
         private int _timer;
         public IEntity Entity { get; }
         public bool Complete => _timer <= 0;
-
+        public string Type => "PlainTextBox";
         public PlainTextBox(IEntity entity, int timer)
         {
             _timer = timer;

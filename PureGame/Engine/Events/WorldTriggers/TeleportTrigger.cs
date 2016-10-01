@@ -2,14 +2,15 @@
 using PureGame.Engine.EntityData;
 using PureGame.Engine.World;
 using System;
+using PureGame.Common;
 
 namespace PureGame.Engine.Events.WorldTriggers
 {
-    public class TeleportTrigger<T> : Trigger, IDisposable where T : WorldArea, new()
+    public class TeleportTrigger<T> : Trigger, IDisposable, IUnSubscribe where T : WorldArea, new()
     {
         public Point EndPosition;
         private readonly IWorldLoader _worldLoader;
-        private TriggerEvent _trigger;
+        private readonly TriggerEvent _trigger;
         public EventHandler TriggerHandler;
 
         public TeleportTrigger(Point position, Point endPosition, IWorldLoader worldLoader)
@@ -36,6 +37,11 @@ namespace PureGame.Engine.Events.WorldTriggers
         }
 
         public void Dispose()
+        {
+            UnSubscribe();
+        }
+
+        public void UnSubscribe()
         {
             _trigger.Event -= TriggerHandler;
         }

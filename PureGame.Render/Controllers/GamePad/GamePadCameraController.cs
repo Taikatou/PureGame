@@ -26,7 +26,7 @@ namespace PureGame.Client.Controllers.GamePad
 
         public void ZoomInBy(float zoomBy, IControlableLayer layer)
         {
-            if (zoomBy != 0)
+            if (Math.Abs(zoomBy) > 0)
             {
                 zoomBy /= DivZoomBy;
                 Zoom(-zoomBy, layer);

@@ -9,5 +9,6 @@ namespace PureGame.Engine.Communication
         void Update(GameTime time);
         bool Complete { get; }
         void Interact();
+        string Type { get; }
     }
 }
