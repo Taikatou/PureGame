@@ -2,13 +2,15 @@
 
 namespace PureGame.Engine.Communication
 {
-    public class TextBoxOption
+    public class InteractionOption
     {
         public EventHandler OnSelected;
+        public string Text;
 
-        public TextBoxOption(EventHandler onSelected)
+        public InteractionOption(EventHandler onSelected, string text)
         {
             OnSelected = onSelected;
+            Text = text;
         }
 
         public void Click()

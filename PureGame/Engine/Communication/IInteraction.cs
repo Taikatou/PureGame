@@ -3,7 +3,7 @@ using PureGame.Engine.EntityData;
 
 namespace PureGame.Engine.Communication
 {
-    public interface ITextBox
+    public interface IInteraction
     {
         IEntity Entity { get; }
         void Update(GameTime time);

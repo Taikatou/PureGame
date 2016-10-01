@@ -37,10 +37,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Common\IUnSubscribe.cs" />
-    <Compile Include="Engine\Communication\ITextBox.cs" />
-    <Compile Include="Engine\Communication\OptionsTextBox.cs" />
-    <Compile Include="Engine\Communication\PlainTextBox.cs" />
-    <Compile Include="Engine\Communication\TextBoxOption.cs" />
+    <Compile Include="Engine\Communication\IInteraction.cs" />
+    <Compile Include="Engine\Communication\OptionsInteraction.cs" />
+    <Compile Include="Engine\Communication\PlainTextInteraction.cs" />
+    <Compile Include="Engine\Communication\InteractionFactory.cs" />
+    <Compile Include="Engine\Communication\InteractionOption.cs" />
     <Compile Include="Engine\World\Controllers\AbstractController.cs" />
     <Compile Include="Common\ContainsList.cs" />
     <Compile Include="Common\IFocusable.cs" />

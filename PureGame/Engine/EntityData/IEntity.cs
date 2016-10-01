@@ -16,6 +16,6 @@ namespace PureGame.Engine.EntityData
         bool Talking { get; set; }
         EventHandler OnMoveEvent { get; set; }
         void MomentumChange();
-        ITextBox Interaction { get; }
+        IInteraction Interaction { get; }
     }
 }

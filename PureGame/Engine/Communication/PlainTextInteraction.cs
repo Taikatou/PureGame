@@ -3,13 +3,13 @@ using PureGame.Engine.EntityData;
 
 namespace PureGame.Engine.Communication
 {
-    public class PlainTextBox : ITextBox
+    public class PlainTextInteraction : IInteraction
     {
         private int _timer;
         public IEntity Entity { get; }
         public bool Complete => _timer <= 0;
-        public virtual string Type => "PlainTextBox";
-        public PlainTextBox(IEntity entity, int timer)
+        public virtual string Type => "PlainTextInteraction";
+        public PlainTextInteraction(IEntity entity, int timer)
         {
             _timer = timer;
             Entity = entity;

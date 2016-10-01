@@ -1,24 +1,25 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.EntityData;
 using System.Collections.Generic;
+using System.Diagnostics;
 using PureGame.Engine.Communication;
 
 namespace PureGame.Engine
 {
     public class TextManager
     {
-        private readonly List<ITextBox> _talkingEntities;
-        private readonly Dictionary<ITextBox, IEntity> _entityDict;
+        private readonly List<IInteraction> _talkingEntities;
+        private readonly Dictionary<IInteraction, IEntity> _entityDict;
 
         public TextManager()
         {
-            _talkingEntities = new List<ITextBox>();
-            _entityDict = new Dictionary<ITextBox, IEntity>();
+            _talkingEntities = new List<IInteraction>();
+            _entityDict = new Dictionary<IInteraction, IEntity>();
         }
 
         public void Update(GameTime time)
         {
-            var toRemoveList = new List<ITextBox>();
+            var toRemoveList = new List<IInteraction>();
             foreach(var textBox in _talkingEntities)
             {
                 textBox.Update(time);
@@ -27,12 +28,16 @@ namespace PureGame.Engine
                     toRemoveList.Add(textBox);
                 }
             }
+            if(toRemoveList.Count > 0)
+                Debug.WriteLine(_talkingEntities.Count);
             foreach (var toRemove in toRemoveList)
             {
                 var entity = _entityDict[toRemove];
                 entity.Talking = false;
                 Remove(entity.Interaction);
             }
+            if (toRemoveList.Count > 0)
+                Debug.WriteLine(_talkingEntities.Count);
         }
 
         public void Interact(IEntity entity)
@@ -55,7 +60,7 @@ namespace PureGame.Engine
             }
         }
 
-        public void Remove(ITextBox toRemove)
+        public void Remove(IInteraction toRemove)
         {
             _talkingEntities.Remove(toRemove);
             _entityDict.Remove(toRemove);

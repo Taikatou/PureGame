@@ -76,6 +76,10 @@ namespace PureGame.Engine.World
                     e.MomentumChange();
                 }
                 e.FacingDirection = e.MovementDirection;
+                if (e.Talking)
+                {
+                    e.Talking = false;
+                }
             }
         }
 

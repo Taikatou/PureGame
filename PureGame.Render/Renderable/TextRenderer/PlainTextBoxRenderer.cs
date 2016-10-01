@@ -9,8 +9,8 @@ namespace PureGame.Client.Renderable.TextRenderer
 {
     public class PlainTextBoxRenderer : ITextBoxRenderer
     {
-        private readonly string _text = "Interacting";
-        private readonly ITextBox _interaction;
+        public string Text => "Interacting";
+        private readonly IInteraction _interaction;
         private readonly BitmapFont _font;
         public DialogBox DialogBox;
 
@@ -18,13 +18,20 @@ namespace PureGame.Client.Renderable.TextRenderer
         {
             _font = font;
             _interaction = r.BaseEntity.Interaction;
-            var textSpace = font.GetSize(_text);
-            DialogBox = new DialogBox(r, textSpace);
+            var textSpace = font.GetSize(Text);
+            DialogBox = new DialogBox(r.ScreenPosition, textSpace);
+        }
+
+        public PlainTextBoxRenderer(BitmapFont font, Point position, Point size, IInteraction interaction)
+        {
+            _font = font;
+            _interaction = interaction;
+            DialogBox = new DialogBox(position, size);
         }
 
         public bool Tap(Vector2 position)
         {
-            var found = DialogBox.Contains(position.ToPoint());
+            var found = DialogBox.Contains(position);
             Debug.WriteLine(position);
             if (found)
             {
@@ -36,7 +43,7 @@ namespace PureGame.Client.Renderable.TextRenderer
         public void Draw(SpriteBatch spriteBatch, Texture2D textBoxTexture)
         {
             DialogBox.Draw(spriteBatch, textBoxTexture);
-            spriteBatch.DrawString(_font, _text, DialogBox.Position.ToVector2(), Color.Black);
+            spriteBatch.DrawString(_font, Text, DialogBox.Position.ToVector2(), Color.Black);
         }
     }
 }

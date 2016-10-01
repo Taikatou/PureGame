@@ -22,12 +22,12 @@ namespace PureGame.Engine.EntityData
         public event EventHandler OnMoveEvent;
 
         public void MomentumChange() => OnMoveEvent?.Invoke(this, null);
-        private ITextBox _interaction;
-        public ITextBox Interaction
+        private IInteraction _interaction;
+        public IInteraction Interaction
         {
             get
             {
-                _interaction = new PlainTextBox(this, 5000);
+                _interaction = InteractionFactory.MakeInteraction(this);
                 return _interaction;
             }
         }

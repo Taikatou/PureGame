@@ -11,10 +11,10 @@ namespace PureGame.Client.Renderable.TextRenderer
             var interaction = renderEntity.BaseEntity.Interaction;
             switch (interaction.Type)
             {
-                case "OptionsTextBox":
-                        toReturn = new OptionsTextBoxRenderer();
+                case "OptionsInteraction":
+                        toReturn = new OptionsTextBoxRenderer(font, renderEntity);
                     break;
-                case "PlainTextBox":
+                case "PlainTextInteraction":
                         toReturn = new PlainTextBoxRenderer(font, renderEntity);
                     break;
                 default:
