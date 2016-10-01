@@ -76,6 +76,7 @@
     <Compile Include="Renderable\HudRenderer\HudRenderLayer.cs" />
     <Compile Include="Renderable\IRenderable.cs" />
     <Compile Include="Renderable\PlainPureGameRenderer.cs" />
+    <Compile Include="Renderable\TextRenderer\DialogBox.cs" />
     <Compile Include="Renderable\TextRenderer\ITextBoxRenderer.cs" />
     <Compile Include="Renderable\TextRenderer\OptionsTextBoxRenderer.cs" />
     <Compile Include="Renderable\TextRenderer\PlainTextBoxRenderer.cs" />
