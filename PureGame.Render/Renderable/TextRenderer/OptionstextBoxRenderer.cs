@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
@@ -31,10 +32,14 @@ namespace PureGame.Client.Renderable.TextRenderer
                     OptionRenderer.Add(plainBox);
                     Option[plainBox] = option;
                 }
+                var rows = textSpace.Y * (_interaction.Options.Count + 1);
+                var optionsTextBox = new Point(textSpace.X, textSpace.Y + rows);
+                DialogBox = new DialogBox(r.ScreenPosition, optionsTextBox);
             }
-            var rows = textSpace.Y*(_interaction.Options.Count + 1);
-            var optionsTextBox = new Point(textSpace.X, textSpace.Y + rows);
-            DialogBox = new DialogBox(r.ScreenPosition, optionsTextBox);
+            else
+            {
+                throw new Exception("Interaction is not of type OptionsInteraction");
+            }
         }
 
         public Point GetGreatestTextSize()

@@ -28,16 +28,12 @@ namespace PureGame.Engine
                     toRemoveList.Add(textBox);
                 }
             }
-            if(toRemoveList.Count > 0)
-                Debug.WriteLine(_talkingEntities.Count);
             foreach (var toRemove in toRemoveList)
             {
                 var entity = _entityDict[toRemove];
                 entity.Talking = false;
                 Remove(entity.Interaction);
             }
-            if (toRemoveList.Count > 0)
-                Debug.WriteLine(_talkingEntities.Count);
         }
 
         public void Interact(IEntity entity)
