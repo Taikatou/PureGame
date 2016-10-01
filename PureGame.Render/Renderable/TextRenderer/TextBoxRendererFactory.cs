@@ -7,11 +7,18 @@ namespace PureGame.Client.Renderable.TextRenderer
     {
         public static ITextBoxRenderer MakeTextBoxRenderer(BitmapFont font, EntityRender renderEntity)
         {
-            PlainTextBoxRenderer toReturn;
+            ITextBoxRenderer toReturn;
             var interaction = renderEntity.BaseEntity.Interaction;
             switch (interaction.Type)
             {
-                default: toReturn = new PlainTextBoxRenderer(font, renderEntity);
+                case "OptionsTextBox":
+                        toReturn = new OptionsTextBoxRenderer();
+                    break;
+                case "PlainTextBox":
+                        toReturn = new PlainTextBoxRenderer(font, renderEntity);
+                    break;
+                default:
+                        toReturn = new PlainTextBoxRenderer(font, renderEntity);
                     break;
             }
             return toReturn;
