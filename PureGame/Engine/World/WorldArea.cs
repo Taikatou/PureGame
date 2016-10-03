@@ -26,7 +26,7 @@ namespace PureGame.Engine.World
 
         public WorldArea()
         {
-            Content = ContentManagerManager.RequestContentManager();
+            Content = ContentManagerFactory.RequestContentManager();
             Entities = new List<IEntity>();
             EntityManager = new EntityManager();
             TriggerManager = new TriggerManager();

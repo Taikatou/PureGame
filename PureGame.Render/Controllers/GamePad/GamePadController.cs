@@ -5,7 +5,7 @@ using PureGame.Client.Controllers.Common;
 
 namespace PureGame.Client.Controllers.GamePad
 {
-    public class GamePadController : AbstractSmartController<SmartButtonControl>
+    public class GamePadController : AbstractSmartController<AbstractSmartControl>
     {
         private readonly JoyStickButton _joyStickButton;
         private readonly GamePadCameraController _joyStickCameraController;
@@ -17,14 +17,10 @@ namespace PureGame.Client.Controllers.GamePad
             _joyStickCameraController = new GamePadCameraController();
             BButton = new SmartButtonControl(Buttons.B, Controls.B);
             EButton = new SmartButtonControl(Buttons.A, Controls.A);
-            AddDirectionalControl(new SmartButtonControl(Buttons.DPadLeft, Controls.Left));
-            AddDirectionalControl(new SmartButtonControl(Buttons.DPadUp, Controls.Up));
-            AddDirectionalControl(new SmartButtonControl(Buttons.DPadDown, Controls.Down));
-            AddDirectionalControl(new SmartButtonControl(Buttons.DPadRight, Controls.Right));
-            AddDirectionalControl(new SmartJoyStickControl(Buttons.DPadDown, _joyStickButton, Controls.Down));
-            AddDirectionalControl(new SmartJoyStickControl(Buttons.DPadRight, _joyStickButton, Controls.Right));
-            AddDirectionalControl(new SmartJoyStickControl(Buttons.DPadUp, _joyStickButton, Controls.Up));
-            AddDirectionalControl(new SmartJoyStickControl(Buttons.DPadLeft, _joyStickButton, Controls.Left));
+            AddDirectionalControl(new SmartDirectionControl(Buttons.DPadDown, _joyStickButton, Controls.Down));
+            AddDirectionalControl(new SmartDirectionControl(Buttons.DPadRight, _joyStickButton, Controls.Right));
+            AddDirectionalControl(new SmartDirectionControl(Buttons.DPadUp, _joyStickButton, Controls.Up));
+            AddDirectionalControl(new SmartDirectionControl(Buttons.DPadLeft, _joyStickButton, Controls.Left));
             SmartControls.Add(EButton);
             SmartControls.Add(BButton);
         }

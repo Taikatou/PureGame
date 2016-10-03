@@ -30,8 +30,6 @@ namespace PureGame.Engine
             }
             foreach (var toRemove in toRemoveList)
             {
-                var entity = _entityDict[toRemove];
-                entity.Talking = false;
                 Remove(toRemove);
             }
         }
@@ -58,10 +56,8 @@ namespace PureGame.Engine
 
         public void Remove(IInteraction toRemove)
         {
-            if(!_talkingEntities.Contains(toRemove))
-            {
-                throw new Exception();
-            }
+            var entity = _entityDict[toRemove];
+            entity.Talking = false;
             _talkingEntities.Remove(toRemove);
             _entityDict.Remove(toRemove);
         }

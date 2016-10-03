@@ -49,7 +49,7 @@
     <Compile Include="Common\PathFinding\Node.cs" />
     <Compile Include="Common\SearchParameters.cs" />
     <Compile Include="Common\UpdateList.cs" />
-    <Compile Include="Engine\ContentManagerManager.cs" />
+    <Compile Include="Engine\ContentManagerFactory.cs" />
     <Compile Include="Engine\DirectionMapper.cs" />
     <Compile Include="Engine\EntityData\EntityFactory.cs" />
     <Compile Include="Engine\EntityData\BaseEntity.cs" />

@@ -22,19 +22,26 @@ namespace PureGame.Client.Renderable.TextRenderer
             _font = font;
             _interaction = r.BaseEntity.Interaction as OptionsInteraction;
             var textSpace = GetGreatestTextSize();
+            var extendBy = 1.2f;
             OptionRenderer = new List<BaseTextBoxRenderer>();
             Option = new Dictionary<BaseTextBoxRenderer, InteractionOption>();
             if (_interaction != null)
             {
+                var count = 0;
+                var optionsTextSpace = new Point((int)(textSpace.X * extendBy), textSpace.Y);
                 foreach (var option in _interaction.Options)
                 {
-                    var plainBox = new BaseTextBoxRenderer(font, r.ScreenPosition, textSpace, option.Text);
+                    var offset = textSpace.Y*count;
+                    var optionScreenPosition = r.ScreenPosition + new Point(0, offset);
+                    var plainBox = new BaseTextBoxRenderer(font, optionScreenPosition, textSpace, option.Text);
                     OptionRenderer.Add(plainBox);
                     Option[plainBox] = option;
+                    count++;
                 }
                 var rows = textSpace.Y * (_interaction.Options.Count + 1);
-                var optionsTextBox = new Point(textSpace.X, textSpace.Y + rows);
-                DialogBox = new DialogBox(r.ScreenPosition, optionsTextBox);
+                var optionsTextBox = new Point((int)(textSpace.X * extendBy), textSpace.Y + rows);
+                var screenPosition = r.ScreenPosition + new Point(0, rows);
+                DialogBox = new DialogBox(screenPosition, optionsTextBox);
             }
             else
             {

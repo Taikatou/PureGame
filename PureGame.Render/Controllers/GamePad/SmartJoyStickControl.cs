@@ -2,7 +2,7 @@
 
 namespace PureGame.Client.Controllers.GamePad
 {
-    class SmartJoyStickControl : SmartButtonControl
+    public class SmartJoyStickControl : SmartButtonControl
     {
         private readonly JoyStickButton _joyStickButton;
 

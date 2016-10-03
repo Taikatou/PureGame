@@ -29,7 +29,7 @@ namespace PureGame.Client.Renderable.WorldRenderer
         public WorldRenderLayer(WorldArea world, ViewportAdapter viewPort, IEntity player, float zoom)
         {
             ToDraw = new ContainsList<EntityRender>();
-            _content = ContentManagerManager.RequestContentManager();
+            _content = ContentManagerFactory.RequestContentManager();
             World = world;
             _tmpCamera = new Camera2D(viewPort) { Zoom=zoom };
             Camera = new Camera2D(viewPort) { Zoom=zoom };

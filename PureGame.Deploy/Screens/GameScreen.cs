@@ -23,10 +23,10 @@ namespace PureGame.Deploy.Screens
         public GameScreen(IServiceProvider serviceProvider, IControllerSettings settings)
         {
             Content = new ContentManager(serviceProvider, "Content");
+            ContentManagerFactory.Initialise(Content);
             var graphicsDeviceService = (IGraphicsDeviceService)serviceProvider.GetService(typeof(IGraphicsDeviceService));
             var viewportAdapter = new DefaultViewportAdapter(graphicsDeviceService.GraphicsDevice);
             _spriteBatch = new SpriteBatch(graphicsDeviceService.GraphicsDevice);
-            ContentManagerManager.Instance = new ContentManagerManager(Content);
             PureGame = new PureGame();
             var player = EntityFactory.MakeEntityObject(new Point(4, 4), "CharacterSheet");
             _gameClient = new PureGameClient(player, PureGame);

@@ -19,7 +19,7 @@ namespace PureGame.Client.Renderable.TextRenderer
         public TextRenderLayer(WorldRenderLayer worldRender)
         {
             WorldRender = worldRender;
-            _content = ContentManagerManager.RequestContentManager();
+            _content = ContentManagerFactory.RequestContentManager();
             Font = _content.Load<BitmapFont>("Fonts/montserrat-84");
             TextBoxTexture = _content.Load<Texture2D>("Images/outline");
             TextBoxDict = new Dictionary<EntityRender, ITextBoxRenderer>();

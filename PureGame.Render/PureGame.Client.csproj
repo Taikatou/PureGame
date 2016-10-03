@@ -54,10 +54,12 @@
     <Compile Include="Controllers\Common\SmartControl.cs" />
     <Compile Include="Controllers\ControllerManager.cs" />
     <Compile Include="Controllers\ControllerManagerFactory.cs" />
+    <Compile Include="Controllers\GamePad\AbstractSmartControl.cs" />
     <Compile Include="Controllers\GamePad\GamePadController.cs" />
     <Compile Include="Controllers\GamePad\JoyStickButton.cs" />
     <Compile Include="Controllers\GamePad\GamePadCameraController.cs" />
     <Compile Include="Controllers\GamePad\SmartButtonControl.cs" />
+    <Compile Include="Controllers\GamePad\SmartDirectionControl.cs" />
     <Compile Include="Controllers\GamePad\SmartJoyStickControl.cs" />
     <Compile Include="Controllers\IControllerSettings.cs" />
     <Compile Include="Controllers\KeyBoard\DualSmartKey.cs" />

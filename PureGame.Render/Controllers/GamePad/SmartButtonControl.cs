@@ -3,7 +3,7 @@ using PureGame.Client.Controllers.Common;
 
 namespace PureGame.Client.Controllers.GamePad
 {
-    public class SmartButtonControl : SmartControl
+    public class SmartButtonControl : AbstractSmartControl
     {
         public readonly Buttons Button;
 
@@ -13,7 +13,7 @@ namespace PureGame.Client.Controllers.GamePad
             Control = control;
         }
 
-        public virtual void Update(GamePadState state)
+        public override void Update(GamePadState state)
         {
             PreviouslyActive = Active;
             Active = state.IsButtonDown(Button);

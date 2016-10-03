@@ -14,6 +14,7 @@ namespace PureGame.Engine.Communication
                 Debug.WriteLine("Event happened");
             };
             interaction.AddOption(new InteractionOption(interactionEvent, "Interacting"));
+            interaction.AddOption(new InteractionOption(interactionEvent, "Interacting"));
             return interaction;
         }
     }
