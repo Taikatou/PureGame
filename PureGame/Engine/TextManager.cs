@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.EntityData;
 using System.Collections.Generic;
-using System.Diagnostics;
 using PureGame.Engine.Communication;
+using System;
 
 namespace PureGame.Engine
 {
@@ -32,7 +32,7 @@ namespace PureGame.Engine
             {
                 var entity = _entityDict[toRemove];
                 entity.Talking = false;
-                Remove(entity.Interaction);
+                Remove(toRemove);
             }
         }
 
@@ -58,6 +58,10 @@ namespace PureGame.Engine
 
         public void Remove(IInteraction toRemove)
         {
+            if(!_talkingEntities.Contains(toRemove))
+            {
+                throw new Exception();
+            }
             _talkingEntities.Remove(toRemove);
             _entityDict.Remove(toRemove);
         }

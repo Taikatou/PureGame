@@ -15,7 +15,18 @@ namespace PureGame.Client.Controlables
         }
         public bool Tap(Vector2 position)
         {
-            return RenderLayer.Tap(position);
+            var found = false;
+            var WorldRender = RenderLayer.WorldRender;
+            position = WorldRender.ScreenToWorld(position);
+            foreach (var r in WorldRender.ToDraw.Elements)
+            {
+                if (r.BaseEntity.Talking)
+                {
+                    var textBox = RenderLayer.GetTextBox(r);
+                    found = found || textBox.Tap(position);
+                }
+            }
+            return found;
         }
 
         public void DoubleTap()

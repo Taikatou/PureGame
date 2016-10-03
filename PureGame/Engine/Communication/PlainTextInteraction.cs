@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.EntityData;
+using System.Diagnostics;
 
 namespace PureGame.Engine.Communication
 {
@@ -7,7 +8,7 @@ namespace PureGame.Engine.Communication
     {
         private int _timer;
         public IEntity Entity { get; }
-        public bool Complete => _timer <= 0;
+        public bool Complete => !Entity.Talking && _timer <= 0;
         public virtual string Type => "PlainTextInteraction";
         public PlainTextInteraction(IEntity entity, int timer)
         {
@@ -25,6 +26,7 @@ namespace PureGame.Engine.Communication
             if (!Complete)
             {
                 _timer -= time.ElapsedGameTime.Milliseconds;
+                Debug.WriteLine("Updating");
             }
         }
     }

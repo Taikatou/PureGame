@@ -64,20 +64,5 @@ namespace PureGame.Client.Renderable.TextRenderer
         {
             _content.Dispose();
         }
-
-        public bool Tap(Vector2 position)
-        {
-            var found = false;
-            position = WorldRender.ScreenToWorld(position);
-            foreach (var r in WorldRender.ToDraw.Elements)
-            {
-                if (r.BaseEntity.Talking)
-                {
-                    var textBox = GetTextBox(r);
-                    found = found || textBox.Tap(position);
-                }
-            }
-            return found;
-        }
     }
 }

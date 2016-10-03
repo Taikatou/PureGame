@@ -14,21 +14,21 @@ namespace PureGame.Client.Renderable.TextRenderer
         private readonly OptionsInteraction _interaction;
         private readonly BitmapFont _font;
         public DialogBox DialogBox;
-        public List<PlainTextBoxRenderer> OptionRenderer;
-        public Dictionary<PlainTextBoxRenderer, InteractionOption> Option;
+        public List<BaseTextBoxRenderer> OptionRenderer;
+        public Dictionary<BaseTextBoxRenderer, InteractionOption> Option;
 
         public OptionsTextBoxRenderer(BitmapFont font, EntityRender r)
         {
             _font = font;
             _interaction = r.BaseEntity.Interaction as OptionsInteraction;
             var textSpace = GetGreatestTextSize();
-            OptionRenderer = new List<PlainTextBoxRenderer>();
-            Option = new Dictionary<PlainTextBoxRenderer, InteractionOption>();
+            OptionRenderer = new List<BaseTextBoxRenderer>();
+            Option = new Dictionary<BaseTextBoxRenderer, InteractionOption>();
             if (_interaction != null)
             {
                 foreach (var option in _interaction.Options)
                 {
-                    var plainBox = new PlainTextBoxRenderer(font, r.ScreenPosition, textSpace, _interaction);
+                    var plainBox = new BaseTextBoxRenderer(font, r.ScreenPosition, textSpace, option.Text);
                     OptionRenderer.Add(plainBox);
                     Option[plainBox] = option;
                 }
@@ -76,6 +76,7 @@ namespace PureGame.Client.Renderable.TextRenderer
                     if (option.Tap(position))
                     {
                         Option[option].Click();
+                        _interaction.Interact();
                         break;
                     }
                 }
