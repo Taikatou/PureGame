@@ -11,25 +11,23 @@ using System.Collections.Generic;
 using System.Linq;
 using PureGame.Common;
 using System;
-using PureGame.Client.Events;
 
 namespace PureGame.Client.Renderable.WorldRenderer
 {
-    public class WorldRenderLayer : IUnSubscribe, IDisposable
+    public class WorldRenderLayer : IDisposable
     {
         public WorldArea World;
         private readonly Dictionary<string, EntityRender> _entitySprites;
         private readonly TiledMap _map;
+
         public readonly Camera2D Camera;
         public readonly ContainsList<EntityRender> ToDraw;
         private readonly ContentManager _content;
         private readonly Camera2D _tmpCamera;
         public readonly EntityPositionFinder PositionFinder;
         public FocusStack FocusStack;
-        public EventManager EventManager;
         public WorldRenderLayer(WorldArea world, ViewportAdapter viewPort, IEntity player, float zoom)
         {
-            EventManager = new EventManager();
             ToDraw = new ContainsList<EntityRender>();
             _content = ContentManagerManager.RequestContentManager();
             World = world;
@@ -45,25 +43,21 @@ namespace PureGame.Client.Renderable.WorldRenderer
             {
                 if (entity != player)
                 {
-                    EventHandler onMoveHandler = (sender, args) =>
+                    entity.OnMoveEvent += (sender, args) =>
                     {
                         RefreshEntity(entity);
                         Sort();
                     };
-                    EventManager.AddEvent(entity.OnMoveEvent, onMoveHandler);
                 }
             }
-            EventHandler refreshEvent = (sender, args) => RefreshToDraw();
-            EventHandler playerOnMoveHandler = (sender, args) => RefreshToDraw();
-            EventManager.AddEvent(FocusStack.RefreshEvent, refreshEvent);
-            EventManager.AddEvent(player.OnMoveEvent, playerOnMoveHandler);
+            FocusStack.RefreshEvent += (sender, args) => RefreshToDraw();
+            player.OnMoveEvent += (sender, args) => RefreshToDraw();
             RefreshToDraw();
         }
 
         public void UnLoad()
         {
             _content.Unload();
-            UnSubscribe();
             Dispose();
         }
 
@@ -136,11 +130,6 @@ namespace PureGame.Client.Renderable.WorldRenderer
                 RefreshEntity(e);
                 Sort();
             }
-        }
-
-        public void UnSubscribe()
-        {
-            EventManager.UnSubscribe();
         }
     }
 }

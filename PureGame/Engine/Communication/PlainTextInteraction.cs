@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using PureGame.Engine.EntityData;
-using System.Diagnostics;
 
 namespace PureGame.Engine.Communication
 {
@@ -26,7 +25,6 @@ namespace PureGame.Engine.Communication
             if (!Complete)
             {
                 _timer -= time.ElapsedGameTime.Milliseconds;
-                Debug.WriteLine("Updating");
             }
         }
     }

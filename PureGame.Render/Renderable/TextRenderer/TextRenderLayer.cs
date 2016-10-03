@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
@@ -24,11 +23,6 @@ namespace PureGame.Client.Renderable.TextRenderer
             Font = _content.Load<BitmapFont>("Fonts/montserrat-84");
             TextBoxTexture = _content.Load<Texture2D>("Images/outline");
             TextBoxDict = new Dictionary<EntityRender, ITextBoxRenderer>();
-        }
-
-        public void Update(GameTime time)
-        {
-
         }
 
         public void Draw(SpriteBatch spriteBatch)

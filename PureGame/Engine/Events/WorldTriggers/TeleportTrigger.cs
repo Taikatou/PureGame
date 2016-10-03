@@ -6,7 +6,7 @@ using PureGame.Common;
 
 namespace PureGame.Engine.Events.WorldTriggers
 {
-    public class TeleportTrigger<T> : Trigger, IDisposable, IUnSubscribe where T : WorldArea, new()
+    public class TeleportTrigger<T> : Trigger, IDisposable where T : WorldArea, new()
     {
         public Point EndPosition;
         private readonly IWorldLoader _worldLoader;
@@ -37,11 +37,6 @@ namespace PureGame.Engine.Events.WorldTriggers
         }
 
         public void Dispose()
-        {
-            UnSubscribe();
-        }
-
-        public void UnSubscribe()
         {
             _trigger.Event -= TriggerHandler;
         }

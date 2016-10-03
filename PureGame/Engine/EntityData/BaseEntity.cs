@@ -15,24 +15,23 @@ namespace PureGame.Engine.EntityData
         public Direction MovementDirection { get; set; }
         public Direction FacingDirection { get; set; }
         public bool Running { get; set; }
-
         public bool Talking { get; set; }
-
         public int Speed => Running ? _runningSpeed : _walkingSpeed;
-        public event EventHandler OnMoveEvent;
+        public EventHandler OnMoveEvent { get; set; }
 
-        public void MomentumChange() => OnMoveEvent?.Invoke(this, null);
-        private IInteraction _interaction;
+        public void Move()
+        {
+            OnMoveEvent?.Invoke(this, null);
+        }
+
         public IInteraction Interaction
         {
             get
             {
-                _interaction = InteractionFactory.MakeInteraction(this);
-                return _interaction;
+                var interaction = InteractionFactory.MakeInteraction(this);
+                return interaction;
             }
         }
-
-        EventHandler IEntity.OnMoveEvent { get; set; }
 
         public override string ToString() => $"EntityObject Id:{Id}, FileName:{FileName}, Position:{Position}";
     }

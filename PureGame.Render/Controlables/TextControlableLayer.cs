@@ -16,9 +16,9 @@ namespace PureGame.Client.Controlables
         public bool Tap(Vector2 position)
         {
             var found = false;
-            var WorldRender = RenderLayer.WorldRender;
-            position = WorldRender.ScreenToWorld(position);
-            foreach (var r in WorldRender.ToDraw.Elements)
+            var worldRender = RenderLayer.WorldRender;
+            position = worldRender.ScreenToWorld(position);
+            foreach (var r in worldRender.ToDraw.Elements)
             {
                 if (r.BaseEntity.Talking)
                 {
@@ -52,7 +52,6 @@ namespace PureGame.Client.Controlables
 
         public void Update(GameTime time)
         {
-            RenderLayer.Update(time);
         }
 
         public void ControllerDPad(Direction direction)

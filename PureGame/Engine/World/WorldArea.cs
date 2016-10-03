@@ -73,7 +73,7 @@ namespace PureGame.Engine.World
                 {
                     var triggerEvent = TriggerManager.GetTriggerEvent(e, newPosition);
                     EntityManager.MoveEntity(e, triggerEvent, newPosition);
-                    e.MomentumChange();
+                    e.Move();
                 }
                 e.FacingDirection = e.MovementDirection;
                 if (e.Talking)
