@@ -5,10 +5,11 @@ namespace PureGame.Engine.World
     public class ExpiringKey <T>
     {
         public readonly T Value;
-        public bool Complete => TimeLeft == 0;
+        public bool Complete => TimeLeft <= 0;
         public int TimeLeft { get; internal set; }
         public int TotalTime { get; }
-        public float Progress => (float)TimeLeft / TotalTime;
+
+        public float Progress => Complete? 0.0f : (float)TimeLeft / TotalTime;
 
         public ExpiringKey(T key, int time)
         {
@@ -22,10 +23,6 @@ namespace PureGame.Engine.World
             if (!Complete)
             {
                 TimeLeft -= time.ElapsedGameTime.Milliseconds;
-                if (TimeLeft < 0)
-                {
-                    TimeLeft = 0;
-                }
             }
         }
     }
