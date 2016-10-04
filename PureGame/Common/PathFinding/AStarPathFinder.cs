@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace PureGame.Common.PathFinding
 {
-    public class AStarPathFinder : IPathfinder
+    public class AStarPathFinder
     {
         public Dictionary<Point, Node> MapNodes;
         public HashSet<Point> ClosedNodes;

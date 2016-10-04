@@ -35,6 +35,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\PureGame.Content\PureGame.Content.csproj">
+      <Project>{C98927D5-511D-4F66-A8BB-938BD6D11935}</Project>
+      <Name>PureGame.Content</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PureGame\PureGame.csproj">
       <Project>{483d0287-2401-4822-893b-eba1b792e055}</Project>
       <Name>PureGame</Name>
@@ -68,6 +72,7 @@
     <Compile Include="Controllers\TouchScreenController.cs" />
     <Compile Include="Controllers\WorldClickController.cs" />
     <Compile Include="Controllers\IController.cs" />
+    <Compile Include="MonoGameGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PureGameClient.cs" />
     <Compile Include="Renderable\CameraFunctions.cs" />

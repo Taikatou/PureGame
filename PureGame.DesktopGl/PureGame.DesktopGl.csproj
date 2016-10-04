@@ -40,7 +40,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ControllerSettings.cs" />
-    <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -81,10 +80,6 @@
     <ProjectReference Include="..\PureGame.Content\PureGame.Content.csproj">
       <Project>{c98927d5-511d-4f66-a8bb-938bd6d11935}</Project>
       <Name>PureGame.Content</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PureGame.Deploy\PureGame.Deploy.csproj">
-      <Project>{84968b90-7a49-4149-b217-50d48a59f9d6}</Project>
-      <Name>PureGame.Deploy</Name>
     </ProjectReference>
     <ProjectReference Include="..\PureGame.Render\PureGame.Client.csproj">
       <Project>{495bf5a7-dea5-4b30-9b9b-4bb358cc60e3}</Project>

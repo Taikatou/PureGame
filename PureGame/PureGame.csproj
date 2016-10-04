@@ -36,6 +36,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Common\PathFinding\AStarPathFinder.cs" />
+    <Compile Include="Common\PathFinding\Node.cs" />
     <Compile Include="Engine\Communication\IInteraction.cs" />
     <Compile Include="Engine\Communication\OptionsInteraction.cs" />
     <Compile Include="Engine\Communication\PlainTextInteraction.cs" />
@@ -44,9 +46,6 @@
     <Compile Include="Engine\World\Controllers\AbstractController.cs" />
     <Compile Include="Common\ContainsList.cs" />
     <Compile Include="Common\IFocusable.cs" />
-    <Compile Include="Common\IPathFinder.cs" />
-    <Compile Include="Common\PathFinding\AStarPathFinder.cs" />
-    <Compile Include="Common\PathFinding\Node.cs" />
     <Compile Include="Common\SearchParameters.cs" />
     <Compile Include="Common\UpdateList.cs" />
     <Compile Include="Engine\ContentManagerFactory.cs" />

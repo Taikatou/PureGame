@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PureGame.Client;
+using System;
 
 namespace PureGame.DesktopGl
 {
@@ -7,7 +8,7 @@ namespace PureGame.DesktopGl
         [STAThread]
         private static void Main()
         {
-            using (var game = new Game1())
+            using (var game = new MonoGameGame(new ControllerSettings()))
                 game.Run();
         }
     }
