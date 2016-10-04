@@ -17,7 +17,7 @@ namespace PureGame.Client.Renderable.TextRenderer
             Font = font;
             Interaction = r.BaseEntity.Interaction;
             var textSpace = font.GetSize(Text);
-            DialogBox = new DialogBox(r.ScreenPosition, textSpace);
+            DialogBox = new DialogBox(r.ScreenPosition, textSpace, Text);
         }
 
         public override bool Tap(Vector2 position)
@@ -29,12 +29,6 @@ namespace PureGame.Client.Renderable.TextRenderer
                 Interaction.Interact();
             }
             return found;
-        }
-
-        public override void Draw(SpriteBatch spriteBatch, Texture2D textBoxTexture)
-        {
-            DialogBox.Draw(spriteBatch, textBoxTexture);
-            spriteBatch.DrawString(Font, Text, DialogBox.Position.ToVector2(), Color.Black);
         }
     }
 }

@@ -21,13 +21,12 @@ namespace PureGame.Client.Renderable.TextRenderer
         {
             Font = font;
             Text = text;
-            DialogBox = new DialogBox(position, size);
+            DialogBox = new DialogBox(position, size, Text);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, Texture2D textBoxTexture)
         {
-            DialogBox.Draw(spriteBatch, textBoxTexture);
-            spriteBatch.DrawString(Font, Text, DialogBox.Position.ToVector2(), Color.Black);
+            DialogBox.Draw(spriteBatch, textBoxTexture, Font);
         }
 
         public virtual bool Tap(Vector2 position)

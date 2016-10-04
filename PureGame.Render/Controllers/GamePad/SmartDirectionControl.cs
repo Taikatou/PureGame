@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Input;
-using PureGame.Client.Controllers.Common;
 
 namespace PureGame.Client.Controllers.GamePad
 {

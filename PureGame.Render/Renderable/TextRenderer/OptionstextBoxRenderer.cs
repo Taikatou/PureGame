@@ -22,26 +22,23 @@ namespace PureGame.Client.Renderable.TextRenderer
             _font = font;
             _interaction = r.BaseEntity.Interaction as OptionsInteraction;
             var textSpace = GetGreatestTextSize();
-            var extendBy = 1.2f;
             OptionRenderer = new List<BaseTextBoxRenderer>();
             Option = new Dictionary<BaseTextBoxRenderer, InteractionOption>();
             if (_interaction != null)
             {
-                var count = 0;
-                var optionsTextSpace = new Point((int)(textSpace.X * extendBy), textSpace.Y);
+                var offset = 0;
                 foreach (var option in _interaction.Options)
                 {
-                    var offset = textSpace.Y*count;
                     var optionScreenPosition = r.ScreenPosition + new Point(0, offset);
                     var plainBox = new BaseTextBoxRenderer(font, optionScreenPosition, textSpace, option.Text);
                     OptionRenderer.Add(plainBox);
                     Option[plainBox] = option;
-                    count++;
+                    offset += textSpace.Y;
                 }
-                var rows = textSpace.Y * (_interaction.Options.Count + 1);
-                var optionsTextBox = new Point((int)(textSpace.X * extendBy), textSpace.Y + rows);
-                var screenPosition = r.ScreenPosition + new Point(0, rows);
-                DialogBox = new DialogBox(screenPosition, optionsTextBox);
+                var rows = textSpace.Y * _interaction.Options.Count;
+                var screenPosition = r.ScreenPosition - new Point(0, textSpace.Y);
+                var optionsTextBox = new Point((int)(textSpace.X * 1.2), (textSpace.Y + rows));
+                DialogBox = new DialogBox(screenPosition, optionsTextBox, Text);
             }
             else
             {
@@ -65,7 +62,7 @@ namespace PureGame.Client.Renderable.TextRenderer
 
         public void Draw(SpriteBatch spriteBatch, Texture2D textBoxTexture)
         {
-            DialogBox.Draw(spriteBatch, textBoxTexture);
+            DialogBox.Draw(spriteBatch, textBoxTexture, _font);
             spriteBatch.DrawString(_font, Text, DialogBox.Position.ToVector2(), Color.Black);
             foreach (var option in OptionRenderer)
             {
