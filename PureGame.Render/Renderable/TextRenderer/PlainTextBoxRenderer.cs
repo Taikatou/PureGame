@@ -16,6 +16,7 @@ namespace PureGame.Client.Renderable.TextRenderer
             Font = font;
             Interaction = r.BaseEntity.Interaction;
             var textSpace = font.GetSize(Text);
+            var screenPositionOffset = r.ScreenPosition - new Point(0, textSpace.Height);
             DialogBox = new DialogBox(screenPositionOffset, textSpace, Text);
         }
 
