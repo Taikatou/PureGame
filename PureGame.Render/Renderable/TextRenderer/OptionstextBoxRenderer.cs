@@ -26,17 +26,18 @@ namespace PureGame.Client.Renderable.TextRenderer
             Option = new Dictionary<BaseTextBoxRenderer, InteractionOption>();
             if (_interaction != null)
             {
+                var rows = textSpace.Y * _interaction.Options.Count;
+                var screenPositionOffset = r.ScreenPosition - new Point(0, rows);
                 var offset = 0;
                 foreach (var option in _interaction.Options)
                 {
-                    var optionScreenPosition = r.ScreenPosition + new Point(0, offset);
+                    var optionScreenPosition = screenPositionOffset + new Point(0, offset);
                     var plainBox = new BaseTextBoxRenderer(font, optionScreenPosition, textSpace, option.Text);
                     OptionRenderer.Add(plainBox);
                     Option[plainBox] = option;
                     offset += textSpace.Y;
                 }
-                var rows = textSpace.Y * _interaction.Options.Count;
-                var screenPosition = r.ScreenPosition - new Point(0, textSpace.Y);
+                var screenPosition = screenPositionOffset - new Point(0, textSpace.Y);
                 var optionsTextBox = new Point((int)(textSpace.X * 1.2), (textSpace.Y + rows));
                 DialogBox = new DialogBox(screenPosition, optionsTextBox, Text);
             }
